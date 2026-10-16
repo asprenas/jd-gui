@@ -1,4 +1,10 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
 include 'api', 'app', 'services'
 
 rootProject.name='jd-gui'
-

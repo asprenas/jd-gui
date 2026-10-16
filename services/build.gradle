@@ -1,11 +1,15 @@
-apply plugin: 'java'
+apply plugin: 'java-library'
 
 dependencies {
-    compile 'com.fifesoft:rsyntaxtextarea:3.0.4'
-    compile 'org.ow2.asm:asm:7.1'
-    compile 'org.jd:jd-core:' + parent.jdCoreVersion
-    compile project(':api')
-    testCompile 'junit:junit:4.12'
+    api 'com.fifesoft:rsyntaxtextarea:3.0.4'
+    implementation 'org.ow2.asm:asm:9.8'
+    implementation parent.jdCoreJitpack
+        ? 'com.github.java-decompiler:jd-core:v' + parent.jdCoreVersion
+        : 'org.jd:jd-core:' + parent.jdCoreVersion
+    api project(':api')
+    testImplementation 'junit:junit:4.13.2'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.13.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.4'
 }
 
 version = parent.version
@@ -24,15 +28,11 @@ configurations {
 }
 
 dependencies {
-    compile 'org.antlr:antlr4-runtime:4.5'
+    implementation 'org.antlr:antlr4-runtime:4.5'
     antlr4 'org.antlr:antlr4:4.5'
 }
 
-task antlr4OutputDir() {
-    mkdir antlr4.destinationDir
-}
-
-task antlr4GenerateGrammarSource(dependsOn: antlr4OutputDir, type: JavaExec) {
+tasks.register('antlr4GenerateGrammarSource', JavaExec) {
     description = 'Generates Java sources from ANTLR4 grammars.'
 
     inputs.dir file(antlr4.antlrSource)
@@ -41,14 +41,16 @@ task antlr4GenerateGrammarSource(dependsOn: antlr4OutputDir, type: JavaExec) {
     def grammars = fileTree(antlr4.antlrSource).include('**/*.g4')
     def pkg = antlr4.grammarPackage.replaceAll("\\.", "/")
 
-    main = 'org.antlr.v4.Tool'
+    doFirst { mkdir antlr4.destinationDir }
+    mainClass = 'org.antlr.v4.Tool'
     classpath = configurations.antlr4
     args = ['-o', "${antlr4.destinationDir}/${pkg}", '-package', antlr4.grammarPackage, grammars.files].flatten()
 }
 
-compileJava {
-    dependsOn antlr4GenerateGrammarSource
-    source antlr4.destinationDir
+sourceSets.main.java.srcDir(tasks.named('antlr4GenerateGrammarSource').map { file(antlr4.destinationDir) })
+
+test {
+    useJUnitPlatform()
 }
 
 clean {
@@ -56,12 +58,11 @@ clean {
 }
 
 idea.module {
-    sourceDirs += file(antlr4.destinationDir)
+    generatedSourceDirs += file(antlr4.destinationDir)
 }
-ideaModule.dependsOn antlr4GenerateGrammarSource
 
 eclipse.classpath.file.withXml { xml ->
     def node = xml.asNode()
     node.appendNode( 'classpathentry', [ kind: 'src', path: antlr4.destinationDir])
 }
-eclipseClasspath.dependsOn antlr4GenerateGrammarSource
+eclipseClasspath.dependsOn 'antlr4GenerateGrammarSource'
