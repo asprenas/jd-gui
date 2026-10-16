@@ -7,7 +7,7 @@
 
 package org.jd.gui.test;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.jd.gui.api.model.Container;
 import org.jd.gui.util.parser.antlr.ANTLRJavaParser;
 import org.jd.gui.util.parser.antlr.AbstractJavaListener;
@@ -29,7 +29,7 @@ public final class ParserTestSupport {
 
     public static <L extends AbstractJavaListener> L parse(Container.Entry entry, L listener) {
         try (InputStream is = entry.getInputStream()) {
-            ANTLRJavaParser.parse(new ANTLRInputStream(is), listener);
+            ANTLRJavaParser.parse(CharStreams.fromStream(is), listener);
             return listener;
         } catch (IOException e) {
             throw new UncheckedIOException(e);

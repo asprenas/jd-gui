@@ -28,8 +28,8 @@ configurations {
 }
 
 dependencies {
-    implementation 'org.antlr:antlr4-runtime:4.5'
-    antlr4 'org.antlr:antlr4:4.5'
+    implementation 'org.antlr:antlr4-runtime:4.13.2'
+    antlr4 'org.antlr:antlr4:4.13.2'
 }
 
 tasks.register('antlr4GenerateGrammarSource', JavaExec) {

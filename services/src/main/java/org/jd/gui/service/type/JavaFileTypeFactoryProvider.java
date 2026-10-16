@@ -7,7 +7,7 @@
 
 package org.jd.gui.service.type;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -29,7 +29,7 @@ public class JavaFileTypeFactoryProvider extends AbstractTypeFactoryProvider {
 
     static {
         // Early class loading
-        ANTLRJavaParser.parse(new ANTLRInputStream("class EarlyLoading{}"), new Listener(null));
+        ANTLRJavaParser.parse(CharStreams.fromString("class EarlyLoading{}"), new Listener(null));
     }
 
     // Create cache
@@ -80,7 +80,7 @@ public class JavaFileTypeFactoryProvider extends AbstractTypeFactoryProvider {
             Listener listener;
 
             try (InputStream inputStream = entry.getInputStream()) {
-                ANTLRJavaParser.parse(new ANTLRInputStream(inputStream), listener = new Listener(entry));
+                ANTLRJavaParser.parse(CharStreams.fromStream(inputStream), listener = new Listener(entry));
             } catch (IOException e) {
                 assert ExceptionUtil.printStackTrace(e);
                 listener = null;

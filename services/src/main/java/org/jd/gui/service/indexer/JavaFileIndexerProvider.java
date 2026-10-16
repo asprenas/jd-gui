@@ -7,7 +7,7 @@
 
 package org.jd.gui.service.indexer;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -30,7 +30,7 @@ public class JavaFileIndexerProvider extends AbstractIndexerProvider {
 
     static {
         // Early class loading
-        ANTLRJavaParser.parse(new ANTLRInputStream("class EarlyLoading{}"), new Listener(null));
+        ANTLRJavaParser.parse(CharStreams.fromString("class EarlyLoading{}"), new Listener(null));
     }
 
     @Override public String[] getSelectors() { return appendSelectors("*:file:*.java"); }
@@ -40,7 +40,7 @@ public class JavaFileIndexerProvider extends AbstractIndexerProvider {
     public void index(API api, Container.Entry entry, Indexes indexes) {
         try (InputStream inputStream = entry.getInputStream()) {
             Listener listener = new Listener(entry);
-            ANTLRJavaParser.parse(new ANTLRInputStream(inputStream), listener);
+            ANTLRJavaParser.parse(CharStreams.fromStream(inputStream), listener);
 
             // Append sets to indexes
             addToIndexes(indexes, "typeDeclarations", listener.getTypeDeclarationSet(), entry);

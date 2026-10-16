@@ -7,7 +7,7 @@
 
 package org.jd.gui.view.component;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Token;
@@ -36,9 +36,9 @@ public class JavaFilePage extends TypePage {
         DeclarationListener declarationListener = new DeclarationListener(entry);
         ReferenceListener referenceListener = new ReferenceListener(entry);
 
-        ANTLRJavaParser.parse(new ANTLRInputStream(text), declarationListener);
+        ANTLRJavaParser.parse(CharStreams.fromString(text), declarationListener);
         referenceListener.init(declarationListener);
-        ANTLRJavaParser.parse(new ANTLRInputStream(text), referenceListener);
+        ANTLRJavaParser.parse(CharStreams.fromString(text), referenceListener);
         // Display
         setText(text);
         initLineNumbers();
