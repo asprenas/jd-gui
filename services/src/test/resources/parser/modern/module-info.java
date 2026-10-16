@@ -1,7 +1,7 @@
 /**
  * Java 9 module declaration.
  */
-open module test.modern {
+module test.modern {
     requires java.base;
     requires transitive java.desktop;
     requires static java.sql;
