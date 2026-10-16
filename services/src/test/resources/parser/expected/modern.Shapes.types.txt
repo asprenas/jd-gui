@@ -1,0 +1,12 @@
+mainType: test/modern/Shapes
+type test/modern/Shapes flags=513 super= outer=null display=test.modern|Shapes|null
+  method area()D flags=1 display=area() : double
+  method area()D flags=1 display=area() : double
+  type test/modern/Shapes$Circle flags=0 super=java/lang/Object outer=test/modern/Shapes display=test.modern|Shapes.Circle|Circle
+    field radius D flags=18 display=radius : double
+    method <init>(D)V flags=1 display=Circle()
+    method area()D flags=1 display=area() : double
+  type test/modern/Shapes$Polygon flags=0 super=java/lang/Object outer=test/modern/Shapes display=test.modern|Shapes.Polygon|Polygon
+    method area()D flags=1 display=area() : double
+  type test/modern/Shapes$Base flags=0 super=java/lang/Object outer=test/modern/Shapes display=test.modern|Shapes.Base|Base
+  type test/modern/Shapes$Derived flags=0 super=test/modern/Shapes$Base outer=test/modern/Shapes display=test.modern|Shapes.Derived|Derived

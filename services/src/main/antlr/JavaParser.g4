@@ -1,5 +1,5 @@
 // Source: https://github.com/antlr/grammars-v4/tree/8c7680c4d28a2c84c8a1077a8b3dad4b37b300df/java/java/JavaParser.g4
-// Imported unmodified for JD-GUI (Java 24 grammar).
+// Imported for JD-GUI (Java 24 grammar). Local change: 'pattern' rule (see 'JD-GUI' comment).
 /*
  [The "BSD licence"]
  Copyright (c) 2013 Terence Parr, Sam Harwell
@@ -684,6 +684,7 @@ expression
 
 pattern
     : variableModifier* typeType annotation* variableDeclarators
+    | variableModifier* VAR identifier // JD-GUI: 'var' in record patterns, e.g. "case Point(var x, var y)"
     | typeType '(' componentPatternList? ')'
     ;
 

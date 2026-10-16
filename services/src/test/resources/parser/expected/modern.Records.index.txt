@@ -1,0 +1,38 @@
+typeDeclarations:
+  test/modern/Records
+constructorDeclarations:
+  Point
+methodDeclarations:
+  compareTo
+  distance
+  of
+  points
+fieldDeclarations:
+  ORIGIN
+typeReferences:
+  java/lang/Comparable
+  java/lang/String
+  java/util/List
+constructorReferences:
+  java/lang/IllegalArgumentException
+methodReferences:
+  compare
+  of
+  point
+  requireNonNull
+  sqrt
+  this
+  x
+  y
+fieldReferences:
+  ORIGIN
+  compare
+  of
+  point
+  requireNonNull
+  sqrt
+  x
+  y
+strings:
+  "negative"
+superTypeNames:

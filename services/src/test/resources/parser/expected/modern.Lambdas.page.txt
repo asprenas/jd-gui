@@ -1,0 +1,84 @@
+declarations:
+  test/modern/Lambdas @378-385 type=test/modern/Lambdas name=null desc=null super=null
+  test/modern/Lambdas$Converter @481-490 type=test/modern/Lambdas$Converter name=null desc=null super=null
+  test/modern/Lambdas$Converter-convert-(L*/F;)L*/T; @509-516 type=test/modern/Lambdas$Converter name=convert desc=(L*/F;)L*/T;
+  test/modern/Lambdas$Converter-helper-()V @825-831 type=test/modern/Lambdas$Converter name=helper desc=()V
+  test/modern/Lambdas$Converter-identity-()Ltest/modern/Lambdas$Converter; @753-761 type=test/modern/Lambdas$Converter name=identity desc=()Ltest/modern/Lambdas$Converter;
+  test/modern/Lambdas$Converter-logged-()Ltest/modern/Lambdas$Converter; @559-565 type=test/modern/Lambdas$Converter name=logged desc=()Ltest/modern/Lambdas$Converter;
+  test/modern/Lambdas-names-Ljava/util/List; @439-444 type=test/modern/Lambdas name=names desc=Ljava/util/List;
+  test/modern/Lambdas-print-(Ljava/util/List;)V @1864-1869 type=test/modern/Lambdas name=print desc=(Ljava/util/List;)V
+  test/modern/Lambdas-run-()V @883-886 type=test/modern/Lambdas name=run desc=()V
+typeDeclarations:
+  @378 test/modern/Lambdas
+  @481 test/modern/Lambdas$Converter
+hyperlinks:
+  @29-48 type=java/util/ArrayList name=null desc=null owner=null
+  @57-77 type=java/util/Comparator name=null desc=null owner=null
+  @86-100 type=java/util/List name=null desc=null owner=null
+  @109-127 type=java/util/Optional name=null desc=null owner=null
+  @136-165 type=java/util/function/BiFunction name=null desc=null owner=null
+  @174-201 type=java/util/function/Function name=null desc=null owner=null
+  @210-237 type=java/util/function/Supplier name=null desc=null owner=null
+  @246-273 type=java/util/stream/Collectors name=null desc=null owner=null
+  @397-405 type=java/lang/Runnable name=null desc=null owner=test/modern/Lambdas
+  @426-430 type=java/util/List name=null desc=null owner=test/modern/Lambdas
+  @431-437 type=java/lang/String name=null desc=null owner=test/modern/Lambdas
+  @451-460 type=java/util/ArrayList name=<init> desc=()V owner=test/modern/Lambdas
+  @507-508 type=*/T name=null desc=null owner=test/modern/Lambdas$Converter
+  @517-518 type=*/F name=null desc=null owner=test/modern/Lambdas$Converter
+  @543-552 type=test/modern/Lambdas$Converter name=null desc=null owner=test/modern/Lambdas$Converter
+  @553-554 type=*/F name=null desc=null owner=test/modern/Lambdas$Converter
+  @556-557 type=*/T name=null desc=null owner=test/modern/Lambdas$Converter
+  @677-684 type=test/modern/Lambdas$Converter name=convert desc=?)? owner=test/modern/Lambdas$Converter
+  @737-746 type=test/modern/Lambdas$Converter name=null desc=null owner=test/modern/Lambdas$Converter
+  @747-748 type=*/T name=null desc=null owner=test/modern/Lambdas$Converter
+  @750-751 type=*/T name=null desc=null owner=test/modern/Lambdas$Converter
+  @899-907 type=java/lang/Runnable name=null desc=null owner=test/modern/Lambdas
+  @955-958 type=java/lang/Runnable name=run desc=()? owner=test/modern/Lambdas
+  @971-979 type=java/util/function/Function name=null desc=null owner=test/modern/Lambdas
+  @980-986 type=java/lang/String name=null desc=null owner=test/modern/Lambdas
+  @988-995 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
+  @1030-1040 type=java/util/function/BiFunction name=null desc=null owner=test/modern/Lambdas
+  @1041-1048 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
+  @1050-1057 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
+  @1059-1066 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
+  @1099-1109 type=java/util/function/BiFunction name=null desc=null owner=test/modern/Lambdas
+  @1110-1117 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
+  @1119-1126 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
+  @1128-1135 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
+  @1150-1157 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
+  @1167-1174 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
+  @1186-1189 type=java/lang/Math name=max desc=??)? owner=test/modern/Lambdas
+  @1205-1213 type=java/util/function/Supplier name=null desc=null owner=test/modern/Lambdas
+  @1214-1218 type=java/util/List name=null desc=null owner=test/modern/Lambdas
+  @1219-1225 type=java/lang/String name=null desc=null owner=test/modern/Lambdas
+  @1238-1247 type=java/util/ArrayList name=null desc=null owner=test/modern/Lambdas
+  @1262-1270 type=java/util/function/Function name=null desc=null owner=test/modern/Lambdas
+  @1271-1278 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
+  @1280-1286 type=java/lang/String name=null desc=null owner=test/modern/Lambdas
+  @1299-1305 type=java/lang/String name=null desc=null owner=test/modern/Lambdas
+  @1329-1333 type=test/modern/Lambdas name=sort desc=?)? owner=test/modern/Lambdas
+  @1334-1344 type=java/util/Comparator name=null desc=null owner=test/modern/Lambdas
+  @1345-1354 type=java/util/Comparator name=comparing desc=?)? owner=test/modern/Lambdas
+  @1385-1393 type=java/util/function/Function name=null desc=null owner=test/modern/Lambdas
+  @1394-1402 type=java/util/function/Function name=identity desc=()? owner=test/modern/Lambdas
+  @1416-1420 type=java/util/List name=null desc=null owner=test/modern/Lambdas
+  @1421-1428 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
+  @1446-1452 type=test/modern/Lambdas name=stream desc=()? owner=test/modern/Lambdas
+  @1487-1494 type=*/n name=isEmpty desc=()? owner=test/modern/Lambdas
+  @1552-1562 type=java/util/stream/Collectors name=null desc=null owner=test/modern/Lambdas
+  @1563-1569 type=java/util/stream/Collectors name=toList desc=()? owner=test/modern/Lambdas
+  @1599-1604 type=java/util/function/BiFunction name=apply desc=??)? owner=test/modern/Lambdas
+  @1613-1617 type=java/util/List name=size desc=()? owner=test/modern/Lambdas
+  @1625-1630 type=java/util/function/BiFunction name=apply desc=??)? owner=test/modern/Lambdas
+  @1737-1745 type=java/util/Optional name=null desc=null owner=test/modern/Lambdas
+  @1746-1756 type=java/util/Optional name=ofNullable desc=?)? owner=test/modern/Lambdas
+  @1765-1768 type=java/util/function/Supplier name=get desc=()? owner=test/modern/Lambdas
+  @1830-1835 type=java/util/function/Function name=apply desc=?)? owner=test/modern/Lambdas
+  @1870-1874 type=java/util/List name=null desc=null owner=test/modern/Lambdas
+  @1875-1881 type=java/lang/String name=null desc=null owner=test/modern/Lambdas
+  @1908-1915 type=java/util/List name=forEach desc=?)? owner=test/modern/Lambdas
+  @1923-1926 type=java/lang/System name=out desc=? owner=test/modern/Lambdas
+strings:
+  @634-644 "convert " owner=test/modern/Lambdas$Converter
+  @937-942 "run" owner=test/modern/Lambdas

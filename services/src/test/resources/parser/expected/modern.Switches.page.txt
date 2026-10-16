@@ -1,0 +1,67 @@
+declarations:
+  test/modern/Switches @116-124 type=test/modern/Switches name=null desc=null super=null
+  test/modern/Switches$Day @136-139 type=test/modern/Switches$Day name=null desc=null super=null
+  test/modern/Switches$Expr @200-204 type=test/modern/Switches$Expr name=null desc=null super=null
+  test/modern/Switches-JSON-Ljava/lang/String; @405-409 type=test/modern/Switches name=JSON desc=Ljava/lang/String;
+  test/modern/Switches-classic-(I)Ljava/lang/String; @863-870 type=test/modern/Switches name=classic desc=(I)Ljava/lang/String;
+  test/modern/Switches-describe-(Ljava/lang/Object;)Ljava/lang/String; @1124-1132 type=test/modern/Switches name=describe desc=(Ljava/lang/Object;)Ljava/lang/String;
+  test/modern/Switches-eval-(Ltest/modern/Switches$Expr;)I @1385-1389 type=test/modern/Switches name=eval desc=(Ltest/modern/Switches$Expr;)I
+  test/modern/Switches-format-(Ljava/lang/Object;)Ljava/lang/String; @1682-1688 type=test/modern/Switches name=format desc=(Ljava/lang/Object;)Ljava/lang/String;
+  test/modern/Switches-letters-(Ltest/modern/Switches$Day;)I @597-604 type=test/modern/Switches name=letters desc=(Ltest/modern/Switches$Day;)I
+typeDeclarations:
+  @116 test/modern/Switches
+  @136 test/modern/Switches$Day
+  @200 test/modern/Switches$Expr
+hyperlinks:
+  @213-216 type=*/Num name=null desc=null owner=test/modern/Switches$Expr
+  @218-221 type=*/Add name=null desc=null owner=test/modern/Switches$Expr
+  @223-226 type=*/Neg name=null desc=null owner=test/modern/Switches$Expr
+  @267-271 type=test/modern/Switches$Expr name=null desc=null owner=test/modern/Switches
+  @290-294 type=test/modern/Switches$Expr name=null desc=null owner=test/modern/Switches
+  @301-305 type=test/modern/Switches$Expr name=null desc=null owner=test/modern/Switches
+  @324-328 type=test/modern/Switches$Expr name=null desc=null owner=test/modern/Switches
+  @347-351 type=test/modern/Switches$Expr name=null desc=null owner=test/modern/Switches
+  @372-376 type=test/modern/Switches$Expr name=null desc=null owner=test/modern/Switches
+  @398-404 type=java/lang/String name=null desc=null owner=test/modern/Switches
+  @605-608 type=test/modern/Switches$Day name=null desc=null owner=test/modern/Switches
+  @773-777 type=test/modern/Switches$Day name=name desc=()? owner=test/modern/Switches
+  @856-862 type=java/lang/String name=null desc=null owner=test/modern/Switches
+  @891-897 type=java/lang/String name=null desc=null owner=test/modern/Switches
+  @1117-1123 type=java/lang/String name=null desc=null owner=test/modern/Switches
+  @1133-1139 type=java/lang/Object name=null desc=null owner=test/modern/Switches
+  @1170-1178 type=String/s name=null desc=null owner=test/modern/Switches
+  @1185-1192 type=*/s name=isEmpty desc=()? owner=test/modern/Switches
+  @1231-1237 type=*/s name=length desc=()? owner=test/modern/Switches
+  @1278-1286 type=Number/n name=null desc=null owner=test/modern/Switches
+  @1358-1366 type=*/n name=intValue desc=()? owner=test/modern/Switches
+  @1390-1394 type=test/modern/Switches$Expr name=null desc=null owner=test/modern/Switches
+  @1451-1454 type=*/Num name=null desc=null owner=test/modern/Switches
+  @1462-1467 type=*/n name=value desc=()? owner=test/modern/Switches
+  @1488-1491 type=*/Add name=null desc=null owner=test/modern/Switches
+  @1492-1496 type=test/modern/Switches$Expr name=null desc=null owner=test/modern/Switches
+  @1503-1507 type=test/modern/Switches$Expr name=null desc=null owner=test/modern/Switches
+  @1518-1522 type=test/modern/Switches name=eval desc=?)? owner=test/modern/Switches
+  @1531-1535 type=test/modern/Switches name=eval desc=?)? owner=test/modern/Switches
+  @1561-1564 type=*/Neg name=null desc=null owner=test/modern/Switches
+  @1565-1568 type=*/Num name=null desc=null owner=test/modern/Switches
+  @1620-1623 type=*/Neg name=null desc=null owner=test/modern/Switches
+  @1632-1636 type=test/modern/Switches name=eval desc=?)? owner=test/modern/Switches
+  @1641-1648 type=*/neg name=operand desc=()? owner=test/modern/Switches
+  @1675-1681 type=java/lang/String name=null desc=null owner=test/modern/Switches
+  @1689-1695 type=java/lang/Object name=null desc=null owner=test/modern/Switches
+  @1779-1786 type=java/lang/Integer name=null desc=null owner=test/modern/Switches
+  @1833-1840 type=java/lang/Integer name=null desc=null owner=test/modern/Switches
+  @1875-1881 type=java/lang/String name=null desc=null owner=test/modern/Switches
+  @1894-1900 type=java/lang/String name=format desc=??)? owner=test/modern/Switches
+  @1909-1915 type=*/s name=length desc=()? owner=test/modern/Switches
+  @1945-1953 type=java/lang/Object name=toString desc=()? owner=test/modern/Switches
+strings:
+  @965-970 "one" owner=test/modern/Switches
+  @1014-1019 "two" owner=test/modern/Switches
+  @1064-1070 "many" owner=test/modern/Switches
+  @1217-1226 "string " owner=test/modern/Switches
+  @1310-1317 "other" owner=test/modern/Switches
+  @1344-1353 "number " owner=test/modern/Switches
+  @1754-1760 "null" owner=test/modern/Switches
+  @1804-1810 "big " owner=test/modern/Switches
+  @1846-1852 "int " owner=test/modern/Switches

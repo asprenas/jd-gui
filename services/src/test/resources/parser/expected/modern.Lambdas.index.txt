@@ -1,0 +1,73 @@
+typeDeclarations:
+  test/modern/Lambdas
+  test/modern/Lambdas$Converter
+constructorDeclarations:
+methodDeclarations:
+  convert
+  helper
+  identity
+  logged
+  print
+  run
+fieldDeclarations:
+  names
+typeReferences:
+  java/lang/Integer
+  java/lang/Runnable
+  java/lang/String
+  java/util/ArrayList
+  java/util/List
+  java/util/function/BiFunction
+  java/util/function/Function
+  java/util/function/Supplier
+  test/modern/Lambdas$Converter
+constructorReferences:
+  java/util/ArrayList
+methodReferences:
+  apply
+  collect
+  comparing
+  convert
+  filter
+  forEach
+  get
+  identity
+  ifPresent
+  isEmpty
+  map
+  max
+  ofNullable
+  println
+  run
+  size
+  sort
+  stream
+  thenComparing
+  toList
+fieldReferences:
+  apply
+  collect
+  comparing
+  filter
+  forEach
+  get
+  identity
+  ifPresent
+  isEmpty
+  length
+  map
+  max
+  ofNullable
+  out
+  println
+  run
+  size
+  sort
+  stream
+  thenComparing
+  toList
+strings:
+  "convert "
+  "run"
+superTypeNames:
+  test/modern/Lambdas -> [java/lang/Runnable]

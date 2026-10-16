@@ -1,0 +1,29 @@
+typeDeclarations:
+  test/modern/Shapes
+  test/modern/Shapes$Base
+  test/modern/Shapes$Circle
+  test/modern/Shapes$Derived
+  test/modern/Shapes$Polygon
+constructorDeclarations:
+  Circle
+methodDeclarations:
+  area
+fieldDeclarations:
+  radius
+typeReferences:
+  Shapes/Circle
+  Shapes/Polygon
+  Shapes/Square
+  test/modern/Shapes
+  test/modern/Shapes$Base
+constructorReferences:
+methodReferences:
+fieldReferences:
+  PI
+  radius
+strings:
+superTypeNames:
+  test/modern/Shapes -> [Shapes/Circle, Shapes/Polygon, Shapes/Square]
+  test/modern/Shapes$Circle -> [test/modern/Shapes]
+  test/modern/Shapes$Derived -> [test/modern/Shapes$Base]
+  test/modern/Shapes$Polygon -> [test/modern/Shapes]

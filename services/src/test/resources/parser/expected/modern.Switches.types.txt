@@ -1,0 +1,10 @@
+mainType: test/modern/Switches
+type test/modern/Switches flags=1 super=java/lang/Object outer=null display=test.modern|Switches|null
+  field JSON Ljava/lang/String; flags=24 display=JSON : String
+  method letters(Ltest/modern/Switches$Day;)I flags=0 display=letters(Switches.Day) : int
+  method classic(I)Ljava/lang/String; flags=0 display=classic(int) : String
+  method describe(Ljava/lang/Object;)Ljava/lang/String; flags=0 display=describe(Object) : String
+  method eval(Ltest/modern/Switches$Expr;)I flags=0 display=eval(Switches.Expr) : int
+  method format(Ljava/lang/Object;)Ljava/lang/String; flags=0 display=format(Object) : String
+  type test/modern/Switches$Day flags=16384 super=java/lang/Object outer=test/modern/Switches display=test.modern|Switches.Day|Day
+  type test/modern/Switches$Expr flags=512 super= outer=test/modern/Switches display=test.modern|Switches.Expr|Expr

@@ -14,7 +14,6 @@ import org.jd.gui.test.Snapshot;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -22,16 +21,14 @@ import java.util.TreeMap;
  * Regression test of the declarations, hyperlinks and strings collected by {@link JavaFilePage}.
  */
 public class JavaFilePageParserTest {
-    static List<String> java7Files() { return ParserTestSupport.JAVA7_FILES; }
-
-    @ParameterizedTest
-    @MethodSource("java7Files")
-    public void testJava7(String path) {
-        InMemoryContainer container = InMemoryContainer.fromResources(ParserTestSupport.JAVA7_ROOT);
+    @ParameterizedTest(name = "{0}/{1}")
+    @MethodSource("org.jd.gui.test.ParserTestSupport#allFixtures")
+    public void testFixture(String root, String path) {
+        InMemoryContainer container = InMemoryContainer.fromResources(root);
         Container.Entry entry = container.getEntry(path);
         JavaFilePage page = new JavaFilePage(null, entry);
 
-        Snapshot.assertMatches(ParserTestSupport.snapshotName(ParserTestSupport.JAVA7_ROOT, path) + ".page", dump(page));
+        Snapshot.assertMatches(ParserTestSupport.snapshotName(root, path) + ".page", dump(page));
     }
 
     static String dump(JavaFilePage page) {

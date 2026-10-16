@@ -1,0 +1,50 @@
+declarations:
+  test/modern/Decompiled @193-203 type=test/modern/Decompiled name=null desc=null super=null
+  test/modern/Decompiled$Inner @1008-1013 type=test/modern/Decompiled$Inner name=null desc=null super=test/modern/Decompiled
+  test/modern/Decompiled$Inner-<init>-(Ljava/util/Map;)V @1056-1061 type=test/modern/Decompiled$Inner name=Inner desc=(Ljava/util/Map;)V
+  test/modern/Decompiled-<init>-(Ljava/util/Map;)V @282-292 type=test/modern/Decompiled name=Decompiled desc=(Ljava/util/Map;)V
+  test/modern/Decompiled-count-([Ljava/lang/Object;)I @627-632 type=test/modern/Decompiled name=count desc=([Ljava/lang/Object;)I
+  test/modern/Decompiled-find-(L*/K;)L*/V; @348-352 type=test/modern/Decompiled name=find desc=(L*/K;)L*/V;
+  test/modern/Decompiled-map-Ljava/util/Map; @238-241 type=test/modern/Decompiled name=map desc=Ljava/util/Map;
+  test/modern/Decompiled-modCount-I @260-268 type=test/modern/Decompiled name=modCount desc=I
+typeDeclarations:
+  @193 test/modern/Decompiled
+  @1008 test/modern/Decompiled$Inner
+hyperlinks:
+  @29-47 type=java/util/Iterator name=null desc=null owner=null
+  @56-69 type=java/util/Map name=null desc=null owner=null
+  @228-231 type=java/util/Map name=null desc=null owner=test/modern/Decompiled
+  @232-233 type=*/K name=null desc=null owner=test/modern/Decompiled
+  @235-236 type=*/V name=null desc=null owner=test/modern/Decompiled
+  @293-296 type=java/util/Map name=null desc=null owner=test/modern/Decompiled
+  @297-298 type=*/K name=null desc=null owner=test/modern/Decompiled
+  @300-301 type=*/V name=null desc=null owner=test/modern/Decompiled
+  @319-322 type=test/modern/Decompiled name=map desc=? owner=test/modern/Decompiled
+  @346-347 type=*/V name=null desc=null owner=test/modern/Decompiled
+  @353-354 type=*/K name=null desc=null owner=test/modern/Decompiled
+  @371-379 type=java/util/Iterator name=null desc=null owner=test/modern/Decompiled
+  @380-389 type=Map/Entry name=null desc=null owner=test/modern/Decompiled
+  @390-391 type=*/K name=null desc=null owner=test/modern/Decompiled
+  @393-394 type=*/V name=null desc=null owner=test/modern/Decompiled
+  @449-456 type=java/util/Iterator name=hasNext desc=()? owner=test/modern/Decompiled
+  @470-479 type=Map/Entry name=null desc=null owner=test/modern/Decompiled
+  @480-481 type=*/K name=null desc=null owner=test/modern/Decompiled
+  @483-484 type=*/V name=null desc=null owner=test/modern/Decompiled
+  @503-507 type=java/util/Iterator name=next desc=()? owner=test/modern/Decompiled
+  @527-533 type=Map/Entry name=getKey desc=()? owner=test/modern/Decompiled
+  @570-578 type=Map/Entry name=getValue desc=()? owner=test/modern/Decompiled
+  @633-639 type=java/lang/Object name=null desc=null owner=test/modern/Decompiled
+  @726-732 type=java/lang/Object name=null desc=null owner=test/modern/Decompiled
+  @832-838 type=java/lang/String name=null desc=null owner=test/modern/Decompiled
+  @850-856 type=java/lang/String name=null desc=null owner=test/modern/Decompiled
+  @864-870 type=java/lang/String name=null desc=null owner=test/modern/Decompiled
+  @895-902 type=java/lang/String name=isEmpty desc=()? owner=test/modern/Decompiled
+  @960-968 type=test/modern/Decompiled name=modCount desc=? owner=test/modern/Decompiled
+  @1022-1032 type=test/modern/Decompiled name=null desc=null owner=test/modern/Decompiled$Inner
+  @1033-1039 type=java/lang/String name=null desc=null owner=test/modern/Decompiled$Inner
+  @1041-1048 type=java/lang/Integer name=null desc=null owner=test/modern/Decompiled$Inner
+  @1062-1065 type=java/util/Map name=null desc=null owner=test/modern/Decompiled$Inner
+  @1066-1072 type=java/lang/String name=null desc=null owner=test/modern/Decompiled$Inner
+  @1074-1081 type=java/lang/Integer name=null desc=null owner=test/modern/Decompiled$Inner
+  @1101-1106 type=test/modern/Decompiled name=<init> desc=?)? owner=test/modern/Decompiled$Inner
+strings:

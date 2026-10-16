@@ -1,0 +1,8 @@
+mainType: test/modern/Records
+type test/modern/Records flags=1 super=java/lang/Object outer=null display=test.modern|Records|null
+  field ORIGIN L*/Point; flags=25 display=ORIGIN : Point
+  method <init>(I)V flags=1 display=Records(int)
+  method distance(L*/Point;)D flags=1 display=distance(Point) : double
+  method compareTo(L*/Point;)I flags=1 display=compareTo(Point) : int
+  method of(II)L*/Point; flags=8 display=of(int, int) : Point
+  method points()Ljava/util/List; flags=0 display=points() : List

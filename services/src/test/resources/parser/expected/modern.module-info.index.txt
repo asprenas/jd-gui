@@ -1,0 +1,10 @@
+typeDeclarations:
+constructorDeclarations:
+methodDeclarations:
+fieldDeclarations:
+typeReferences:
+constructorReferences:
+methodReferences:
+fieldReferences:
+strings:
+superTypeNames:

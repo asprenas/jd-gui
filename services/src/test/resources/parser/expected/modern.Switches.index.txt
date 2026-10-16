@@ -1,0 +1,52 @@
+typeDeclarations:
+  test/modern/Switches
+  test/modern/Switches$Day
+  test/modern/Switches$Expr
+constructorDeclarations:
+methodDeclarations:
+  classic
+  describe
+  eval
+  format
+  letters
+fieldDeclarations:
+  JSON
+typeReferences:
+  Number/n
+  String/s
+  java/lang/Integer
+  java/lang/Object
+  java/lang/String
+  test/modern/Switches$Day
+  test/modern/Switches$Expr
+constructorReferences:
+methodReferences:
+  eval
+  format
+  intValue
+  isEmpty
+  length
+  name
+  operand
+  toString
+  value
+fieldReferences:
+  format
+  intValue
+  isEmpty
+  length
+  name
+  operand
+  toString
+  value
+strings:
+  "big "
+  "int "
+  "many"
+  "null"
+  "number "
+  "one"
+  "other"
+  "string "
+  "two"
+superTypeNames:

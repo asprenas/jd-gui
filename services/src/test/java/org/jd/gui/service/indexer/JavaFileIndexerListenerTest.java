@@ -15,7 +15,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -23,16 +22,14 @@ import java.util.TreeMap;
  * Regression test of the type/member index built by {@link JavaFileIndexerProvider.Listener}.
  */
 public class JavaFileIndexerListenerTest {
-    static List<String> java7Files() { return ParserTestSupport.JAVA7_FILES; }
-
-    @ParameterizedTest
-    @MethodSource("java7Files")
-    public void testJava7(String path) {
-        InMemoryContainer container = InMemoryContainer.fromResources(ParserTestSupport.JAVA7_ROOT);
+    @ParameterizedTest(name = "{0}/{1}")
+    @MethodSource("org.jd.gui.test.ParserTestSupport#allFixtures")
+    public void testFixture(String root, String path) {
+        InMemoryContainer container = InMemoryContainer.fromResources(root);
         Container.Entry entry = container.getEntry(path);
         JavaFileIndexerProvider.Listener listener = ParserTestSupport.parse(entry, new JavaFileIndexerProvider.Listener(entry));
 
-        Snapshot.assertMatches(ParserTestSupport.snapshotName(ParserTestSupport.JAVA7_ROOT, path) + ".index", dump(listener));
+        Snapshot.assertMatches(ParserTestSupport.snapshotName(root, path) + ".index", dump(listener));
     }
 
     static String dump(JavaFileIndexerProvider.Listener listener) {

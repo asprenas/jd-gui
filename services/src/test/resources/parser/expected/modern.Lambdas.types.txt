@@ -1,0 +1,10 @@
+mainType: test/modern/Lambdas
+type test/modern/Lambdas flags=1 super=java/lang/Object outer=null display=test.modern|Lambdas|null
+  field names Ljava/util/List; flags=18 display=names : List
+  method run()V flags=1 display=run() : void
+  method print(Ljava/util/List;)V flags=0 display=print(List) : void
+  type test/modern/Lambdas$Converter flags=512 super= outer=test/modern/Lambdas display=test.modern|Lambdas.Converter|Converter
+    method convert(L*/F;)L*/T; flags=1 display=convert(F) : T
+    method logged()Ltest/modern/Lambdas$Converter; flags=1 display=logged() : Lambdas.Converter
+    method identity()Ltest/modern/Lambdas$Converter; flags=1 display=identity() : Lambdas.Converter
+    method helper()V flags=1 display=helper() : void

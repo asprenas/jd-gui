@@ -15,18 +15,15 @@ import org.jd.gui.test.Snapshot;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.List;
 
 /**
  * Regression test of the type model built by {@link JavaFileTypeFactoryProvider.Listener}.
  */
 public class JavaFileTypeFactoryListenerTest {
-    static List<String> java7Files() { return ParserTestSupport.JAVA7_FILES; }
-
-    @ParameterizedTest
-    @MethodSource("java7Files")
-    public void testJava7(String path) {
-        InMemoryContainer container = InMemoryContainer.fromResources(ParserTestSupport.JAVA7_ROOT);
+    @ParameterizedTest(name = "{0}/{1}")
+    @MethodSource("org.jd.gui.test.ParserTestSupport#allFixtures")
+    public void testFixture(String root, String path) {
+        InMemoryContainer container = InMemoryContainer.fromResources(root);
         Container.Entry entry = container.getEntry(path);
         JavaFileTypeFactoryProvider.Listener listener = ParserTestSupport.parse(entry, new JavaFileTypeFactoryProvider.Listener(entry));
 
@@ -36,7 +33,7 @@ public class JavaFileTypeFactoryListenerTest {
             dump(sb, type, "");
         }
 
-        Snapshot.assertMatches(ParserTestSupport.snapshotName(ParserTestSupport.JAVA7_ROOT, path) + ".types", sb.toString());
+        Snapshot.assertMatches(ParserTestSupport.snapshotName(root, path) + ".types", sb.toString());
     }
 
     static void dump(StringBuilder sb, Type type, String indent) {

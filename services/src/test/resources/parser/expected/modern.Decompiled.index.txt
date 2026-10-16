@@ -1,0 +1,46 @@
+typeDeclarations:
+  test/modern/Decompiled
+  test/modern/Decompiled$Inner
+constructorDeclarations:
+  Decompiled
+  Inner
+methodDeclarations:
+  count
+  find
+fieldDeclarations:
+  map
+  modCount
+typeReferences:
+  Map/Entry
+  java/lang/Integer
+  java/lang/Object
+  java/lang/String
+  java/util/Iterator
+  java/util/Map
+  test/modern/Decompiled
+constructorReferences:
+methodReferences:
+  entrySet
+  equals
+  getKey
+  getValue
+  hasNext
+  isEmpty
+  iterator
+  next
+  super
+fieldReferences:
+  entrySet
+  equals
+  getKey
+  getValue
+  hasNext
+  isEmpty
+  iterator
+  length
+  map
+  modCount
+  next
+strings:
+superTypeNames:
+  test/modern/Decompiled$Inner -> [test/modern/Decompiled]

@@ -1,5 +1,5 @@
 // Source: https://github.com/antlr/grammars-v4/tree/8c7680c4d28a2c84c8a1077a8b3dad4b37b300df/java/java/JavaLexer.g4
-// Imported unmodified for JD-GUI (Java 24 grammar).
+// Imported for JD-GUI (Java 24 grammar). Local change: TEXT_BLOCK rule (see 'JD-GUI' comment).
 /*
  [The "BSD licence"]
  Copyright (c) 2013 Terence Parr, Sam Harwell
@@ -127,7 +127,9 @@ CHAR_LITERAL: '\'' (~['\\\r\n] | EscapeSequence) '\'';
 
 STRING_LITERAL: '"' (~["\\\r\n] | EscapeSequence)* '"';
 
-TEXT_BLOCK: '"""' [ \t]* [\r\n] (. | EscapeSequence)*? '"""';
+// JD-GUI: a backslash always consumes the next character, so that '\"""' does not close the text block
+// (the original '(. | EscapeSequence)*?' could match the backslash alone)
+TEXT_BLOCK: '"""' [ \t]* [\r\n] (~'\\' | '\\' .)*? '"""';
 
 NULL_LITERAL: 'null';
 

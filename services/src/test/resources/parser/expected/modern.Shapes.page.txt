@@ -1,0 +1,29 @@
+declarations:
+  test/modern/Shapes @97-103 type=test/modern/Shapes name=null desc=null super=null
+  test/modern/Shapes$Base @768-772 type=test/modern/Shapes$Base name=null desc=null super=null
+  test/modern/Shapes$Circle @195-201 type=test/modern/Shapes$Circle name=null desc=null super=null
+  test/modern/Shapes$Circle-<init>-(D)V @275-281 type=test/modern/Shapes$Circle name=Circle desc=(D)V
+  test/modern/Shapes$Circle-area-()D @384-388 type=test/modern/Shapes$Circle name=area desc=()D
+  test/modern/Shapes$Circle-radius-D @251-257 type=test/modern/Shapes$Circle name=radius desc=D
+  test/modern/Shapes$Derived @814-821 type=test/modern/Shapes$Derived name=null desc=null super=test/modern/Shapes$Base
+  test/modern/Shapes$Polygon @626-633 type=test/modern/Shapes$Polygon name=null desc=null super=null
+  test/modern/Shapes$Polygon-area-()D @694-698 type=test/modern/Shapes$Polygon name=area desc=()D
+  test/modern/Shapes-area-()D @547-551 type=test/modern/Shapes name=area desc=()D
+typeDeclarations:
+  @97 test/modern/Shapes
+  @195 test/modern/Shapes$Circle
+  @626 test/modern/Shapes$Polygon
+  @768 test/modern/Shapes$Base
+  @814 test/modern/Shapes$Derived
+hyperlinks:
+  @112-125 type=Shapes/Circle name=null desc=null owner=test/modern/Shapes
+  @127-140 type=Shapes/Square name=null desc=null owner=test/modern/Shapes
+  @142-156 type=Shapes/Polygon name=null desc=null owner=test/modern/Shapes
+  @213-219 type=test/modern/Shapes name=null desc=null owner=test/modern/Shapes$Circle
+  @316-322 type=test/modern/Shapes$Circle name=radius desc=? owner=test/modern/Shapes$Circle
+  @417-419 type=java/lang/Math name=PI desc=? owner=test/modern/Shapes$Circle
+  @498-504 type=test/modern/Shapes name=null desc=null owner=test/modern/Shapes
+  @645-651 type=test/modern/Shapes name=null desc=null owner=test/modern/Shapes$Polygon
+  @781-788 type=test/modern/Shapes$Derived name=null desc=null owner=test/modern/Shapes$Base
+  @830-834 type=test/modern/Shapes$Base name=null desc=null owner=test/modern/Shapes$Derived
+strings:
