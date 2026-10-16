@@ -9,6 +9,9 @@ JD-GUI, a standalone graphical utility that displays Java sources from CLASS fil
 > - Gradle 9.1, builds with JDK 21+; bytecode targets Java 21 (Java 21+ required to run)
 > - JD-Core 1.1.4 from the [asprenas/jd-core](https://github.com/asprenas/jd-core) fork
 > - Tests migrated to JUnit 5, GitHub Actions CI (JDK 21 / 25) and Dependabot
+> - `.java` files are parsed with a Java 24 grammar ([antlr/grammars-v4](https://github.com/antlr/grammars-v4/tree/master/java/java), ANTLR 4.13.2)
+  instead of Java 7, so sources using lambdas, `var`, records, sealed types, switch expressions, text blocks and patterns
+  no longer break hyperlinks and indexing (records are not yet indexed as types)
 
 ![](https://raw.githubusercontent.com/java-decompiler/jd-gui/master/src/website/img/jd-gui.png)
 
