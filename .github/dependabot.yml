@@ -22,3 +22,5 @@ updates:
       # jd-core version is managed manually (rootProject.ext jdCoreVersion)
       - dependency-name: "org.jd:jd-core"
       - dependency-name: "com.github.asprenas:jd-core"
+      # Gradle wrapper is kept at 9.1.0 for now
+      - dependency-name: "gradle-wrapper"
