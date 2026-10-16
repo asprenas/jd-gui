@@ -109,13 +109,32 @@ jar {
 // Minify JAR file //
 def minJar = file('build/libs/' + project.name + '-' + project.version + '-min.jar')
 
+def javaHome = javaToolchains.launcherFor(java.toolchain).get().metadata.installationPath.asFile
+def jmodsDir = new File(javaHome, 'jmods')
+def jdkClassesDir = file('build/tmp/jdk-classes')
+
+// JDK 24+ builds may ship without 'jmods' (JEP 493, e.g. Temurin 25): extract JDK classes from 'lib/modules'
+tasks.register('extractJdkClasses', Exec) {
+    onlyIf { !jmodsDir.isDirectory() }
+    inputs.file new File(javaHome, 'lib/modules')
+    outputs.dir jdkClassesDir
+    doFirst { delete jdkClassesDir }
+    commandLine new File(javaHome, 'bin/jimage').path, 'extract', '--dir', jdkClassesDir.path,
+            '--include', 'regex:/java\\..*', new File(javaHome, 'lib/modules').path
+}
+
 tasks.register('proguard', proguard.gradle.ProGuardTask) {
-    dependsOn 'jar'
+    dependsOn 'jar', 'extractJdkClasses'
     configuration 'src/proguard/resources/proguard.config.txt'
     injars jar.archiveFile.get().asFile
     outjars minJar
-    def javaHome = javaToolchains.launcherFor(java.toolchain).get().metadata.installationPath.asFile
-    libraryjars([jarfilter: '!**.jar', filter: '!module-info.class'], new File(javaHome, 'jmods'))
+    if (jmodsDir.isDirectory()) {
+        libraryjars([jarfilter: '!**.jar', filter: '!module-info.class'], jmodsDir)
+    } else {
+        doFirst {
+            jdkClassesDir.eachDir { moduleDir -> libraryjars([filter: '!module-info.class'], moduleDir) }
+        }
+    }
 }
 
 // Java executable wrapper for Windows //
