@@ -1,10 +1,10 @@
 package org.jd.gui.view.component;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
-public class JavaFilePageTest extends TestCase {
+public class JavaFilePageTest {
 
     public HashMap<String, TypePage.DeclarationData> initDeclarations() {
         TypePage.DeclarationData data = new TypePage.DeclarationData(0, 1, "Test", "test", "I");
@@ -49,9 +49,12 @@ public class JavaFilePageTest extends TestCase {
         return declarations;
     }
 
+    @Test
     public void testMatchFragmentAndAddDocumentRange() {}
 
+    @Test
     public void testMatchQueryAndAddDocumentRange() {}
 
+    @Test
     public void testMatchScope() {}
 }
