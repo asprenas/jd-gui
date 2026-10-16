@@ -17,6 +17,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import java.io.*;
+import java.net.URI;
 import java.net.URL;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
@@ -28,7 +29,7 @@ public class MavenOrgSourceLoaderProvider implements SourceLoader {
     protected static final String MAVENORG_SEARCH_URL_PREFIX = "https://search.maven.org/solrsearch/select?q=1:%22";
     protected static final String MAVENORG_SEARCH_URL_SUFFIX = "%22&rows=20&wt=xml";
 
-    protected static final String MAVENORG_LOAD_URL_PREFIX = "https://search.maven.org/classic/remotecontent?filepath=";
+    protected static final String MAVENORG_LOAD_URL_PREFIX = "https://repo1.maven.org/maven2/";
     protected static final String MAVENORG_LOAD_URL_SUFFIX = "-sources.jar";
 
     protected HashSet<Container.Entry> failed = new HashSet<>();
@@ -138,7 +139,8 @@ public class MavenOrgSourceLoaderProvider implements SourceLoader {
                 String sha1 = sb.toString();
 
                 // Search artifact on maven.org
-                URL searchUrl = new URL(MAVENORG_SEARCH_URL_PREFIX + sha1 + MAVENORG_SEARCH_URL_SUFFIX);
+                URL searchUrl = URI.create(MAVENORG_SEARCH_URL_PREFIX + sha1 + MAVENORG_SEARCH_URL_SUFFIX).toURL();
+
                 boolean sourceAvailable = false;
                 String id = null;
                 String numFound = null;
@@ -201,7 +203,7 @@ public class MavenOrgSourceLoaderProvider implements SourceLoader {
                 if (artifactId != null) {
                     // Load source
                     String filePath = groupId.replace('.', '/') + '/' + artifactId + '/' + version + '/' + artifactId + '-' + version;
-                    URL loadUrl = new URL(MAVENORG_LOAD_URL_PREFIX + filePath + MAVENORG_LOAD_URL_SUFFIX);
+                    URL loadUrl = URI.create(MAVENORG_LOAD_URL_PREFIX + filePath + MAVENORG_LOAD_URL_SUFFIX).toURL();
                     File tmpFile = File.createTempFile("jd-gui.tmp.", '.' + groupId + '_' + artifactId + '_' + version + "-sources.jar");
 
                     tmpFile.delete();
