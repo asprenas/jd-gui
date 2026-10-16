@@ -17,6 +17,7 @@ import org.jd.gui.api.feature.UriGettable;
 import org.jd.gui.api.model.Container;
 import org.jd.gui.util.exception.ExceptionUtil;
 import org.jd.gui.util.io.TextReader;
+import org.jd.gui.view.component.AbstractTextPage;
 import org.jd.gui.view.component.TextPage;
 import org.jd.gui.view.data.TreeNodeBean;
 
@@ -33,7 +34,7 @@ public class TextFileTreeNodeFactoryProvider extends FileTreeNodeFactoryProvider
         // Early class loading
         new Gutter(new RSyntaxTextArea());
         try {
-            Theme.load(TextFileTreeNodeFactoryProvider.class.getClassLoader().getResourceAsStream("rsyntaxtextarea/themes/eclipse.xml"));
+            Theme.load(TextFileTreeNodeFactoryProvider.class.getClassLoader().getResourceAsStream(AbstractTextPage.THEME_RESOURCE));
         } catch (IOException e) {
             assert ExceptionUtil.printStackTrace(e);
         }

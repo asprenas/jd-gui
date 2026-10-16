@@ -11,6 +11,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.jd.gui.spi.PreferencesPanel;
 import org.jd.gui.util.exception.ExceptionUtil;
+import org.jd.gui.view.component.AbstractTextPage;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -61,7 +62,7 @@ public class ViewerPreferencesProvider extends JPanel implements PreferencesPane
             RSyntaxTextArea textArea = new RSyntaxTextArea();
 
             try {
-                Theme theme = Theme.load(getClass().getClassLoader().getResourceAsStream("rsyntaxtextarea/themes/eclipse.xml"));
+                Theme theme = Theme.load(getClass().getClassLoader().getResourceAsStream(AbstractTextPage.THEME_RESOURCE));
                 theme.apply(textArea);
             } catch (IOException e) {
                 assert ExceptionUtil.printStackTrace(e);

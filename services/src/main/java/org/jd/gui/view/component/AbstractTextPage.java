@@ -35,6 +35,9 @@ import java.util.Map;
 public class AbstractTextPage extends JPanel implements LineNumberNavigable, ContentSearchable, UriOpenable, PreferencesChangeListener {
     protected static final String FONT_SIZE_KEY = "ViewerPreferences.fontSize";
 
+    /** Editor theme (other themes in the same directory: eclipse.xml) */
+    public static final String THEME_RESOURCE = "rsyntaxtextarea/themes/intellij-light.xml";
+
     protected static final ImageIcon COLLAPSED_ICON = new ImageIcon(AbstractTextPage.class.getClassLoader().getResource("org/jd/gui/images/plus.png"));
     protected static final ImageIcon EXPANDED_ICON = new ImageIcon(AbstractTextPage.class.getClassLoader().getResource("org/jd/gui/images/minus.png"));
 
@@ -82,7 +85,7 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
 
         try {
             // Apply the theme after the scroll pane creation: 'Theme.apply' styles the gutter (line numbers, fold indicator) only if it exists
-            Theme theme = Theme.load(getClass().getClassLoader().getResourceAsStream("rsyntaxtextarea/themes/eclipse.xml"));
+            Theme theme = Theme.load(getClass().getClassLoader().getResourceAsStream(THEME_RESOURCE));
             theme.apply(textArea);
         } catch (IOException e) {
             assert ExceptionUtil.printStackTrace(e);
