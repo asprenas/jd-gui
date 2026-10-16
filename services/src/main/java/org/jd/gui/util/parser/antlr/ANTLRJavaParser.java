@@ -14,7 +14,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.jd.gui.util.exception.ExceptionUtil;
 
 public class ANTLRJavaParser {
-    public static void parse(CharStream input, JavaListener listener) {
+    public static void parse(CharStream input, JavaParserListener listener) {
         try {
             JavaLexer lexer = new JavaLexer(input);
 
@@ -25,7 +25,7 @@ public class ANTLRJavaParser {
 
             parser.removeErrorListeners();
 
-            ParseTree tree = parser.compilationUnit();
+            ParseTree tree = parser.compilationunit();
 
             ParseTreeWalker.DEFAULT.walk(listener, tree);
         } catch (StackOverflowError e) {

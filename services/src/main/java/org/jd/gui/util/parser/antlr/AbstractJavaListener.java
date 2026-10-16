@@ -7,16 +7,18 @@
 
 package org.jd.gui.util.parser.antlr;
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 import org.jd.gui.api.model.Container;
 import org.jd.gui.util.exception.ExceptionUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class AbstractJavaListener extends JavaBaseListener {
+public abstract class AbstractJavaListener extends JavaParserBaseListener {
     protected Container.Entry entry;
     protected String packageName = "";
     protected HashMap<String, String> nameToInternalTypeName = new HashMap<>();
@@ -28,15 +30,97 @@ public abstract class AbstractJavaListener extends JavaBaseListener {
     }
 
     public void enterPackageDeclaration(JavaParser.PackageDeclarationContext ctx) {
-        packageName = concatIdentifiers(ctx.qualifiedName().Identifier());
+        packageName = concatIdentifiers(identifiers(ctx.qualifiedName()));
     }
 
     public void enterImportDeclaration(JavaParser.ImportDeclarationContext ctx) {
-        List<TerminalNode> identifiers = ctx.qualifiedName().Identifier();
+        List<TerminalNode> identifiers = identifiers(ctx.qualifiedName());
         int size = identifiers.size();
 
         if (size > 1) {
             nameToInternalTypeName.put(identifiers.get(size - 1).getText(), concatIdentifiers(identifiers));
+        }
+    }
+
+    // --- Grammar helpers --- //
+
+    /** @return the token of an 'identifier' or 'typeIdentifier' rule, or null */
+    protected static TerminalNode identifier(ParserRuleContext ctx) {
+        return (ctx == null) ? null : ctx.getChild(TerminalNode.class, 0);
+    }
+
+    protected static List<TerminalNode> identifiers(List<? extends ParserRuleContext> contexts) {
+        List<TerminalNode> identifiers = new ArrayList<>(contexts.size());
+
+        for (ParserRuleContext context : contexts) {
+            identifiers.add(identifier(context));
+        }
+
+        return identifiers;
+    }
+
+    protected static List<TerminalNode> identifiers(JavaParser.QualifiedNameContext ctx) {
+        return identifiers(ctx.identifier());
+    }
+
+    /** @return the name token of a type declaration (class, enum, interface, annotation, record) */
+    protected static TerminalNode typeDeclarationIdentifier(ParserRuleContext ctx) {
+        return identifier(ctx.getRuleContext(JavaParser.IdentifierContext.class, 0));
+    }
+
+    /**
+     * @return the identifiers of a class or interface type name, without type arguments and annotations
+     *         ("java.util.Map<K, V>.Entry" -> [java, util, Map, Entry])
+     */
+    protected static List<TerminalNode> identifiers(JavaParser.ClassOrInterfaceTypeContext ctx) {
+        List<TerminalNode> identifiers = new ArrayList<>();
+        collectTypeNameIdentifiers(ctx, identifiers);
+        return identifiers;
+    }
+
+    private static void collectTypeNameIdentifiers(ParserRuleContext ctx, List<TerminalNode> identifiers) {
+        if (ctx.children != null) {
+            for (ParseTree child : ctx.children) {
+                if ((child instanceof JavaParser.IdentifierContext) || (child instanceof JavaParser.TypeIdentifierContext)) {
+                    identifiers.add(identifier((ParserRuleContext)child));
+                } else if ((child instanceof ParserRuleContext) &&
+                        !(child instanceof JavaParser.TypeArgumentsContext) && !(child instanceof JavaParser.AnnotationContext)) {
+                    collectTypeNameIdentifiers((ParserRuleContext)child, identifiers);
+                }
+            }
+        }
+    }
+
+    /**
+     * Formal parameters, except receiver and variable arity parameters.
+     * Variable arity parameters were ignored with the Java 7 grammar ('lastFormalParameter') and still are.
+     *
+     * @return null if there is no parameter list
+     */
+    protected static List<JavaParser.FormalParameterContext> formalParameters(JavaParser.FormalParametersContext ctx) {
+        List<JavaParser.FormalParameterContext> formalParameters = new ArrayList<>();
+        boolean empty = true;
+
+        if (ctx.children != null) {
+            for (ParseTree child : ctx.children) {
+                if (child instanceof JavaParser.FormalParameterContext) {
+                    empty = false;
+                    addFormalParameter(formalParameters, (JavaParser.FormalParameterContext)child);
+                } else if (child instanceof JavaParser.FormalParameterListContext) {
+                    empty = false;
+                    for (JavaParser.FormalParameterContext formalParameter : ((JavaParser.FormalParameterListContext)child).formalParameter()) {
+                        addFormalParameter(formalParameters, formalParameter);
+                    }
+                }
+            }
+        }
+
+        return empty ? null : formalParameters;
+    }
+
+    private static void addFormalParameter(List<JavaParser.FormalParameterContext> formalParameters, JavaParser.FormalParameterContext formalParameter) {
+        if (formalParameter.ELLIPSIS() == null) {
+            formalParameters.add(formalParameter);
         }
     }
 
@@ -129,7 +213,11 @@ public abstract class AbstractJavaListener extends JavaBaseListener {
         }
     }
 
-    protected String createDescriptor(JavaParser.TypeContext typeContext, int dimension) {
+    protected String createDescriptor(JavaParser.TypeTypeOrVoidContext typeContext, int dimension) {
+        return createDescriptor((typeContext == null) ? null : typeContext.typeType(), dimension);
+    }
+
+    protected String createDescriptor(JavaParser.TypeTypeContext typeContext, int dimension) {
         if (typeContext == null) {
             return "V";
         } else {
@@ -138,17 +226,7 @@ public abstract class AbstractJavaListener extends JavaBaseListener {
             String name;
 
             if (primitive == null) {
-                JavaParser.ClassOrInterfaceTypeContext type = typeContext.classOrInterfaceType();
-                List<JavaParser.TypeArgumentsContext> typeArgumentsContexts = type.typeArguments();
-
-                if (typeArgumentsContexts.size() == 1) {
-                    JavaParser.TypeArgumentsContext typeArgumentsContext = typeArgumentsContexts.get(0);
-                    List<JavaParser.TypeArgumentContext> typeArguments = typeArgumentsContext.typeArgument();
-                } else if (typeArgumentsContexts.size() > 1) {
-                    throw new RuntimeException("UNEXPECTED");
-                }
-
-                name = "L" + resolveInternalTypeName(type.Identifier()) + ";";
+                name = "L" + resolveInternalTypeName(identifiers(typeContext.classOrInterfaceType())) + ";";
             } else {
                 // Search primitive
                 switch (primitive.getText()) {

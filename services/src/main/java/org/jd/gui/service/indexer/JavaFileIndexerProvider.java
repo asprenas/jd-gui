@@ -122,7 +122,7 @@ public class JavaFileIndexerProvider extends AbstractIndexerProvider {
 
         protected void enterTypeDeclaration(ParserRuleContext ctx) {
             // Add type declaration
-            TerminalNode identifier = ctx.getToken(JavaParser.Identifier, 0);
+            TerminalNode identifier = typeDeclarationIdentifier(ctx);
 
             if (identifier != null) {
                 String typeName = identifier.getText();
@@ -141,9 +141,9 @@ public class JavaFileIndexerProvider extends AbstractIndexerProvider {
                 HashSet<String> superInternalTypeNameSet = new HashSet<>();
 
                 // Add super type reference
-                JavaParser.TypeContext superType = ctx.getRuleContext(JavaParser.TypeContext.class, 0);
-                if (superType != null) {
-                    String superQualifiedTypeName = resolveInternalTypeName(superType.classOrInterfaceType().Identifier());
+                JavaParser.TypeTypeContext superType = ctx.getRuleContext(JavaParser.TypeTypeContext.class, 0);
+                if ((superType != null) && (superType.classOrInterfaceType() != null)) {
+                    String superQualifiedTypeName = resolveInternalTypeName(identifiers(superType.classOrInterfaceType()));
 
                     if (superQualifiedTypeName.charAt(0) != '*')
                         superInternalTypeNameSet.add(superQualifiedTypeName);
@@ -152,8 +152,11 @@ public class JavaFileIndexerProvider extends AbstractIndexerProvider {
                 // Add implementation references
                 JavaParser.TypeListContext superInterfaces = ctx.getRuleContext(JavaParser.TypeListContext.class, 0);
                 if (superInterfaces != null) {
-                    for (JavaParser.TypeContext superInterface : superInterfaces.type()) {
-                        String superQualifiedInterfaceName = resolveInternalTypeName(superInterface.classOrInterfaceType().Identifier());
+                    for (JavaParser.TypeTypeContext superInterface : superInterfaces.typeType()) {
+                        if (superInterface.classOrInterfaceType() == null)
+                            continue;
+
+                        String superQualifiedInterfaceName = resolveInternalTypeName(identifiers(superInterface.classOrInterfaceType()));
 
                         if (superQualifiedInterfaceName.charAt(0) != '*')
                             superInternalTypeNameSet.add(superQualifiedInterfaceName);
@@ -180,12 +183,12 @@ public class JavaFileIndexerProvider extends AbstractIndexerProvider {
             }
         }
 
-        public void enterType(JavaParser.TypeContext ctx) {
+        public void enterTypeType(JavaParser.TypeTypeContext ctx) {
             // Add type reference
             JavaParser.ClassOrInterfaceTypeContext classOrInterfaceType = ctx.classOrInterfaceType();
 
             if (classOrInterfaceType != null) {
-                String internalTypeName = resolveInternalTypeName(classOrInterfaceType.Identifier());
+                String internalTypeName = resolveInternalTypeName(identifiers(classOrInterfaceType));
 
                 if (internalTypeName.charAt(0) != '*')
                     typeReferenceSet.add(internalTypeName);
@@ -194,14 +197,14 @@ public class JavaFileIndexerProvider extends AbstractIndexerProvider {
 
         public void enterConstDeclaration(JavaParser.ConstDeclarationContext ctx) {
             for (JavaParser.ConstantDeclaratorContext constantDeclaratorContext : ctx.constantDeclarator()) {
-                String name = constantDeclaratorContext.Identifier().getText();
+                String name = identifier(constantDeclaratorContext.identifier()).getText();
                 fieldDeclarationSet.add(name);
             }
         }
 
         public void enterFieldDeclaration(JavaParser.FieldDeclarationContext ctx) {
             for (JavaParser.VariableDeclaratorContext declaration : ctx.variableDeclarators().variableDeclarator()) {
-                TerminalNode identifier = declaration.variableDeclaratorId().Identifier();
+                TerminalNode identifier = identifier(declaration.variableDeclaratorId().identifier());
 
                 if (identifier != null) {
                     String name = identifier.getText();
@@ -211,7 +214,7 @@ public class JavaFileIndexerProvider extends AbstractIndexerProvider {
         }
 
         public void enterMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
-            TerminalNode identifier = ctx.Identifier();
+            TerminalNode identifier = identifier(ctx.identifier());
 
             if (identifier != null) {
                 String name = identifier.getText();
@@ -219,8 +222,8 @@ public class JavaFileIndexerProvider extends AbstractIndexerProvider {
             }
         }
 
-        public void enterInterfaceMethodDeclaration(JavaParser.InterfaceMethodDeclarationContext ctx) {
-            TerminalNode identifier = ctx.Identifier();
+        public void enterInterfaceCommonBodyDeclaration(JavaParser.InterfaceCommonBodyDeclarationContext ctx) {
+            TerminalNode identifier = identifier(ctx.identifier());
 
             if (identifier != null) {
                 String name = identifier.getText();
@@ -229,96 +232,39 @@ public class JavaFileIndexerProvider extends AbstractIndexerProvider {
         }
 
         public void enterConstructorDeclaration(JavaParser.ConstructorDeclarationContext ctx) {
-            String name = ctx.Identifier().getText();
+            String name = identifier(ctx.identifier()).getText();
             constructorDeclarationSet.add(name);
         }
 
         public void enterCreatedName(JavaParser.CreatedNameContext ctx) {
-            String internalTypeName = resolveInternalTypeName(ctx.Identifier());
+            String internalTypeName = resolveInternalTypeName(identifiers(ctx.identifier()));
 
             if ((internalTypeName != null) && (internalTypeName.charAt(0) != '*'))
                 constructorReferenceSet.add(internalTypeName);
         }
 
-        public void enterExpression(JavaParser.ExpressionContext ctx) {
-            switch (ctx.getChildCount()) {
-                case 3:
-                    if (getToken(ctx.children, 1, JavaParser.DOT) != null) {
-                        // Search "expression '.' Identifier" : field
-                        TerminalNode identifier3 = getToken(ctx.children, 2, JavaParser.Identifier);
+        public void enterMemberReferenceExpression(JavaParser.MemberReferenceExpressionContext ctx) {
+            // Search "expression '.' identifier" : field
+            JavaParser.IdentifierContext identifier = ctx.identifier();
 
-                        if (identifier3 != null) {
-                            String fieldName = identifier3.getText();
-                            fieldReferenceSet.add(fieldName);
-                        }
-                    } else if (getToken(ctx.children, 1, JavaParser.LPAREN) != null) {
-                        // Search "expression '(' ')'" : method
-                        if (getToken(ctx.children, 2, JavaParser.RPAREN) != null) {
-                            TerminalNode identifier0 = getRightTerminalNode(ctx.children.get(0));
-
-                            if (identifier0 != null) {
-                                String methodName = identifier0.getText();
-                                methodReferenceSet.add(methodName);
-                            }
-                        }
-                    }
-                    break;
-                case 4:
-                    if (getToken(ctx.children, 1, JavaParser.LPAREN) != null) {
-                        // Search "expression '(' expressionList ')'" : method
-                        if (getToken(ctx.children, 3, JavaParser.RPAREN) != null) {
-                            JavaParser.ExpressionListContext expressionListContext = ctx.expressionList();
-
-                            if ((expressionListContext != null) && (expressionListContext == ctx.children.get(2))) {
-                                TerminalNode identifier0 = getRightTerminalNode(ctx.children.get(0));
-
-                                if (identifier0 != null) {
-                                    String methodName = identifier0.getText();
-                                    methodReferenceSet.add(methodName);
-                                }
-                            }
-                        }
-                    }
-                    break;
+            if (identifier != null) {
+                fieldReferenceSet.add(identifier.getText());
             }
         }
 
-        protected TerminalNode getToken(List<ParseTree> children, int i, int type) {
-            ParseTree pt = children.get(i);
+        public void enterMethodCall(JavaParser.MethodCallContext ctx) {
+            // Search "identifier '(' expressionList? ')'", "this(...)", "super(...)" and "expression '.' identifier '(' expressionList? ')'" : method
+            String methodName = ctx.getChild(0).getText();
+            methodReferenceSet.add(methodName);
 
-            if (pt instanceof TerminalNode) {
-                if (((TerminalNode)pt).getSymbol().getType() == type) {
-                    return (TerminalNode)pt;
-                }
+            if ((ctx.identifier() != null) && (ctx.getParent() instanceof JavaParser.MemberReferenceExpressionContext)) {
+                // The Java 7 grammar parsed "a.b(...)" as "(a.b)(...)": "b" was also indexed as a field reference
+                fieldReferenceSet.add(methodName);
             }
-
-            return null;
-        }
-
-        protected TerminalNode getRightTerminalNode(ParseTree pt) {
-            if (pt instanceof ParserRuleContext) {
-                List<ParseTree> children = ((ParserRuleContext)pt).children;
-
-                if (children != null) {
-                    int size = children.size();
-
-                    if (size > 0) {
-                        ParseTree last = children.get(size - 1);
-
-                        if (last instanceof TerminalNode) {
-                            return (TerminalNode) last;
-                        } else {
-                            return getRightTerminalNode(last);
-                        }
-                    }
-                }
-            }
-
-            return null;
         }
 
         public void enterLiteral(JavaParser.LiteralContext ctx) {
-            TerminalNode stringLiteral = ctx.StringLiteral();
+            TerminalNode stringLiteral = ctx.STRING_LITERAL();
             if (stringLiteral != null) {
                 stringSet.add(stringLiteral.getSymbol().getText());
             }

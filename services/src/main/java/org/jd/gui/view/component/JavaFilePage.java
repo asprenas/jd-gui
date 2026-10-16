@@ -71,7 +71,7 @@ public class JavaFilePage extends TypePage {
         }
 
         public void enterImportDeclaration(JavaParser.ImportDeclarationContext ctx) {
-            List<TerminalNode> identifiers = ctx.qualifiedName().Identifier();
+            List<TerminalNode> identifiers = identifiers(ctx.qualifiedName());
             String internalTypeName = concatIdentifiers(identifiers);
             String typeName = identifiers.get(identifiers.size()-1).getSymbol().getText();
 
@@ -92,7 +92,7 @@ public class JavaFilePage extends TypePage {
 
         public void enterTypeDeclaration(ParserRuleContext ctx) {
             // Type declaration
-            TerminalNode identifier = ctx.getToken(JavaParser.Identifier, 0);
+            TerminalNode identifier = typeDeclarationIdentifier(ctx);
             String typeName = identifier.getText();
             int position = identifier.getSymbol().getStartIndex();
             int length = sbTypeDeclaration.length();
@@ -107,8 +107,8 @@ public class JavaFilePage extends TypePage {
             nameToInternalTypeName.put(typeName, currentInternalTypeName);
 
             // Super type reference
-            JavaParser.TypeContext superType = ctx.getRuleContext(JavaParser.TypeContext.class, 0);
-            String superInternalTypeName = (superType != null) ? resolveInternalTypeName(superType.classOrInterfaceType().Identifier()) : null;
+            JavaParser.TypeTypeContext superType = ctx.getRuleContext(JavaParser.TypeTypeContext.class, 0);
+            String superInternalTypeName = ((superType != null) && (superType.classOrInterfaceType() != null)) ? resolveInternalTypeName(identifiers(superType.classOrInterfaceType())) : null;
             TypeDeclarationData data = new TypeDeclarationData(position, typeName.length(), currentInternalTypeName, null, null, superInternalTypeName);
 
             declarations.put(currentInternalTypeName, data);
@@ -148,10 +148,10 @@ public class JavaFilePage extends TypePage {
         }
 
         public void enterConstDeclaration(JavaParser.ConstDeclarationContext ctx) {
-            JavaParser.TypeContext typeContext = ctx.type();
+            JavaParser.TypeTypeContext typeContext = ctx.typeType();
 
             for (JavaParser.ConstantDeclaratorContext constantDeclaratorContext : ctx.constantDeclarator()) {
-                TerminalNode identifier = constantDeclaratorContext.Identifier();
+                TerminalNode identifier = identifier(constantDeclaratorContext.identifier());
                 String name = identifier.getText();
                 int dimensionOnVariable = countDimension(constantDeclaratorContext.children);
                 String descriptor = createDescriptor(typeContext, dimensionOnVariable);
@@ -162,11 +162,11 @@ public class JavaFilePage extends TypePage {
         }
 
         public void enterFieldDeclaration(JavaParser.FieldDeclarationContext ctx) {
-            JavaParser.TypeContext typeContext = ctx.type();
+            JavaParser.TypeTypeContext typeContext = ctx.typeType();
 
             for (JavaParser.VariableDeclaratorContext declaration : ctx.variableDeclarators().variableDeclarator()) {
                 JavaParser.VariableDeclaratorIdContext variableDeclaratorId = declaration.variableDeclaratorId();
-                TerminalNode identifier = variableDeclaratorId.Identifier();
+                TerminalNode identifier = identifier(variableDeclaratorId.identifier());
                 String name = identifier.getText();
                 int dimensionOnVariable = countDimension(variableDeclaratorId.children);
                 String descriptor = createDescriptor(typeContext, dimensionOnVariable);
@@ -178,19 +178,19 @@ public class JavaFilePage extends TypePage {
         }
 
         public void enterMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
-            enterMethodDeclaration(ctx, ctx.Identifier(), ctx.formalParameters(), ctx.type());
+            enterMethodDeclaration(ctx, identifier(ctx.identifier()), ctx.formalParameters(), ctx.typeTypeOrVoid());
         }
 
-        public void enterInterfaceMethodDeclaration(JavaParser.InterfaceMethodDeclarationContext ctx) {
-            enterMethodDeclaration(ctx, ctx.Identifier(), ctx.formalParameters(), ctx.type());
+        public void enterInterfaceCommonBodyDeclaration(JavaParser.InterfaceCommonBodyDeclarationContext ctx) {
+            enterMethodDeclaration(ctx, identifier(ctx.identifier()), ctx.formalParameters(), ctx.typeTypeOrVoid());
         }
 
         public void enterMethodDeclaration(
                 ParserRuleContext ctx, TerminalNode identifier,
-                JavaParser.FormalParametersContext formalParameters, JavaParser.TypeContext returnType) {
+                JavaParser.FormalParametersContext formalParameters, JavaParser.TypeTypeOrVoidContext returnType) {
 
             String name = identifier.getText();
-            String paramDescriptors = createParamDescriptors(formalParameters.formalParameterList());
+            String paramDescriptors = createParamDescriptors(formalParameters(formalParameters));
             String returnDescriptor = createDescriptor(returnType, 0);
             String descriptor = paramDescriptors + returnDescriptor;
             int position = identifier.getSymbol().getStartIndex();
@@ -199,25 +199,24 @@ public class JavaFilePage extends TypePage {
         }
 
         public void enterConstructorDeclaration(JavaParser.ConstructorDeclarationContext ctx) {
-            TerminalNode identifier = ctx.Identifier();
+            TerminalNode identifier = identifier(ctx.identifier());
             String name = identifier.getText();
-            String paramDescriptors = createParamDescriptors(ctx.formalParameters().formalParameterList());
+            String paramDescriptors = createParamDescriptors(formalParameters(ctx.formalParameters()));
             String descriptor = paramDescriptors + "V";
             int position = identifier.getSymbol().getStartIndex();
 
             declarations.put(currentInternalTypeName + "-<init>-" + descriptor, new TypePage.DeclarationData(position, name.length(), currentInternalTypeName, name, descriptor));
         }
 
-        public String createParamDescriptors(JavaParser.FormalParameterListContext formalParameterList) {
+        public String createParamDescriptors(List<JavaParser.FormalParameterContext> formalParameters) {
             StringBuilder paramDescriptors = null;
 
-            if (formalParameterList != null) {
-                List<JavaParser.FormalParameterContext> formalParameters = formalParameterList.formalParameter();
+            if (formalParameters != null) {
                 paramDescriptors = new StringBuilder("(");
 
                 for (JavaParser.FormalParameterContext formalParameter : formalParameters) {
                     int dimensionOnParameter = countDimension(formalParameter.variableDeclaratorId().children);
-                    String descriptor = createDescriptor(formalParameter.type(), dimensionOnParameter);
+                    String descriptor = createDescriptor(formalParameter.typeType(), dimensionOnParameter);
 
                     paramDescriptors.append(descriptor);
                 }
@@ -249,7 +248,7 @@ public class JavaFilePage extends TypePage {
         }
 
         public void enterImportDeclaration(JavaParser.ImportDeclarationContext ctx) {
-            List<TerminalNode> identifiers = ctx.qualifiedName().Identifier();
+            List<TerminalNode> identifiers = identifiers(ctx.qualifiedName());
             int position = identifiers.get(0).getSymbol().getStartIndex();
             String internalTypeName = concatIdentifiers(identifiers);
 
@@ -270,7 +269,7 @@ public class JavaFilePage extends TypePage {
 
         public void enterTypeDeclaration(ParserRuleContext ctx) {
             // Type declaration
-            TerminalNode identifier = ctx.getToken(JavaParser.Identifier, 0);
+            TerminalNode identifier = typeDeclarationIdentifier(ctx);
             String typeName = identifier.getText();
             int length = sbTypeDeclaration.length();
 
@@ -301,15 +300,13 @@ public class JavaFilePage extends TypePage {
         }
 
         public void enterFormalParameters(JavaParser.FormalParametersContext ctx) {
-            JavaParser.FormalParameterListContext formalParameterList = ctx.formalParameterList();
+            List<JavaParser.FormalParameterContext> formalParameters = formalParameters(ctx);
 
-            if (formalParameterList != null) {
-                List<JavaParser.FormalParameterContext> formalParameters = formalParameterList.formalParameter();
-
+            if (formalParameters != null) {
                 for (JavaParser.FormalParameterContext formalParameter : formalParameters) {
                     int dimensionOnParameter = countDimension(formalParameter.variableDeclaratorId().children);
-                    String descriptor = createDescriptor(formalParameter.type(), dimensionOnParameter);
-                    String name = formalParameter.variableDeclaratorId().Identifier().getSymbol().getText();
+                    String descriptor = createDescriptor(formalParameter.typeType(), dimensionOnParameter);
+                    String name = identifier(formalParameter.variableDeclaratorId().identifier()).getSymbol().getText();
 
                     currentContext.nameToDescriptor.put(name, descriptor);
                 }
@@ -317,12 +314,12 @@ public class JavaFilePage extends TypePage {
         }
 
         // --- Add references --- //
-        public void enterType(JavaParser.TypeContext ctx) {
+        public void enterTypeType(JavaParser.TypeTypeContext ctx) {
             // Add type reference
             JavaParser.ClassOrInterfaceTypeContext classOrInterfaceType = ctx.classOrInterfaceType();
 
             if (classOrInterfaceType != null) {
-                List<TerminalNode> identifiers = classOrInterfaceType.Identifier();
+                List<TerminalNode> identifiers = identifiers(classOrInterfaceType);
                 String name = concatIdentifiers(identifiers);
                 String internalTypeName = resolveInternalTypeName(identifiers);
                 int position = identifiers.get(0).getSymbol().getStartIndex();
@@ -332,24 +329,30 @@ public class JavaFilePage extends TypePage {
         }
 
         public void enterLocalVariableDeclaration(JavaParser.LocalVariableDeclarationContext ctx) {
-            JavaParser.TypeContext typeContext = ctx.type();
+            JavaParser.TypeTypeContext typeContext = ctx.typeType();
+
+            if (typeContext == null) {
+                // "var name = expression": inferred type, register the local variable name only
+                currentContext.nameToDescriptor.put(identifier(ctx.identifier()).getText(), "?");
+                return;
+            }
 
             for (JavaParser.VariableDeclaratorContext variableDeclarator : ctx.variableDeclarators().variableDeclarator()) {
                 JavaParser.VariableDeclaratorIdContext variableDeclaratorId = variableDeclarator.variableDeclaratorId();
                 int dimensionOnVariable = countDimension(variableDeclaratorId.children);
                 String descriptor = createDescriptor(typeContext, dimensionOnVariable);
-                String name = variableDeclarator.variableDeclaratorId().Identifier().getSymbol().getText();
+                String name = identifier(variableDeclarator.variableDeclaratorId().identifier()).getSymbol().getText();
 
                 currentContext.nameToDescriptor.put(name, descriptor);
             }
         }
 
         public void enterCreator(JavaParser.CreatorContext ctx) {
-            enterNewExpression(ctx.createdName().Identifier(), ctx.classCreatorRest());
+            enterNewExpression(identifiers(ctx.createdName().identifier()), ctx.classCreatorRest());
         }
 
         public void enterInnerCreator(JavaParser.InnerCreatorContext ctx) {
-            enterNewExpression(Collections.singletonList(ctx.Identifier()), ctx.classCreatorRest());
+            enterNewExpression(Collections.singletonList(identifier(ctx.identifier())), ctx.classCreatorRest());
         }
 
         public void enterNewExpression(List<TerminalNode> identifiers, JavaParser.ClassCreatorRestContext classCreatorRest) {
@@ -371,155 +374,91 @@ public class JavaFilePage extends TypePage {
             }
         }
 
-        public void enterExpression(JavaParser.ExpressionContext ctx) {
-            switch (ctx.getChildCount()) {
-                case 1:
-                    TerminalNode identifier0 = getToken(ctx.children, JavaParser.Identifier, 0);
+        public void enterPrimaryExpression(JavaParser.PrimaryExpressionContext ctx) {
+            // Search "Type" : reference to a known type
+            TerminalNode identifier = identifier(ctx.primary().identifier());
 
-                    if (identifier0 != null) {
-                        if (isAField(ctx)) {
-                            JavaParser.PrimaryContext primaryContext = ctx.primary();
+            if (identifier != null) {
+                Token symbol = identifier.getSymbol();
+                String name = symbol.getText();
+                String internalTypeName = nameToInternalTypeName.get(name);
 
-                            if (primaryContext != null) {
-                                String fieldName = primaryContext.literal().StringLiteral().getText();
+                if (internalTypeName != null) {
+                    int position = symbol.getStartIndex();
 
-                                if (currentContext.getDescriptor(fieldName) == null) {
-                                    // Not a local variable or a method parameter
-                                    String fieldTypeName = searchInternalTypeNameForThisFieldName(currentInternalTypeName, fieldName);
-                                    int position = ctx.Identifier().getSymbol().getStartIndex();
-
-                                    addHyperlink(new TypePage.HyperlinkReferenceData(position, fieldName.length(), newReferenceData(fieldTypeName, fieldName, "?", currentInternalTypeName)));
-                                }
-                            }
-                        }
-                    } else if (ctx.primary() != null) {
-                        TerminalNode identifier = ctx.primary().Identifier();
-
-                        if (identifier != null) {
-                            Token symbol = identifier.getSymbol();
-                            String name = symbol.getText();
-                            String internalTypeName = nameToInternalTypeName.get(name);
-
-                            if (internalTypeName != null) {
-                                int position = symbol.getStartIndex();
-
-                                addHyperlink(new TypePage.HyperlinkReferenceData(position, name.length(), newReferenceData(internalTypeName, null, null, currentInternalTypeName)));
-                            }
-                        }
-                    }
-                    break;
-                case 3:
-                    if (getToken(ctx.children, JavaParser.DOT, 1) != null) {
-                        // Search "expression '.' Identifier" : field reference
-                        TerminalNode identifier3 = getToken(ctx.children, JavaParser.Identifier, 2);
-
-                        if ((identifier3 != null) && isAField(ctx)) {
-                            String fieldTypeName = getInternalTypeName(ctx.getChild(0));
-
-                            if (fieldTypeName != null) {
-                                int position = identifier3.getSymbol().getStartIndex();
-                                String fieldName = identifier3.getText();
-
-                                addHyperlink(new TypePage.HyperlinkReferenceData(position, fieldName.length(), newReferenceData(fieldTypeName, fieldName, "?", currentInternalTypeName)));
-                            }
-                        }
-                    } else if (getToken(ctx.children, JavaParser.LPAREN, 1) != null) {
-                        // Search "expression '(' ')'" : method reference
-                        if (getToken(ctx.children, JavaParser.RPAREN, 2) != null) {
-                            enterCallMethodExpression(ctx, null);
-                        }
-                    }
-                    break;
-                case 4:
-                    if (getToken(ctx.children, JavaParser.LPAREN, 1) != null) {
-                        // Search "expression '(' expressionList ')'" : method reference
-                        if (getToken(ctx.children, JavaParser.RPAREN, 3) != null) {
-                            JavaParser.ExpressionListContext expressionListContext = ctx.expressionList();
-
-                            if ((expressionListContext != null) && (expressionListContext == ctx.children.get(2))) {
-                                enterCallMethodExpression(ctx, expressionListContext);
-                            }
-                        }
-                    }
-                    break;
+                    addHyperlink(new TypePage.HyperlinkReferenceData(position, name.length(), newReferenceData(internalTypeName, null, null, currentInternalTypeName)));
+                }
             }
         }
 
-        public void enterCallMethodExpression(JavaParser.ExpressionContext ctx, JavaParser.ExpressionListContext expressionListContext) {
-            ParseTree first = ctx.children.get(0);
+        public void enterMemberReferenceExpression(JavaParser.MemberReferenceExpressionContext ctx) {
+            // Search "expression '.' identifier" : field reference
+            TerminalNode identifier = identifier(ctx.identifier());
 
-            if (first instanceof JavaParser.ExpressionContext) {
-                JavaParser.ExpressionContext f = (JavaParser.ExpressionContext)first;
+            if ((identifier != null) && isAField(ctx)) {
+                String fieldTypeName = getInternalTypeName(ctx.expression());
 
-                switch (f.getChildCount()) {
-                    case 1:
-                        JavaParser.PrimaryContext primary = f.primary();
-                        TerminalNode identifier = primary.Identifier();
+                if (fieldTypeName != null) {
+                    int position = identifier.getSymbol().getStartIndex();
+                    String fieldName = identifier.getText();
 
-                        if (identifier != null) {
-                            Token symbol = identifier.getSymbol();
+                    addHyperlink(new TypePage.HyperlinkReferenceData(position, fieldName.length(), newReferenceData(fieldTypeName, fieldName, "?", currentInternalTypeName)));
+                }
+            }
+        }
 
-                            if (symbol != null) {
-                                String methodName = symbol.getText();
-                                String methodTypeName = searchInternalTypeNameForThisMethodName(currentInternalTypeName, methodName);
+        public void enterMethodCall(JavaParser.MethodCallContext ctx) {
+            JavaParser.ExpressionListContext expressionListContext = ctx.arguments().expressionList();
+            ParserRuleContext parent = ctx.getParent();
+            TerminalNode identifier = identifier(ctx.identifier());
 
-                                if (methodTypeName != null) {
-                                    int position = symbol.getStartIndex();
-                                    String methodDescriptor = (expressionListContext != null) ? getParametersDescriptor(expressionListContext).append('?').toString() : "()?";
+            if (parent instanceof JavaParser.MethodCallExpressionContext) {
+                if (identifier != null) {
+                    // Search "identifier '(' expressionList? ')'" : method of the current type
+                    Token symbol = identifier.getSymbol();
+                    String methodName = symbol.getText();
+                    String methodTypeName = searchInternalTypeNameForThisMethodName(currentInternalTypeName, methodName);
 
-                                    addHyperlink(new TypePage.HyperlinkReferenceData(position, methodName.length(), newReferenceData(methodTypeName, methodName, methodDescriptor, currentInternalTypeName)));
-                                }
+                    if (methodTypeName != null) {
+                        int position = symbol.getStartIndex();
+                        String methodDescriptor = (expressionListContext != null) ? getParametersDescriptor(expressionListContext).append('?').toString() : "()?";
+
+                        addHyperlink(new TypePage.HyperlinkReferenceData(position, methodName.length(), newReferenceData(methodTypeName, methodName, methodDescriptor, currentInternalTypeName)));
+                    }
+                } else {
+                    // Search "this(...)" and "super(...)" : constructor call
+                    Token symbol = ((TerminalNode)ctx.getChild(0)).getSymbol();
+
+                    switch (symbol.getType()) {
+                        case JavaParser.THIS:
+                            int position = symbol.getStartIndex();
+                            String methodDescriptor = (expressionListContext != null) ? getParametersDescriptor(expressionListContext).append('?').toString() : "()?";
+
+                            addHyperlink(new TypePage.HyperlinkReferenceData(position, 4, newReferenceData(currentInternalTypeName, "<init>", methodDescriptor, currentInternalTypeName)));
+                            break;
+                        case JavaParser.SUPER:
+                            DeclarationData data = declarations.get(currentInternalTypeName);
+
+                            if (data instanceof TypeDeclarationData) {
+                                position = symbol.getStartIndex();
+                                String methodTypeName = ((TypeDeclarationData) data).superTypeName;
+                                methodDescriptor = (expressionListContext != null) ? getParametersDescriptor(expressionListContext).append('?').toString() : "()?";
+
+                                addHyperlink(new TypePage.HyperlinkReferenceData(position, 5, newReferenceData(methodTypeName, "<init>", methodDescriptor, currentInternalTypeName)));
                             }
-                        } else {
-                            Token symbol = primary.getChild(TerminalNode.class, 0).getSymbol();
+                            break;
+                    }
+                }
+            } else if ((parent instanceof JavaParser.MemberReferenceExpressionContext) && (identifier != null)) {
+                // Search "expression '.' identifier '(' expressionList? ')'" : method of the expression type
+                String methodTypeName = getInternalTypeName(((JavaParser.MemberReferenceExpressionContext)parent).expression());
 
-                            if (symbol != null) {
-                                switch (symbol.getType()) {
-                                    case JavaParser.THIS:
-                                        int position = symbol.getStartIndex();
-                                        String methodDescriptor = (expressionListContext != null) ? getParametersDescriptor(expressionListContext).append('?').toString() : "()?";
+                if (methodTypeName != null) {
+                    int position = identifier.getSymbol().getStartIndex();
+                    String methodName = identifier.getText();
+                    String methodDescriptor = (expressionListContext != null) ? getParametersDescriptor(expressionListContext).append('?').toString() : "()?";
 
-                                        addHyperlink(new TypePage.HyperlinkReferenceData(position, 4, newReferenceData(currentInternalTypeName, "<init>", methodDescriptor, currentInternalTypeName)));
-                                        break;
-                                    case JavaParser.SUPER:
-                                        DeclarationData data = declarations.get(currentInternalTypeName);
-
-                                        if (data instanceof TypeDeclarationData) {
-                                            position = symbol.getStartIndex();
-                                            String methodTypeName = ((TypeDeclarationData) data).superTypeName;
-                                            methodDescriptor = (expressionListContext != null) ? getParametersDescriptor(expressionListContext).append('?').toString() : "()?";
-
-                                            addHyperlink(new TypePage.HyperlinkReferenceData(position, 5, newReferenceData(methodTypeName, "<init>", methodDescriptor, currentInternalTypeName)));
-                                        }
-                                        break;
-                                }
-                            }
-                        }
-                        break;
-                    case 3:
-                        // Search "expression '.' Identifier"
-                        ParseTree dot = first.getChild(1);
-
-                        if ((dot instanceof TerminalNode) && (((TerminalNode)dot).getSymbol().getType() == JavaParser.DOT)) {
-                            ParseTree identifier3 = first.getChild(2);
-
-                            if (identifier3 instanceof TerminalNode) {
-                                TerminalNode i3 = (TerminalNode)identifier3;
-
-                                if (i3.getSymbol().getType() == JavaParser.Identifier) {
-                                    String methodTypeName = getInternalTypeName(first.getChild(0));
-
-                                    if (methodTypeName != null) {
-                                        int position = i3.getSymbol().getStartIndex();
-                                        String methodName = i3.getText();
-                                        String methodDescriptor = (expressionListContext != null) ? getParametersDescriptor(expressionListContext).append('?').toString() : "()?";
-
-                                        addHyperlink(new TypePage.HyperlinkReferenceData(position, methodName.length(), newReferenceData(methodTypeName, methodName, methodDescriptor, currentInternalTypeName)));
-                                    }
-                                }
-                            }
-                        }
-                        break;
+                    addHyperlink(new TypePage.HyperlinkReferenceData(position, methodName.length(), newReferenceData(methodTypeName, methodName, methodDescriptor, currentInternalTypeName)));
                 }
             }
         }
@@ -558,56 +497,53 @@ public class JavaFilePage extends TypePage {
         }
 
         public String getInternalTypeName(ParseTree pt) {
-            if (pt instanceof JavaParser.ExpressionContext) {
+            if (pt instanceof JavaParser.PrimaryExpressionContext) {
+                JavaParser.PrimaryContext primary = ((JavaParser.PrimaryExpressionContext)pt).primary();
+                TerminalNode identifier = identifier(primary.identifier());
 
-                if (pt.getChildCount() == 1) {
-                    JavaParser.PrimaryContext primary = ((JavaParser.ExpressionContext)pt).primary();
-                    TerminalNode identifier = primary.Identifier();
+                if (identifier != null) {
+                    String name = identifier.getSymbol().getText();
+                    String descriptor = (currentContext == null) ? null : currentContext.getDescriptor(name);
 
-                    if (identifier != null) {
-                        String name = identifier.getSymbol().getText();
-                        String descriptor = (currentContext == null) ? null : currentContext.getDescriptor(name);
+                    if (descriptor != null) {
+                        // Is a local variable or a method parameter
+                        if (descriptor.charAt(0) == 'L') {
+                            return descriptor.substring(1, descriptor.length() - 1);
+                        }
+                    } else if (currentInternalTypeName != null) {
+                        String internalTypeName = searchInternalTypeNameForThisFieldName(currentInternalTypeName, name);
 
-                        if (descriptor != null) {
-                            // Is a local variable or a method parameter
-                            if (descriptor.charAt(0) == 'L') {
-                                return descriptor.substring(1, descriptor.length() - 1);
-                            }
-                        } else if (currentInternalTypeName != null) {
-                            String internalTypeName = searchInternalTypeNameForThisFieldName(currentInternalTypeName, name);
+                        if (internalTypeName != null) {
+                            // Is a field
+                            return internalTypeName;
+                        } else {
+                            internalTypeName = resolveInternalTypeName(Collections.singletonList(identifier));
 
                             if (internalTypeName != null) {
-                                // Is a field
+                                // Is a type
                                 return internalTypeName;
                             } else {
-                                internalTypeName = resolveInternalTypeName(Collections.singletonList(identifier));
-
-                                if (internalTypeName != null) {
-                                    // Is a type
-                                    return internalTypeName;
-                                } else {
-                                    // Not found
-                                    return null;
-                                }
+                                // Not found
+                                return null;
                             }
                         }
-                    } else {
-                        TerminalNode tn = primary.getChild(TerminalNode.class, 0);
-                        Token symbol = (tn == null) ? null : tn.getSymbol();
+                    }
+                } else {
+                    TerminalNode tn = primary.getChild(TerminalNode.class, 0);
+                    Token symbol = (tn == null) ? null : tn.getSymbol();
 
-                        if (symbol != null) {
-                            switch (symbol.getType()) {
-                                case JavaParser.THIS:
-                                    return currentInternalTypeName;
-                                case JavaParser.SUPER:
-                                    DeclarationData data = declarations.get(currentInternalTypeName);
+                    if (symbol != null) {
+                        switch (symbol.getType()) {
+                            case JavaParser.THIS:
+                                return currentInternalTypeName;
+                            case JavaParser.SUPER:
+                                DeclarationData data = declarations.get(currentInternalTypeName);
 
-                                    if (data instanceof TypeDeclarationData) {
-                                        return ((TypeDeclarationData)data).superTypeName;
-                                    } else {
-                                        return null;
-                                    }
-                            }
+                                if (data instanceof TypeDeclarationData) {
+                                    return ((TypeDeclarationData)data).superTypeName;
+                                } else {
+                                    return null;
+                                }
                         }
                     }
                 }
@@ -663,18 +599,6 @@ public class JavaFilePage extends TypePage {
             return null;
         }
 
-        public TerminalNode getToken(List<ParseTree> children, int type, int i) {
-            ParseTree pt = children.get(i);
-
-            if (pt instanceof TerminalNode) {
-                if (((TerminalNode)pt).getSymbol().getType() == type) {
-                    return (TerminalNode)pt;
-                }
-            }
-
-            return null;
-        }
-
         public void enterBlock(JavaParser.BlockContext ctx) {
             currentContext = new Context(currentContext);
         }
@@ -698,7 +622,7 @@ public class JavaFilePage extends TypePage {
 
         // --- Add strings --- //
         public void enterLiteral(JavaParser.LiteralContext ctx) {
-            TerminalNode stringLiteral = ctx.StringLiteral();
+            TerminalNode stringLiteral = ctx.STRING_LITERAL();
 
             if (stringLiteral != null) {
                 String str = stringLiteral.getSymbol().getText();

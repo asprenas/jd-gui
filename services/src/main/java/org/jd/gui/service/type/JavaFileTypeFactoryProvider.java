@@ -234,15 +234,15 @@ public class JavaFileTypeFactoryProvider extends AbstractTypeFactoryProvider {
         public void exitAnnotationTypeDeclaration(JavaParser.AnnotationTypeDeclarationContext ctx) { exitTypeDeclaration(); }
 
         protected void enterTypeDeclaration(ParserRuleContext ctx, int access) {
-            String name = ctx.getToken(JavaParser.Identifier, 0).getText();
+            String name = typeDeclarationIdentifier(ctx).getText();
 
-            JavaParser.TypeContext superType = ctx.getRuleContext(JavaParser.TypeContext.class, 0);
+            JavaParser.TypeTypeContext superType = ctx.getRuleContext(JavaParser.TypeTypeContext.class, 0);
             String superQualifiedTypeName;
 
-            if (superType == null) {
+            if ((superType == null) || (superType.classOrInterfaceType() == null)) {
                 superQualifiedTypeName = ((access & JavaType.FLAG_INTERFACE) == 0) ? "java/lang/Object" : "";
             } else {
-                superQualifiedTypeName = resolveInternalTypeName(superType.classOrInterfaceType().Identifier());
+                superQualifiedTypeName = resolveInternalTypeName(identifiers(superType.classOrInterfaceType()));
             }
 
             ParserRuleContext parent = ctx.getParent();
@@ -306,11 +306,11 @@ public class JavaFileTypeFactoryProvider extends AbstractTypeFactoryProvider {
         }
 
         public void enterConstDeclaration(JavaParser.ConstDeclarationContext ctx) {
-            JavaParser.TypeContext typeContext = ctx.type();
+            JavaParser.TypeTypeContext typeContext = ctx.typeType();
             int access = getClassBodyDeclarationAccessFlag(ctx.getParent().getParent());
 
             for (JavaParser.ConstantDeclaratorContext constantDeclaratorContext : ctx.constantDeclarator()) {
-                TerminalNode identifier = constantDeclaratorContext.Identifier();
+                TerminalNode identifier = identifier(constantDeclaratorContext.identifier());
                 String name = identifier.getText();
                 int dimensionOnVariable = countDimension(constantDeclaratorContext.children);
                 String descriptor = createDescriptor(typeContext, dimensionOnVariable);
@@ -320,12 +320,12 @@ public class JavaFileTypeFactoryProvider extends AbstractTypeFactoryProvider {
         }
 
         public void enterFieldDeclaration(JavaParser.FieldDeclarationContext ctx) {
-            JavaParser.TypeContext typeContext = ctx.type();
+            JavaParser.TypeTypeContext typeContext = ctx.typeType();
             int access = getClassBodyDeclarationAccessFlag(ctx.getParent().getParent());
 
             for (JavaParser.VariableDeclaratorContext declaration : ctx.variableDeclarators().variableDeclarator()) {
                 JavaParser.VariableDeclaratorIdContext variableDeclaratorId = declaration.variableDeclaratorId();
-                TerminalNode identifier = variableDeclaratorId.Identifier();
+                TerminalNode identifier = identifier(variableDeclaratorId.identifier());
                 String name = identifier.getText();
                 int dimensionOnVariable = countDimension(variableDeclaratorId.children);
                 String descriptor = createDescriptor(typeContext, dimensionOnVariable);
@@ -335,20 +335,21 @@ public class JavaFileTypeFactoryProvider extends AbstractTypeFactoryProvider {
         }
 
         public void enterMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
-            enterMethodDeclaration(ctx, ctx.Identifier(), ctx.formalParameters(), ctx.type());
+            enterMethodDeclaration(ctx, identifier(ctx.identifier()), ctx.formalParameters(), ctx.typeTypeOrVoid());
         }
 
-        public void enterInterfaceMethodDeclaration(JavaParser.InterfaceMethodDeclarationContext ctx) {
-            enterMethodDeclaration(ctx, ctx.Identifier(), ctx.formalParameters(), ctx.type());
+        public void enterInterfaceCommonBodyDeclaration(JavaParser.InterfaceCommonBodyDeclarationContext ctx) {
+            // Parent: (generic) interface method declaration, like the Java 7 'interfaceMethodDeclaration' rule
+            enterMethodDeclaration(ctx.getParent(), identifier(ctx.identifier()), ctx.formalParameters(), ctx.typeTypeOrVoid());
         }
 
         public void enterMethodDeclaration(
                 ParserRuleContext ctx, TerminalNode identifier,
-                JavaParser.FormalParametersContext formalParameters, JavaParser.TypeContext returnType) {
+                JavaParser.FormalParametersContext formalParameters, JavaParser.TypeTypeOrVoidContext returnType) {
 
             int access = getClassBodyDeclarationAccessFlag(ctx.getParent().getParent());
             String name = identifier.getText();
-            String paramDescriptors = createParamDescriptors(formalParameters.formalParameterList());
+            String paramDescriptors = createParamDescriptors(formalParameters(formalParameters));
             String returnDescriptor = createDescriptor(returnType, 0);
             String descriptor = paramDescriptors + returnDescriptor;
 
@@ -357,22 +358,21 @@ public class JavaFileTypeFactoryProvider extends AbstractTypeFactoryProvider {
 
         public void enterConstructorDeclaration(JavaParser.ConstructorDeclarationContext ctx) {
             int access = getClassBodyDeclarationAccessFlag(ctx.getParent().getParent());
-            String paramDescriptors = createParamDescriptors(ctx.formalParameters().formalParameterList());
+            String paramDescriptors = createParamDescriptors(formalParameters(ctx.formalParameters()));
             String descriptor = paramDescriptors + "V";
 
             currentType.getMethods().add(new JavaMethod(currentType, access, "<init>", descriptor));
         }
 
-        protected String createParamDescriptors(JavaParser.FormalParameterListContext formalParameterList) {
+        protected String createParamDescriptors(List<JavaParser.FormalParameterContext> formalParameters) {
             StringBuilder paramDescriptors = null;
 
-            if (formalParameterList != null) {
-                List<JavaParser.FormalParameterContext> formalParameters = formalParameterList.formalParameter();
+            if (formalParameters != null) {
                 paramDescriptors = new StringBuilder("(");
 
                 for (JavaParser.FormalParameterContext formalParameter : formalParameters) {
                     int dimensionOnParameter = countDimension(formalParameter.variableDeclaratorId().children);
-                    paramDescriptors.append(createDescriptor(formalParameter.type(), dimensionOnParameter));
+                    paramDescriptors.append(createDescriptor(formalParameter.typeType(), dimensionOnParameter));
                 }
             }
 

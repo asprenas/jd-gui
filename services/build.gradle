@@ -41,10 +41,15 @@ tasks.register('antlr4GenerateGrammarSource', JavaExec) {
     def grammars = fileTree(antlr4.antlrSource).include('**/*.g4')
     def pkg = antlr4.grammarPackage.replaceAll("\\.", "/")
 
-    doFirst { mkdir antlr4.destinationDir }
+    doFirst {
+        // Remove stale generated sources (e.g. from a renamed grammar)
+        delete antlr4.destinationDir
+        mkdir "${antlr4.destinationDir}/${pkg}"
+    }
     mainClass = 'org.antlr.v4.Tool'
     classpath = configurations.antlr4
-    args = ['-o', "${antlr4.destinationDir}/${pkg}", '-package', antlr4.grammarPackage, grammars.files].flatten()
+    // '-lib': JavaParser.g4 reads the tokens generated from JavaLexer.g4 (tokenVocab)
+    args = ['-o', "${antlr4.destinationDir}/${pkg}", '-lib', "${antlr4.destinationDir}/${pkg}", '-package', antlr4.grammarPackage, grammars.files].flatten()
 }
 
 sourceSets.main.java.srcDir(tasks.named('antlr4GenerateGrammarSource').map { file(antlr4.destinationDir) })
