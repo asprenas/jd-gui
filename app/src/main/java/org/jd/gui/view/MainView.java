@@ -194,7 +194,7 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             Action aboutAction = newAction("About...", true, "About JD-GUI", aboutActionListener);
 
             // Menu //
-            int menuShortcutKeyMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+            int menuShortcutKeyMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
             JMenuBar menuBar = new JMenuBar();
             JMenu menu = new JMenu("File");
             menuBar.add(menu);
@@ -203,12 +203,12 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             menu.add(closeAction).setAccelerator(KeyStroke.getKeyStroke('W', menuShortcutKeyMask));
             menu.addSeparator();
             menu.add(saveAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask));
-            menu.add(saveAllSourcesAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask|InputEvent.ALT_MASK));
+            menu.add(saveAllSourcesAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask|InputEvent.ALT_DOWN_MASK));
             menu.addSeparator();
             menu.add(recentFiles);
             if (!PlatformService.getInstance().isMac()) {
                 menu.addSeparator();
-                menu.add(exitAction).setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.ALT_MASK));
+                menu.add(exitAction).setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.ALT_DOWN_MASK));
             }
             menu = new JMenu("Edit");
             menuBar.add(menu);
@@ -225,11 +225,11 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             menu.addSeparator();
             menu.add(goToAction).setAccelerator(KeyStroke.getKeyStroke('L', menuShortcutKeyMask));
             menu.addSeparator();
-            menu.add(backwardAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_MASK));
-            menu.add(forwardAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.ALT_MASK));
+            menu.add(backwardAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_DOWN_MASK));
+            menu.add(forwardAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.ALT_DOWN_MASK));
             menu = new JMenu("Search");
             menuBar.add(menu);
-            menu.add(searchAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask|InputEvent.SHIFT_MASK));
+            menu.add(searchAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask|InputEvent.SHIFT_DOWN_MASK));
             menu = new JMenu("Help");
             menuBar.add(menu);
             if (browser) {
@@ -238,7 +238,7 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
                 menu.add(jdCoreIssuesActionAction);
                 menu.addSeparator();
             }
-            menu.add(preferencesAction).setAccelerator(KeyStroke.getKeyStroke('P', menuShortcutKeyMask|InputEvent.SHIFT_MASK));
+            menu.add(preferencesAction).setAccelerator(KeyStroke.getKeyStroke('P', menuShortcutKeyMask|InputEvent.SHIFT_DOWN_MASK));
             if (!PlatformService.getInstance().isMac()) {
                 menu.addSeparator();
                 menu.add(aboutAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));

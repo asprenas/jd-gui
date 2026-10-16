@@ -19,10 +19,12 @@ import org.jd.gui.util.exception.ExceptionUtil;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -68,9 +70,9 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
             }
         });
 
-        KeyStroke ctrlA = KeyStroke.getKeyStroke(KeyEvent.VK_A, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
-        KeyStroke ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
-        KeyStroke ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        KeyStroke ctrlA = KeyStroke.getKeyStroke(KeyEvent.VK_A, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
+        KeyStroke ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
+        KeyStroke ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
         InputMap inputMap = textArea.getInputMap();
         inputMap.put(ctrlA, "none");
         inputMap.put(ctrlC, "none");
@@ -95,10 +97,10 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
         }
 
         scrollPane.addMouseWheelListener(e -> {
-            if ((e.getModifiers() & (Event.META_MASK|Event.CTRL_MASK)) != 0) {
+            if ((e.getModifiersEx() & (InputEvent.META_DOWN_MASK|InputEvent.CTRL_DOWN_MASK)) != 0) {
                 int x = e.getX() + scrollPane.getX() - textArea.getX();
                 int y = e.getY() + scrollPane.getY() - textArea.getY();
-                int offset = textArea.viewToModel(new Point(x, y));
+                int offset = textArea.viewToModel2D(new Point(x, y));
 
                 // Update font size
                 if (e.getWheelRotation() > 0) {
@@ -113,7 +115,7 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
                 }
 
                 try {
-                    Rectangle newRectangle = textArea.modelToView(offset);
+                    Rectangle newRectangle = modelToView(offset);
                     int newY = newRectangle.y + (newRectangle.height >> 1);
 
                     // Scroll
@@ -171,7 +173,7 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
 
         if (!foldsExpanded) {
             try {
-                Rectangle rec = textArea.modelToView(start);
+                Rectangle rec = modelToView(start);
 
                 if (rec != null) {
                     // Visible
@@ -180,7 +182,7 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
                     // Not visible yet
                     SwingUtilities.invokeLater(() -> {
                         try {
-                            Rectangle r = textArea.modelToView(start);
+                            Rectangle r = modelToView(start);
                             if (r != null) {
                                 setCaretPositionAndCenter(start, end, r);
                             }
@@ -195,10 +197,15 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
         }
     }
 
+    protected Rectangle modelToView(int offset) throws BadLocationException {
+        Rectangle2D r = textArea.modelToView2D(offset);
+        return (r == null) ? null : r.getBounds();
+    }
+
     protected void setCaretPositionAndCenter(int start, int end, Rectangle r) {
         if (end != start) {
             try {
-                r = r.union(textArea.modelToView(end));
+                r = r.union(modelToView(end));
             } catch (BadLocationException e) {
                 assert ExceptionUtil.printStackTrace(e);
             }

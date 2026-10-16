@@ -59,7 +59,7 @@ public class ExtensionService {
                 if (child.isDirectory()) {
                     searchJarAndMetaInf(urls, child);
                 } else if (child.getName().toLowerCase().endsWith(".jar")) {
-                    urls.add(new URL("jar", "", child.toURI().toURL().toString() + "!/"));
+                    urls.add(URI.create("jar:" + child.toURI().toURL() + "!/").toURL());
                 }
             }
         }

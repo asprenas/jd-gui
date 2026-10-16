@@ -69,7 +69,7 @@ public class XmlFilePage extends TypeReferencePage implements UriGettable, Index
             try {
                 // Save current position in history
                 Point location = textArea.getLocationOnScreen();
-                int offset = textArea.viewToModel(new Point(x-location.x, y-location.y));
+                int offset = textArea.viewToModel2D(new Point(x-location.x, y-location.y));
                 URI uri = entry.getUri();
                 api.addURI(new URI(uri.getScheme(), uri.getAuthority(), uri.getPath(), "position=" + offset, null));
 

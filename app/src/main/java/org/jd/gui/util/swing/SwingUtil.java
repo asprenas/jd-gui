@@ -67,7 +67,7 @@ public class SwingUtil {
         try {
             // Access the GTK style factory
             Field field = lafClass.getDeclaredField("styleFactory");
-            boolean accessible = field.isAccessible();
+            boolean accessible = field.canAccess(laf);
             field.setAccessible(true);
             Object styleFactory = field.get(laf);
             field.setAccessible(accessible);
@@ -99,7 +99,7 @@ public class SwingUtil {
      */
     private static void fixGtkThickness(Object style, String fieldName) throws Exception {
         Field field = style.getClass().getDeclaredField(fieldName);
-        boolean accessible = field.isAccessible();
+        boolean accessible = field.canAccess(style);
         field.setAccessible(true);
         field.setInt(style, Math.max(1, field.getInt(style)));
         field.setAccessible(accessible);
@@ -128,7 +128,7 @@ public class SwingUtil {
         // Get and return the style
         Class<?> styleFactoryClass = styleFactory.getClass();
         Method method = styleFactoryClass.getMethod("getStyle", JComponent.class, regionClass);
-        boolean accessible = method.isAccessible();
+        boolean accessible = method.canAccess(styleFactory);
         method.setAccessible(true);
         Object style = method.invoke(styleFactory, component, region);
         method.setAccessible(accessible);

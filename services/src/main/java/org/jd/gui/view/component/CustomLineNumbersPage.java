@@ -195,7 +195,7 @@ public abstract class CustomLineNumbersPage extends HyperlinkPage {
                 View v = ui.getRootView(rTextArea).getView(0);
                 Element root = rTextArea.getDocument().getDefaultRootElement();
                 int lineCount = root.getElementCount();
-                int topPosition = rTextArea.viewToModel(visibleRect.getLocation());
+                int topPosition = rTextArea.viewToModel2D(visibleRect.getLocation());
                 int topLine = root.getElementIndex(topPosition);
                 Rectangle visibleEditorRect = ui.getVisibleEditorRect();
                 Rectangle r = LineNumberList.getChildViewBounds(v, topLine, visibleEditorRect);
