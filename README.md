@@ -1,6 +1,14 @@
 # JD-GUI
 
+[![CI](https://github.com/asprenas/jd-gui/actions/workflows/ci.yml/badge.svg)](https://github.com/asprenas/jd-gui/actions/workflows/ci.yml)
+
 JD-GUI, a standalone graphical utility that displays Java sources from CLASS files.
+
+> **Fork notice:** this repository is a fork of [java-decompiler/jd-gui](https://github.com/java-decompiler/jd-gui),
+> based on commit `b3c1ced` (JD-GUI 1.6.6). Changes in this fork:
+> - Gradle 9.1, builds with JDK 21+; bytecode targets Java 21 (Java 21+ required to run)
+> - JD-Core 1.1.4 from the [asprenas/jd-core](https://github.com/asprenas/jd-core) fork
+> - Tests migrated to JUnit 5, GitHub Actions CI (JDK 21 / 25) and Dependabot
 
 ![](https://raw.githubusercontent.com/java-decompiler/jd-gui/master/src/website/img/jd-gui.png)
 
@@ -12,19 +20,26 @@ JD-GUI is a standalone graphical utility that displays Java source codes of
 ".class" files. You can browse the reconstructed source code with the JD-GUI
 for instant access to methods and fields.
 
+## Download
+Prebuilt packages: [GitHub Releases](https://github.com/asprenas/jd-gui/releases)
+
 ## How to build JD-GUI ?
+Requirements: JDK 21 or later (Gradle 9). The resulting bytecode targets Java 21.
+
+JD-Core 1.1.4 is resolved from Maven local (`org.jd:jd-core`, install it from
+[asprenas/jd-core](https://github.com/asprenas/jd-core)) or from JitPack with `-PjdCoreJitpack`.
 ```
-> git clone https://github.com/java-decompiler/jd-gui.git
+> git clone https://github.com/asprenas/jd-gui.git
 > cd jd-gui
-> ./gradlew build 
+> ./gradlew build -PjdCoreJitpack
 ```
 generate :
 - _"build/libs/jd-gui-x.y.z.jar"_
 - _"build/libs/jd-gui-x.y.z-min.jar"_
 - _"build/distributions/jd-gui-windows-x.y.z.zip"_
 - _"build/distributions/jd-gui-osx-x.y.z.tar"_
-- _"build/distributions/jd-gui-x.y.z.deb"_
-- _"build/distributions/jd-gui-x.y.z.rpm"_
+- _"build/distributions/jd-gui_x.y.z-0_all.deb"_
+- _"build/distributions/jd-gui-x.y.z-0.noarch.rpm"_
 
 ## How to launch JD-GUI ?
 - Double-click on _"jd-gui-x.y.z.jar"_
