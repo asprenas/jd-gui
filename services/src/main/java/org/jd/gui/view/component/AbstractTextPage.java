@@ -78,14 +78,16 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
         inputMap.put(ctrlC, "none");
         inputMap.put(ctrlV, "none");
 
+        scrollPane = new RTextScrollPane(textArea);
+
         try {
+            // Apply the theme after the scroll pane creation: 'Theme.apply' styles the gutter (line numbers, fold indicator) only if it exists
             Theme theme = Theme.load(getClass().getClassLoader().getResourceAsStream("rsyntaxtextarea/themes/eclipse.xml"));
             theme.apply(textArea);
         } catch (IOException e) {
             assert ExceptionUtil.printStackTrace(e);
         }
 
-        scrollPane = new RTextScrollPane(textArea);
         scrollPane.setFoldIndicatorEnabled(true);
         scrollPane.setFont(textArea.getFont());
 
