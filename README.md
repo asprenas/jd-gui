@@ -12,6 +12,7 @@ JD-GUI, a standalone graphical utility that displays Java sources from CLASS fil
 > - `.java` files are parsed with a Java 24 grammar ([antlr/grammars-v4](https://github.com/antlr/grammars-v4/tree/master/java/java), ANTLR 4.13.2)
   instead of Java 7, so sources using lambdas, `var`, records, sealed types, switch expressions, text blocks and patterns
   no longer break hyperlinks and indexing (records are not yet indexed as types)
+> - RSyntaxTextArea 3.6.3: syntax highlighting of text blocks and of the `record`, `sealed`, `permits`, `yield` and `var` keywords
 
 ![](https://raw.githubusercontent.com/java-decompiler/jd-gui/master/src/website/img/jd-gui.png)
 
