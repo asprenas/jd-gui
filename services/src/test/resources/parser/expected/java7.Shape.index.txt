@@ -1,0 +1,15 @@
+typeDeclarations:
+  test/fixture/Shape
+constructorDeclarations:
+methodDeclarations:
+  area
+fieldDeclarations:
+  UNIT
+typeReferences:
+  java/io/Serializable
+constructorReferences:
+methodReferences:
+fieldReferences:
+strings:
+superTypeNames:
+  test/fixture/Shape -> [java/io/Serializable]

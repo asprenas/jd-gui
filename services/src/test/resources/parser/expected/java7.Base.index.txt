@@ -1,0 +1,21 @@
+typeDeclarations:
+  test/fixture/Base
+  test/fixture/Base$Helper
+constructorDeclarations:
+  Base
+methodDeclarations:
+  compareTo
+  getLabel
+fieldDeclarations:
+  label
+typeReferences:
+  java/lang/Comparable
+  java/lang/String
+  test/fixture/Base$Helper
+constructorReferences:
+methodReferences:
+fieldReferences:
+  label
+strings:
+superTypeNames:
+  test/fixture/Base$Helper -> [java/lang/Comparable]

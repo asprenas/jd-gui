@@ -51,6 +51,8 @@ sourceSets.main.java.srcDir(tasks.named('antlr4GenerateGrammarSource').map { fil
 
 test {
     useJUnitPlatform()
+    // '-PupdateSnapshots' rewrites the parser snapshot files in src/test/resources/parser/expected
+    systemProperty 'snapshot.update', project.hasProperty('updateSnapshots')
 }
 
 clean {

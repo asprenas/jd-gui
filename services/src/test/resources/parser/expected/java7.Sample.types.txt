@@ -1,0 +1,41 @@
+mainType: test/fixture/Sample
+type test/fixture/Sample flags=1 super=test/fixture/Base outer=null display=test.fixture|Sample|null
+  field MAX I flags=25 display=MAX : int
+  field NAME Ljava/lang/String; flags=26 display=NAME : String
+  field values [I flags=4 display=values : int[]
+  field matrix [[Ljava/lang/String; flags=2 display=matrix : String[][]
+  field names Ljava/util/List; flags=2 display=names : List
+  field index Ljava/util/Map; flags=2 display=index : Map
+  field current L*/T; flags=0 display=current : T
+  field running Z flags=0 display=running : boolean
+  field stopped Z flags=0 display=stopped : boolean
+  method <clinit>()V flags=8 display={...}
+  method <init>()V flags=1 display=Sample()
+  method <init>(I)V flags=1 display=Sample(int)
+  method run()V flags=1 display=run() : void
+  method area()D flags=1 display=area() : double
+  method sum()I flags=9 display=sum() : int
+  method getCurrent()L*/T; flags=4 display=getCurrent() : T
+  method filter(Ljava/util/List;L*/E;)Ljava/util/List; flags=0 display=filter(List, E) : List
+  method split(Ljava/lang/String;C)[Ljava/lang/String; flags=0 display=split(String, char) : String[]
+  method read(Ljava/io/InputStream;)J flags=0 display=read(InputStream) : long
+  method describe(L*/Color;)Ljava/lang/String; flags=0 display=describe(Color) : String
+  method task()Ljava/lang/Runnable; flags=0 display=task() : Runnable
+  method run()V flags=1 display=run() : void
+  method ternary(II)I flags=0 display=ternary(int, int) : int
+  type test/fixture/Sample$Nested flags=9 super=java/lang/Object outer=test/fixture/Sample display=test.fixture|Sample.Nested|Nested
+    field nestedValue I flags=0 display=nestedValue : int
+    method copy()Ltest/fixture/Sample$Nested; flags=0 display=copy() : Sample.Nested
+  type test/fixture/Sample$Inner flags=0 super=test/fixture/Base outer=test/fixture/Sample display=test.fixture|Sample.Inner|Inner
+    method <init>()V flags=0 display=Inner()
+    method value()L*/T; flags=0 display=value() : T
+  type test/fixture/Sample$Color flags=16384 super=java/lang/Object outer=test/fixture/Sample display=test.fixture|Sample.Color|Color
+    field label Ljava/lang/String; flags=18 display=label : String
+    method code()Ljava/lang/String; flags=0 display=code() : String
+    method <init>()V flags=0 display=Color()
+    method <init>(Ljava/lang/String;)V flags=0 display=Color()
+    method code()Ljava/lang/String; flags=0 display=code() : String
+  type test/fixture/Sample$Marker flags=8192 super=java/lang/Object outer=test/fixture/Sample display=test.fixture|Sample.Marker|Marker
+  type test/fixture/Sample$Callback flags=512 super= outer=test/fixture/Sample display=test.fixture|Sample.Callback|Callback
+    field TIMEOUT I flags=1 display=TIMEOUT : int
+    method call(Ljava/lang/String;)L*/R; flags=1 display=call(String) : R

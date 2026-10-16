@@ -1,0 +1,7 @@
+mainType: test/fixture/Base
+type test/fixture/Base flags=1025 super=java/lang/Object outer=null display=test.fixture|Base|null
+  field label Ljava/lang/String; flags=20 display=label : String
+  method <init>(Ljava/lang/String;)V flags=4 display=Base(String)
+  method getLabel()Ljava/lang/String; flags=1 display=getLabel() : String
+  type test/fixture/Base$Helper flags=1036 super=java/lang/Object outer=test/fixture/Base display=test.fixture|Base.Helper|Helper
+    method compareTo(Ltest/fixture/Base$Helper;)I flags=1 display=compareTo(Base.Helper) : int

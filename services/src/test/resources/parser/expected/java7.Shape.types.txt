@@ -1,0 +1,4 @@
+mainType: test/fixture/Shape
+type test/fixture/Shape flags=513 super= outer=null display=test.fixture|Shape|null
+  field UNIT D flags=1 display=UNIT : double
+  method area()D flags=1 display=area() : double

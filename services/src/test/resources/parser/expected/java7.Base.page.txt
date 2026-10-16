@@ -1,0 +1,19 @@
+declarations:
+  test/fixture/Base @45-49 type=test/fixture/Base name=null desc=null super=null
+  test/fixture/Base$Helper @253-259 type=test/fixture/Base$Helper name=null desc=null super=null
+  test/fixture/Base$Helper-compareTo-(Ltest/fixture/Base$Helper;)I @311-320 type=test/fixture/Base$Helper name=compareTo desc=(Ltest/fixture/Base$Helper;)I
+  test/fixture/Base-<init>-(Ljava/lang/String;)V @101-105 type=test/fixture/Base name=Base desc=(Ljava/lang/String;)V
+  test/fixture/Base-getLabel-()Ljava/lang/String; @175-183 type=test/fixture/Base name=getLabel desc=()Ljava/lang/String;
+  test/fixture/Base-label-Ljava/lang/String; @79-84 type=test/fixture/Base name=label desc=Ljava/lang/String;
+typeDeclarations:
+  @45 test/fixture/Base
+  @253 test/fixture/Base$Helper
+hyperlinks:
+  @72-78 type=java/lang/String name=null desc=null owner=test/fixture/Base
+  @106-112 type=java/lang/String name=null desc=null owner=test/fixture/Base
+  @135-140 type=test/fixture/Base name=label desc=? owner=test/fixture/Base
+  @168-174 type=java/lang/String name=null desc=null owner=test/fixture/Base
+  @271-281 type=java/lang/Comparable name=null desc=null owner=test/fixture/Base$Helper
+  @282-288 type=test/fixture/Base$Helper name=null desc=null owner=test/fixture/Base$Helper
+  @321-327 type=test/fixture/Base$Helper name=null desc=null owner=test/fixture/Base$Helper
+strings:

@@ -21,3 +21,6 @@ gradlew text eol=lf
 
 # Java archives (Gradle wrapper jar, etc.)
 *.jar binary
+
+# Parser test fixtures and snapshots: keep LF so offsets match on every platform
+services/src/test/resources/parser/** text eol=lf

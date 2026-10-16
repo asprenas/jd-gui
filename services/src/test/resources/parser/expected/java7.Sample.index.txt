@@ -1,0 +1,101 @@
+typeDeclarations:
+  test/fixture/Sample
+  test/fixture/Sample$Callback
+  test/fixture/Sample$Color
+  test/fixture/Sample$Inner
+  test/fixture/Sample$Marker
+  test/fixture/Sample$Nested
+constructorDeclarations:
+  Color
+  Inner
+  Sample
+methodDeclarations:
+  area
+  call
+  code
+  copy
+  describe
+  filter
+  getCurrent
+  read
+  run
+  split
+  sum
+  task
+  ternary
+  value
+fieldDeclarations:
+  MAX
+  NAME
+  TIMEOUT
+  current
+  index
+  label
+  matrix
+  names
+  nestedValue
+  running
+  stopped
+  values
+typeReferences:
+  java/io/InputStream
+  java/lang/Class
+  java/lang/Comparable
+  java/lang/Integer
+  java/lang/Number
+  java/lang/Object
+  java/lang/Runnable
+  java/lang/String
+  java/util/List
+  java/util/Map
+  test/fixture/Base
+  test/fixture/Sample$Nested
+  test/fixture/Shape
+constructorReferences:
+  java/lang/IllegalArgumentException
+  java/lang/Runnable
+  java/lang/String
+  java/util/ArrayList
+  java/util/HashMap
+  test/fixture/Sample$Nested
+methodReferences:
+  add
+  doubleValue
+  length
+  name
+  println
+  read
+  split
+  super
+  this
+  valueOf
+fieldReferences:
+  PI
+  add
+  current
+  doubleValue
+  label
+  length
+  name
+  out
+  println
+  read
+  split
+  valueOf
+strings:
+  ""
+  "b"
+  "base"
+  "g"
+  "green"
+  "inner"
+  "instance init"
+  "none"
+  "other: "
+  "red"
+  "sample"
+  "static init"
+  "text is null"
+superTypeNames:
+  test/fixture/Sample -> [java/lang/Runnable, test/fixture/Base, test/fixture/Shape]
+  test/fixture/Sample$Inner -> [test/fixture/Base]

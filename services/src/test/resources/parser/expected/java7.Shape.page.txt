@@ -1,0 +1,9 @@
+declarations:
+  test/fixture/Shape @40-45 type=test/fixture/Shape name=null desc=null super=null
+  test/fixture/Shape-UNIT-D @88-92 type=test/fixture/Shape name=UNIT desc=D
+  test/fixture/Shape-area-()D @113-117 type=test/fixture/Shape name=area desc=()D
+typeDeclarations:
+  @40 test/fixture/Shape
+hyperlinks:
+  @54-74 type=java/io/Serializable name=null desc=null owner=test/fixture/Shape
+strings:

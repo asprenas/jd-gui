@@ -29,7 +29,8 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
       - name: Build with Gradle Wrapper
         # jd-core 1.1.4 is not in Maven Central; resolve it from JitPack (com.github.asprenas:jd-core)
-        run: ./gradlew build -PjdCoreJitpack
+        # xvfb: JavaFilePage parser tests create Swing components and need a display
+        run: xvfb-run --auto-servernum ./gradlew build -PjdCoreJitpack
       - name: Upload test reports
         if: failure()
         uses: actions/upload-artifact@v7
