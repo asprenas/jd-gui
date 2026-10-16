@@ -17,7 +17,7 @@ plugins {
 // Common configuration //
 rootProject.version='1.6.6'
 rootProject.ext.set('jdCoreVersion', '1.1.4')
-// jd-core from Maven local (org.jd:jd-core) by default; '-PjdCoreJitpack' uses JitPack (com.github.java-decompiler:jd-core)
+// jd-core from Maven local (org.jd:jd-core) by default; '-PjdCoreJitpack' uses JitPack (com.github.asprenas:jd-core)
 rootProject.ext.set('jdCoreJitpack', project.hasProperty('jdCoreJitpack'))
 
 allprojects {

@@ -4,7 +4,7 @@ dependencies {
     api 'com.fifesoft:rsyntaxtextarea:3.0.4'
     implementation 'org.ow2.asm:asm:9.8'
     implementation parent.jdCoreJitpack
-        ? 'com.github.java-decompiler:jd-core:v' + parent.jdCoreVersion
+        ? 'com.github.asprenas:jd-core:v' + parent.jdCoreVersion
         : 'org.jd:jd-core:' + parent.jdCoreVersion
     api project(':api')
     testImplementation platform('org.junit:junit-bom:5.14.4')

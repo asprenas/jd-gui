@@ -1,0 +1,24 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns: ["*"]
+
+  - package-ecosystem: gradle
+    directory: /
+    schedule:
+      interval: weekly
+    ignore:
+      # JUnit 6 requires Java 17 for test compilation; allow 5.x updates only
+      - dependency-name: "org.junit:junit-bom"
+        update-types: ["version-update:semver-major"]
+      # ANTLR runtime must match the tool version used to generate the grammar sources
+      - dependency-name: "org.antlr:antlr4-runtime"
+      - dependency-name: "org.antlr:antlr4"
+      # jd-core version is managed manually (rootProject.ext jdCoreVersion)
+      - dependency-name: "org.jd:jd-core"
+      - dependency-name: "com.github.asprenas:jd-core"
