@@ -1,7 +1,7 @@
 apply plugin: 'java-library'
 
 dependencies {
-    api 'com.fifesoft:rsyntaxtextarea:3.0.4'
+    api 'com.fifesoft:rsyntaxtextarea:3.6.3'
     implementation 'org.ow2.asm:asm:9.8'
     implementation parent.jdCoreJitpack
         ? 'com.github.asprenas:jd-core:v' + parent.jdCoreVersion

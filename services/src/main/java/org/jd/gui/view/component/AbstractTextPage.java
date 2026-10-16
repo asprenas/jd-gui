@@ -134,11 +134,24 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
         });
 
         Gutter gutter = scrollPane.getGutter();
-        gutter.setFoldIcons(COLLAPSED_ICON, EXPANDED_ICON);
+        gutter.setFoldIcons(newFoldIndicatorIcon(COLLAPSED_ICON, true), newFoldIndicatorIcon(EXPANDED_ICON, false));
+        // Always show the icons of expanded folds, as before RSyntaxTextArea 3.6 (default: on mouse hover only)
+        gutter.setExpandedFoldRenderStrategy(ExpandedFoldRenderStrategy.ALWAYS);
         gutter.setFoldIndicatorForeground(gutter.getBorderColor());
 
         add(scrollPane, BorderLayout.CENTER);
         add(new RoundMarkErrorStrip(textArea), BorderLayout.LINE_END);
+    }
+
+    /**
+     * Wraps an image as a fold indicator icon: 'Gutter.setFoldIcons' of RSyntaxTextArea 3.6 only accepts 'FoldIndicatorIcon'.
+     */
+    protected static FoldIndicatorIcon newFoldIndicatorIcon(Icon icon, boolean collapsed) {
+        return new FoldIndicatorIcon(collapsed) {
+            @Override public void paintIcon(Component c, Graphics g, int x, int y) { icon.paintIcon(c, g, x, y); }
+            @Override public int getIconWidth() { return icon.getIconWidth(); }
+            @Override public int getIconHeight() { return icon.getIconHeight(); }
+        };
     }
 
     protected RSyntaxTextArea newSyntaxTextArea() { return new RSyntaxTextArea(); }
