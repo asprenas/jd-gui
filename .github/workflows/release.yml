@@ -75,6 +75,6 @@ jobs:
         run: |
           gh release create "${{ steps.versions.outputs.gui_tag }}" \
             --title "JD-GUI ${{ steps.versions.outputs.gui_version }}" \
-            --notes "Built with jd-core ${{ steps.versions.outputs.core_tag }}." \
+            --notes "Built with jd-core ${{ steps.versions.outputs.core_tag }}." --generate-notes \
             build/libs/*-min.jar \
             build/distributions/*
