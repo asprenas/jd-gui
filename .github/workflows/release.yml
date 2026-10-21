@@ -1,0 +1,80 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Resolve versions
+        id: versions
+        run: |
+          # jd-gui: pushed tag, or the latest v* tag on manual runs
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            GUI_TAG="${GITHUB_REF_NAME}"
+          else
+            GUI_TAG=$(git tag --list 'v*' --sort=-v:refname | head -1)
+          fi
+          if [ -z "$GUI_TAG" ]; then
+            echo "::error::No v* tag found in jd-gui"
+            exit 1
+          fi
+          # jd-core: latest v* tag on GitHub (not published to a Maven repository)
+          CORE_TAG=$(git ls-remote --tags --refs --sort=-v:refname https://github.com/asprenas/jd-core 'v*' | head -1 | sed 's#.*refs/tags/##')
+          if [ -z "$CORE_TAG" ]; then
+            echo "::error::No v* tag found in asprenas/jd-core"
+            exit 1
+          fi
+          echo "gui_tag=$GUI_TAG" >> "$GITHUB_OUTPUT"
+          echo "gui_version=${GUI_TAG#v}" >> "$GITHUB_OUTPUT"
+          echo "core_tag=$CORE_TAG" >> "$GITHUB_OUTPUT"
+          echo "core_version=${CORE_TAG#v}" >> "$GITHUB_OUTPUT"
+          echo "jd-gui $GUI_TAG, jd-core $CORE_TAG"
+
+      - name: Check out jd-gui tag
+        if: github.ref_type != 'tag'
+        run: git checkout "${{ steps.versions.outputs.gui_tag }}"
+
+      - uses: actions/checkout@v7
+        with:
+          repository: asprenas/jd-core
+          ref: ${{ steps.versions.outputs.core_tag }}
+          path: jd-core
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 25
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Publish jd-core to Maven local
+        working-directory: jd-core
+        run: ./gradlew publishToMavenLocal -x test
+
+      - name: Build jd-gui
+        # xvfb: JavaFilePage parser tests create Swing components and need a display
+        run: >
+          xvfb-run --auto-servernum ./gradlew build
+          windowsDistZip osxDistTar
+          -PjdGuiVersion=${{ steps.versions.outputs.gui_version }}
+          -PjdCoreVersion=${{ steps.versions.outputs.core_version }}
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.versions.outputs.gui_tag }}" \
+            --title "JD-GUI ${{ steps.versions.outputs.gui_version }}" \
+            --notes "Built with jd-core ${{ steps.versions.outputs.core_tag }}." \
+            build/libs/*-min.jar \
+            build/distributions/*
