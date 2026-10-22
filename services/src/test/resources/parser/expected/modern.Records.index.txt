@@ -1,20 +1,45 @@
 typeDeclarations:
   test/modern/Records
+  test/modern/Records$Local
+  test/modern/Records$Names
+  test/modern/Records$Pair
+  test/modern/Records$Point
 constructorDeclarations:
+  Local
+  Names
+  Pair
   Point
 methodDeclarations:
   compareTo
   distance
+  first
+  index
   of
+  point
   points
+  second
+  values
+  x
+  y
 fieldDeclarations:
   ORIGIN
+  first
+  index
+  point
+  second
+  values
+  x
+  y
 typeReferences:
   java/lang/Comparable
   java/lang/String
   java/util/List
+  test/modern/Records$Local
+  test/modern/Records$Point
 constructorReferences:
   java/lang/IllegalArgumentException
+  test/modern/Records$Local
+  test/modern/Records$Point
 methodReferences:
   compare
   of
@@ -31,3 +56,4 @@ fieldReferences:
 strings:
   "negative"
 superTypeNames:
+  test/modern/Records$Point -> [java/lang/Comparable]

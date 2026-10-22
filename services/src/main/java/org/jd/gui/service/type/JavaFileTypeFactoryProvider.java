@@ -180,13 +180,13 @@ public class JavaFileTypeFactoryProvider extends AbstractTypeFactoryProvider {
 
         public String getDisplayName() {
             String constructorName = type.getDisplayInnerTypeName();
-            boolean isInnerClass = (constructorName != null);
 
             if (constructorName == null)
                 constructorName = type.getDisplayTypeName();
 
+            // Unlike compiled inner class constructors, source descriptors have no outer instance parameter to skip
             StringBuilder sb = new StringBuilder();
-            writeMethodSignature(sb, access, access, isInnerClass, constructorName, name, descriptor);
+            writeMethodSignature(sb, type.access, access, false, constructorName, name, descriptor);
             return sb.toString();
         }
     }
@@ -233,13 +233,40 @@ public class JavaFileTypeFactoryProvider extends AbstractTypeFactoryProvider {
         public void enterAnnotationTypeDeclaration(JavaParser.AnnotationTypeDeclarationContext ctx) { enterTypeDeclaration(ctx, JavaType.FLAG_ANNOTATION); }
         public void exitAnnotationTypeDeclaration(JavaParser.AnnotationTypeDeclarationContext ctx) { exitTypeDeclaration(); }
 
+        public void enterRecordDeclaration(JavaParser.RecordDeclarationContext ctx) {
+            // Records are final, and static when nested
+            enterTypeDeclaration(ctx, (currentType == null) ? JavaType.FLAG_FINAL : JavaType.FLAG_FINAL | JavaType.FLAG_STATIC);
+
+            // Implicit members: private final fields, canonical constructor and accessors
+            for (JavaParser.RecordComponentContext recordComponent : recordComponents(ctx)) {
+                String name = identifier(recordComponent.identifier()).getText();
+                currentType.getFields().add(new JavaField(JavaType.FLAG_PRIVATE | JavaType.FLAG_FINAL, name, createDescriptor(recordComponent)));
+            }
+
+            if (!hasExplicitCanonicalConstructor(ctx)) {
+                int access = currentType.access & (JavaType.FLAG_PUBLIC | JavaType.FLAG_PROTECTED | JavaType.FLAG_PRIVATE);
+                currentType.getMethods().add(new JavaMethod(currentType, access, "<init>", createCanonicalConstructorDescriptor(ctx)));
+            }
+
+            for (JavaParser.RecordComponentContext recordComponent : recordComponents(ctx)) {
+                String name = identifier(recordComponent.identifier()).getText();
+
+                if (!hasExplicitAccessor(ctx, name)) {
+                    currentType.getMethods().add(new JavaMethod(currentType, JavaType.FLAG_PUBLIC, name, "()" + createDescriptor(recordComponent)));
+                }
+            }
+        }
+        public void exitRecordDeclaration(JavaParser.RecordDeclarationContext ctx) { exitTypeDeclaration(); }
+
         protected void enterTypeDeclaration(ParserRuleContext ctx, int access) {
             String name = typeDeclarationIdentifier(ctx).getText();
 
             JavaParser.TypeTypeContext superType = ctx.getRuleContext(JavaParser.TypeTypeContext.class, 0);
             String superQualifiedTypeName;
 
-            if ((superType == null) || (superType.classOrInterfaceType() == null)) {
+            if (ctx instanceof JavaParser.RecordDeclarationContext) {
+                superQualifiedTypeName = "java/lang/Record";
+            } else if ((superType == null) || (superType.classOrInterfaceType() == null)) {
                 superQualifiedTypeName = ((access & JavaType.FLAG_INTERFACE) == 0) ? "java/lang/Object" : "";
             } else {
                 superQualifiedTypeName = resolveInternalTypeName(identifiers(superType.classOrInterfaceType()));
@@ -248,9 +275,9 @@ public class JavaFileTypeFactoryProvider extends AbstractTypeFactoryProvider {
             ParserRuleContext parent = ctx.getParent();
 
             if (parent instanceof JavaParser.TypeDeclarationContext)
-                access += getTypeDeclarationContextAccessFlag(parent);
+                access |= getTypeDeclarationContextAccessFlag(parent);
             else if (parent instanceof JavaParser.MemberDeclarationContext)
-                access += getMemberDeclarationContextAccessFlag(parent.getParent());
+                access |= getMemberDeclarationContextAccessFlag(parent.getParent());
 
             if (currentType == null) {
                 String internalTypeName = packageName.isEmpty() ? name : packageName + "/" + name;
@@ -388,19 +415,12 @@ public class JavaFileTypeFactoryProvider extends AbstractTypeFactoryProvider {
             currentType.getMethods().add(new JavaMethod(currentType, access, "<init>", descriptor));
         }
 
-        protected String createParamDescriptors(List<JavaParser.FormalParameterContext> formalParameters) {
-            StringBuilder paramDescriptors = null;
 
-            if (formalParameters != null) {
-                paramDescriptors = new StringBuilder("(");
+        public void enterCompactConstructorDeclaration(JavaParser.CompactConstructorDeclarationContext ctx) {
+            int access = getClassBodyDeclarationAccessFlag(ctx);
+            String descriptor = createCanonicalConstructorDescriptor((JavaParser.RecordDeclarationContext)ctx.getParent().getParent());
 
-                for (JavaParser.FormalParameterContext formalParameter : formalParameters) {
-                    int dimensionOnParameter = countDimension(formalParameter);
-                    paramDescriptors.append(createDescriptor(formalParameter.typeType(), dimensionOnParameter));
-                }
-            }
-
-            return (paramDescriptors == null) ? "()" : paramDescriptors.append(')').toString();
+            currentType.getMethods().add(new JavaMethod(currentType, access, "<init>", descriptor));
         }
 
         protected int getTypeDeclarationContextAccessFlag(ParserRuleContext ctx) {

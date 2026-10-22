@@ -1,16 +1,30 @@
 typeDeclarations:
   test/modern/Switches
+  test/modern/Switches$Add
   test/modern/Switches$Day
   test/modern/Switches$Expr
+  test/modern/Switches$Neg
+  test/modern/Switches$Num
 constructorDeclarations:
+  Add
+  Neg
+  Num
 methodDeclarations:
   classic
   describe
   eval
   format
+  left
   letters
+  operand
+  right
+  value
 fieldDeclarations:
   JSON
+  left
+  operand
+  right
+  value
 typeReferences:
   Number/n
   String/s
@@ -42,3 +56,6 @@ strings:
   "string "
   "two"
 superTypeNames:
+  test/modern/Switches$Add -> [test/modern/Switches$Expr]
+  test/modern/Switches$Neg -> [test/modern/Switches$Expr]
+  test/modern/Switches$Num -> [test/modern/Switches$Expr]

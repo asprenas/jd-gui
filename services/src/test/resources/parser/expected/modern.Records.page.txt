@@ -1,49 +1,77 @@
 declarations:
   test/modern/Records @114-121 type=test/modern/Records name=null desc=null super=null
-  test/modern/Records-<init>-(I)V @415-420 type=test/modern/Records name=Point desc=(I)V
-  test/modern/Records-ORIGIN-L*/Point; @227-233 type=test/modern/Records name=ORIGIN desc=L*/Point;
-  test/modern/Records-compareTo-(L*/Point;)I @692-701 type=test/modern/Records name=compareTo desc=(L*/Point;)I
-  test/modern/Records-distance-(L*/Point;)D @499-507 type=test/modern/Records name=distance desc=(L*/Point;)D
-  test/modern/Records-of-(II)L*/Point; @839-841 type=test/modern/Records name=of desc=(II)L*/Point;
+  test/modern/Records$Local @1115-1120 type=test/modern/Records$Local name=null desc=null super=null
+  test/modern/Records$Local-<init>-(ILtest/modern/Records$Point;)V @1115-1120 type=test/modern/Records$Local name=Local desc=(ILtest/modern/Records$Point;)V
+  test/modern/Records$Local-index-()I @1125-1130 type=test/modern/Records$Local name=index desc=()I
+  test/modern/Records$Local-index-I @1125-1130 type=test/modern/Records$Local name=index desc=I
+  test/modern/Records$Local-point-()Ltest/modern/Records$Point; @1138-1143 type=test/modern/Records$Local name=point desc=()Ltest/modern/Records$Point;
+  test/modern/Records$Local-point-Ltest/modern/Records$Point; @1138-1143 type=test/modern/Records$Local name=point desc=Ltest/modern/Records$Point;
+  test/modern/Records$Names @1040-1045 type=test/modern/Records$Names name=null desc=null super=null
+  test/modern/Records$Names-<init>-([Ljava/lang/String;)V @1040-1045 type=test/modern/Records$Names name=Names desc=([Ljava/lang/String;)V
+  test/modern/Records$Names-values-()[Ljava/lang/String; @1056-1062 type=test/modern/Records$Names name=values desc=()[Ljava/lang/String;
+  test/modern/Records$Names-values-[Ljava/lang/String; @1056-1062 type=test/modern/Records$Names name=values desc=[Ljava/lang/String;
+  test/modern/Records$Pair @922-926 type=test/modern/Records$Pair name=null desc=null super=null
+  test/modern/Records$Pair-<init>-(L*/A;L*/B;)V @962-966 type=test/modern/Records$Pair name=Pair desc=(L*/A;L*/B;)V
+  test/modern/Records$Pair-first-()L*/A; @935-940 type=test/modern/Records$Pair name=first desc=()L*/A;
+  test/modern/Records$Pair-first-L*/A; @935-940 type=test/modern/Records$Pair name=first desc=L*/A;
+  test/modern/Records$Pair-second-()L*/B; @944-950 type=test/modern/Records$Pair name=second desc=()L*/B;
+  test/modern/Records$Pair-second-L*/B; @944-950 type=test/modern/Records$Pair name=second desc=L*/B;
+  test/modern/Records$Point @142-147 type=test/modern/Records$Point name=null desc=null super=null
+  test/modern/Records$Point-<init>-(I)V @415-420 type=test/modern/Records$Point name=Point desc=(I)V
+  test/modern/Records$Point-<init>-(II)V @269-274 type=test/modern/Records$Point name=Point desc=(II)V
+  test/modern/Records$Point-ORIGIN-Ltest/modern/Records$Point; @227-233 type=test/modern/Records$Point name=ORIGIN desc=Ltest/modern/Records$Point;
+  test/modern/Records$Point-compareTo-(Ltest/modern/Records$Point;)I @692-701 type=test/modern/Records$Point name=compareTo desc=(Ltest/modern/Records$Point;)I
+  test/modern/Records$Point-distance-(Ltest/modern/Records$Point;)D @499-507 type=test/modern/Records$Point name=distance desc=(Ltest/modern/Records$Point;)D
+  test/modern/Records$Point-of-(II)Ltest/modern/Records$Point; @839-841 type=test/modern/Records$Point name=of desc=(II)Ltest/modern/Records$Point;
+  test/modern/Records$Point-x-()I @152-153 type=test/modern/Records$Point name=x desc=()I
+  test/modern/Records$Point-x-I @152-153 type=test/modern/Records$Point name=x desc=I
+  test/modern/Records$Point-y-()I @159-160 type=test/modern/Records$Point name=y desc=()I
+  test/modern/Records$Point-y-I @159-160 type=test/modern/Records$Point name=y desc=I
   test/modern/Records-points-()Ljava/util/List; @1089-1095 type=test/modern/Records name=points desc=()Ljava/util/List;
 typeDeclarations:
   @114 test/modern/Records
+  @142 test/modern/Records$Point
+  @922 test/modern/Records$Pair
+  @1040 test/modern/Records$Names
+  @1115 test/modern/Records$Local
 hyperlinks:
   @29-43 type=java/util/List name=null desc=null owner=null
   @52-69 type=java/util/Objects name=null desc=null owner=null
-  @173-183 type=java/lang/Comparable name=null desc=null owner=test/modern/Records
-  @184-189 type=*/Point name=null desc=null owner=test/modern/Records
-  @221-226 type=*/Point name=null desc=null owner=test/modern/Records
-  @240-245 type=*/Point name=<init> desc=(??)V owner=test/modern/Records
-  @337-361 type=java/lang/IllegalArgumentException name=<init> desc=(?)V owner=test/modern/Records
-  @446-450 type=test/modern/Records name=<init> desc=(??)? owner=test/modern/Records
-  @508-513 type=*/Point name=null desc=null owner=test/modern/Records
-  @554-555 type=*/Point name=x desc=()? owner=test/modern/Records
-  @590-591 type=*/Point name=y desc=()? owner=test/modern/Records
-  @619-623 type=java/lang/Math name=sqrt desc=(?)? owner=test/modern/Records
-  @702-707 type=*/Point name=null desc=null owner=test/modern/Records
-  @744-751 type=java/lang/Integer name=compare desc=(??)? owner=test/modern/Records
-  @773-774 type=*/Point name=x desc=? owner=test/modern/Records
-  @783-784 type=*/Point name=x desc=? owner=test/modern/Records
-  @793-794 type=*/Point name=y desc=? owner=test/modern/Records
-  @803-804 type=*/Point name=y desc=? owner=test/modern/Records
-  @833-838 type=*/Point name=null desc=null owner=test/modern/Records
-  @881-886 type=*/Point name=<init> desc=(??)V owner=test/modern/Records
-  @933-934 type=*/A name=null desc=null owner=test/modern/Records
-  @942-943 type=*/B name=null desc=null owner=test/modern/Records
-  @981-988 type=java/util/Objects name=null desc=null owner=test/modern/Records
-  @989-1003 type=java/util/Objects name=requireNonNull desc=(?)? owner=test/modern/Records
-  @1046-1052 type=java/lang/String name=null desc=null owner=test/modern/Records
+  @173-183 type=java/lang/Comparable name=null desc=null owner=test/modern/Records$Point
+  @184-189 type=test/modern/Records$Point name=null desc=null owner=test/modern/Records$Point
+  @221-226 type=test/modern/Records$Point name=null desc=null owner=test/modern/Records$Point
+  @240-245 type=test/modern/Records$Point name=<init> desc=(??)V owner=test/modern/Records$Point
+  @337-361 type=java/lang/IllegalArgumentException name=<init> desc=(?)V owner=test/modern/Records$Point
+  @446-450 type=test/modern/Records$Point name=<init> desc=(??)? owner=test/modern/Records$Point
+  @508-513 type=test/modern/Records$Point name=null desc=null owner=test/modern/Records$Point
+  @554-555 type=test/modern/Records$Point name=x desc=()? owner=test/modern/Records$Point
+  @590-591 type=test/modern/Records$Point name=y desc=()? owner=test/modern/Records$Point
+  @619-623 type=java/lang/Math name=sqrt desc=(?)? owner=test/modern/Records$Point
+  @702-707 type=test/modern/Records$Point name=null desc=null owner=test/modern/Records$Point
+  @744-751 type=java/lang/Integer name=compare desc=(??)? owner=test/modern/Records$Point
+  @773-774 type=test/modern/Records$Point name=x desc=? owner=test/modern/Records$Point
+  @783-784 type=test/modern/Records$Point name=x desc=? owner=test/modern/Records$Point
+  @793-794 type=test/modern/Records$Point name=y desc=? owner=test/modern/Records$Point
+  @803-804 type=test/modern/Records$Point name=y desc=? owner=test/modern/Records$Point
+  @833-838 type=test/modern/Records$Point name=null desc=null owner=test/modern/Records$Point
+  @881-886 type=test/modern/Records$Point name=<init> desc=(??)V owner=test/modern/Records$Point
+  @933-934 type=*/A name=null desc=null owner=test/modern/Records$Pair
+  @942-943 type=*/B name=null desc=null owner=test/modern/Records$Pair
+  @981-988 type=java/util/Objects name=null desc=null owner=test/modern/Records$Pair
+  @989-1003 type=java/util/Objects name=requireNonNull desc=(?)? owner=test/modern/Records$Pair
+  @1046-1052 type=java/lang/String name=null desc=null owner=test/modern/Records$Names
   @1077-1081 type=java/util/List name=null desc=null owner=test/modern/Records
-  @1082-1087 type=*/Point name=null desc=null owner=test/modern/Records
-  @1132-1137 type=*/Point name=null desc=null owner=test/modern/Records
-  @1165-1170 type=*/Local name=null desc=null owner=test/modern/Records
-  @1183-1188 type=*/Local name=<init> desc=(??)V owner=test/modern/Records
-  @1198-1204 type=*/Point name=ORIGIN desc=? owner=test/modern/Records
+  @1082-1087 type=test/modern/Records$Point name=null desc=null owner=test/modern/Records
+  @1132-1137 type=test/modern/Records$Point name=null desc=null owner=test/modern/Records$Local
+  @1165-1170 type=test/modern/Records$Local name=null desc=null owner=test/modern/Records
+  @1183-1188 type=test/modern/Records$Local name=<init> desc=(??)V owner=test/modern/Records
+  @1192-1197 type=test/modern/Records$Point name=null desc=null owner=test/modern/Records
+  @1198-1204 type=test/modern/Records$Point name=ORIGIN desc=? owner=test/modern/Records
   @1222-1226 type=java/util/List name=null desc=null owner=test/modern/Records
   @1227-1229 type=java/util/List name=of desc=(???)? owner=test/modern/Records
-  @1236-1241 type=*/Local name=point desc=()? owner=test/modern/Records
-  @1251-1253 type=*/Point name=of desc=(??)? owner=test/modern/Records
-  @1265-1270 type=*/Point name=<init> desc=(?)V owner=test/modern/Records
+  @1236-1241 type=test/modern/Records$Local name=point desc=()? owner=test/modern/Records
+  @1245-1250 type=test/modern/Records$Point name=null desc=null owner=test/modern/Records
+  @1251-1253 type=test/modern/Records$Point name=of desc=(??)? owner=test/modern/Records
+  @1265-1270 type=test/modern/Records$Point name=<init> desc=(?)V owner=test/modern/Records
 strings:
-  @362-372 "negative" owner=test/modern/Records
+  @362-372 "negative" owner=test/modern/Records$Point

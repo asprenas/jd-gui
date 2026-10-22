@@ -8,10 +8,16 @@ declarations:
   test/modern/Shapes$Derived @814-821 type=test/modern/Shapes$Derived name=null desc=null super=test/modern/Shapes$Base
   test/modern/Shapes$Polygon @626-633 type=test/modern/Shapes$Polygon name=null desc=null super=null
   test/modern/Shapes$Polygon-area-()D @694-698 type=test/modern/Shapes$Polygon name=area desc=()D
-  test/modern/Shapes-area-()D @547-551 type=test/modern/Shapes name=area desc=()D
+  test/modern/Shapes$Square @467-473 type=test/modern/Shapes$Square name=null desc=null super=null
+  test/modern/Shapes$Square-<init>-(D)V @467-473 type=test/modern/Shapes$Square name=Square desc=(D)V
+  test/modern/Shapes$Square-area-()D @547-551 type=test/modern/Shapes$Square name=area desc=()D
+  test/modern/Shapes$Square-side-()D @481-485 type=test/modern/Shapes$Square name=side desc=()D
+  test/modern/Shapes$Square-side-D @481-485 type=test/modern/Shapes$Square name=side desc=D
+  test/modern/Shapes-area-()D @170-174 type=test/modern/Shapes name=area desc=()D
 typeDeclarations:
   @97 test/modern/Shapes
   @195 test/modern/Shapes$Circle
+  @467 test/modern/Shapes$Square
   @626 test/modern/Shapes$Polygon
   @768 test/modern/Shapes$Base
   @814 test/modern/Shapes$Derived
@@ -22,7 +28,7 @@ hyperlinks:
   @213-219 type=test/modern/Shapes name=null desc=null owner=test/modern/Shapes$Circle
   @316-322 type=test/modern/Shapes$Circle name=radius desc=? owner=test/modern/Shapes$Circle
   @417-419 type=java/lang/Math name=PI desc=? owner=test/modern/Shapes$Circle
-  @498-504 type=test/modern/Shapes name=null desc=null owner=test/modern/Shapes
+  @498-504 type=test/modern/Shapes name=null desc=null owner=test/modern/Shapes$Square
   @645-651 type=test/modern/Shapes name=null desc=null owner=test/modern/Shapes$Polygon
   @781-788 type=test/modern/Shapes$Derived name=null desc=null owner=test/modern/Shapes$Base
   @830-834 type=test/modern/Shapes$Base name=null desc=null owner=test/modern/Shapes$Derived

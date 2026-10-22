@@ -120,6 +120,20 @@ public class JavaFileIndexerProvider extends AbstractIndexerProvider {
         public void enterAnnotationTypeDeclaration(JavaParser.AnnotationTypeDeclarationContext ctx) { enterTypeDeclaration(ctx); }
         public void exitAnnotationTypeDeclaration(JavaParser.AnnotationTypeDeclarationContext ctx) { exitTypeDeclaration(); }
 
+        public void enterRecordDeclaration(JavaParser.RecordDeclarationContext ctx) {
+            enterTypeDeclaration(ctx);
+
+            // Implicit members: fields, accessors and canonical constructor
+            for (JavaParser.RecordComponentContext recordComponent : recordComponents(ctx)) {
+                String name = identifier(recordComponent.identifier()).getText();
+                fieldDeclarationSet.add(name);
+                methodDeclarationSet.add(name);
+            }
+
+            constructorDeclarationSet.add(typeDeclarationIdentifier(ctx).getText());
+        }
+        public void exitRecordDeclaration(JavaParser.RecordDeclarationContext ctx) { exitTypeDeclaration(); }
+
         protected void enterTypeDeclaration(ParserRuleContext ctx) {
             // Add type declaration
             TerminalNode identifier = typeDeclarationIdentifier(ctx);
@@ -232,6 +246,11 @@ public class JavaFileIndexerProvider extends AbstractIndexerProvider {
         }
 
         public void enterConstructorDeclaration(JavaParser.ConstructorDeclarationContext ctx) {
+            String name = identifier(ctx.identifier()).getText();
+            constructorDeclarationSet.add(name);
+        }
+
+        public void enterCompactConstructorDeclaration(JavaParser.CompactConstructorDeclarationContext ctx) {
             String name = identifier(ctx.identifier()).getText();
             constructorDeclarationSet.add(name);
         }

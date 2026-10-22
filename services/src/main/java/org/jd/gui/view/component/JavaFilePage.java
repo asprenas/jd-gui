@@ -91,6 +91,44 @@ public class JavaFilePage extends TypePage {
         public void enterAnnotationTypeDeclaration(JavaParser.AnnotationTypeDeclarationContext ctx) { enterTypeDeclaration(ctx); }
         public void exitAnnotationTypeDeclaration(JavaParser.AnnotationTypeDeclarationContext ctx) { exitTypeDeclaration(); }
 
+        public void enterRecordDeclaration(JavaParser.RecordDeclarationContext ctx) {
+            enterTypeDeclaration(ctx);
+
+            // Implicit members: fields and accessors at the component, canonical constructor at the record name
+            for (JavaParser.RecordComponentContext recordComponent : recordComponents(ctx)) {
+                TerminalNode identifier = identifier(recordComponent.identifier());
+                String name = identifier.getText();
+                String descriptor = createDescriptor(recordComponent);
+                int position = identifier.getSymbol().getStartIndex();
+
+                declarations.put(currentInternalTypeName + '-' + name + '-' + descriptor, new TypePage.DeclarationData(position, name.length(), currentInternalTypeName, name, descriptor));
+
+                if (!hasExplicitAccessor(ctx, name)) {
+                    String accessorDescriptor = "()" + descriptor;
+                    declarations.put(currentInternalTypeName + '-' + name + '-' + accessorDescriptor, new TypePage.DeclarationData(position, name.length(), currentInternalTypeName, name, accessorDescriptor));
+                }
+            }
+
+            if (!hasExplicitCanonicalConstructor(ctx)) {
+                TerminalNode identifier = typeDeclarationIdentifier(ctx);
+                String name = identifier.getText();
+                String descriptor = createCanonicalConstructorDescriptor(ctx);
+                int position = identifier.getSymbol().getStartIndex();
+
+                declarations.put(currentInternalTypeName + "-<init>-" + descriptor, new TypePage.DeclarationData(position, name.length(), currentInternalTypeName, name, descriptor));
+            }
+        }
+        public void exitRecordDeclaration(JavaParser.RecordDeclarationContext ctx) { exitTypeDeclaration(); }
+
+        public void enterCompactConstructorDeclaration(JavaParser.CompactConstructorDeclarationContext ctx) {
+            TerminalNode identifier = identifier(ctx.identifier());
+            String name = identifier.getText();
+            String descriptor = createCanonicalConstructorDescriptor((JavaParser.RecordDeclarationContext)ctx.getParent().getParent());
+            int position = identifier.getSymbol().getStartIndex();
+
+            declarations.put(currentInternalTypeName + "-<init>-" + descriptor, new TypePage.DeclarationData(position, name.length(), currentInternalTypeName, name, descriptor));
+        }
+
         public void enterTypeDeclaration(ParserRuleContext ctx) {
             // Type declaration
             TerminalNode identifier = typeDeclarationIdentifier(ctx);
@@ -224,22 +262,6 @@ public class JavaFilePage extends TypePage {
             declarations.put(currentInternalTypeName + "-<init>-" + descriptor, new TypePage.DeclarationData(position, name.length(), currentInternalTypeName, name, descriptor));
         }
 
-        public String createParamDescriptors(List<JavaParser.FormalParameterContext> formalParameters) {
-            StringBuilder paramDescriptors = null;
-
-            if (formalParameters != null) {
-                paramDescriptors = new StringBuilder("(");
-
-                for (JavaParser.FormalParameterContext formalParameter : formalParameters) {
-                    int dimensionOnParameter = countDimension(formalParameter);
-                    String descriptor = createDescriptor(formalParameter.typeType(), dimensionOnParameter);
-
-                    paramDescriptors.append(descriptor);
-                }
-            }
-
-            return (paramDescriptors == null) ? "()" : paramDescriptors.append(')').toString();
-        }
     }
 
     public class ReferenceListener extends AbstractJavaListener {
@@ -282,6 +304,9 @@ public class JavaFilePage extends TypePage {
 
         public void enterAnnotationTypeDeclaration(JavaParser.AnnotationTypeDeclarationContext ctx) { enterTypeDeclaration(ctx); }
         public void exitAnnotationTypeDeclaration(JavaParser.AnnotationTypeDeclarationContext ctx) { exitTypeDeclaration(); }
+
+        public void enterRecordDeclaration(JavaParser.RecordDeclarationContext ctx) { enterTypeDeclaration(ctx); }
+        public void exitRecordDeclaration(JavaParser.RecordDeclarationContext ctx) { exitTypeDeclaration(); }
 
         public void enterTypeDeclaration(ParserRuleContext ctx) {
             // Type declaration

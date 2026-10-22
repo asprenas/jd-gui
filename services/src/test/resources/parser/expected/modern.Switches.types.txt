@@ -8,3 +8,17 @@ type test/modern/Switches flags=1 super=java/lang/Object outer=null display=test
   method format(Ljava/lang/Object;)Ljava/lang/String; flags=0 display=format(Object) : String
   type test/modern/Switches$Day flags=16384 super=java/lang/Object outer=test/modern/Switches display=test.modern|Switches.Day|Day
   type test/modern/Switches$Expr flags=512 super= outer=test/modern/Switches display=test.modern|Switches.Expr|Expr
+  type test/modern/Switches$Num flags=24 super=java/lang/Record outer=test/modern/Switches display=test.modern|Switches.Num|Num
+    field value I flags=18 display=value : int
+    method <init>(I)V flags=0 display=Num(int)
+    method value()I flags=1 display=value() : int
+  type test/modern/Switches$Add flags=24 super=java/lang/Record outer=test/modern/Switches display=test.modern|Switches.Add|Add
+    field left Ltest/modern/Switches$Expr; flags=18 display=left : Switches.Expr
+    field right Ltest/modern/Switches$Expr; flags=18 display=right : Switches.Expr
+    method <init>(Ltest/modern/Switches$Expr;Ltest/modern/Switches$Expr;)V flags=0 display=Add(Switches.Expr, Switches.Expr)
+    method left()Ltest/modern/Switches$Expr; flags=1 display=left() : Switches.Expr
+    method right()Ltest/modern/Switches$Expr; flags=1 display=right() : Switches.Expr
+  type test/modern/Switches$Neg flags=24 super=java/lang/Record outer=test/modern/Switches display=test.modern|Switches.Neg|Neg
+    field operand Ltest/modern/Switches$Expr; flags=18 display=operand : Switches.Expr
+    method <init>(Ltest/modern/Switches$Expr;)V flags=0 display=Neg(Switches.Expr)
+    method operand()Ltest/modern/Switches$Expr; flags=1 display=operand() : Switches.Expr

@@ -4,12 +4,16 @@ typeDeclarations:
   test/modern/Shapes$Circle
   test/modern/Shapes$Derived
   test/modern/Shapes$Polygon
+  test/modern/Shapes$Square
 constructorDeclarations:
   Circle
+  Square
 methodDeclarations:
   area
+  side
 fieldDeclarations:
   radius
+  side
 typeReferences:
   Shapes/Circle
   Shapes/Polygon
@@ -27,3 +31,4 @@ superTypeNames:
   test/modern/Shapes$Circle -> [test/modern/Shapes]
   test/modern/Shapes$Derived -> [test/modern/Shapes$Base]
   test/modern/Shapes$Polygon -> [test/modern/Shapes]
+  test/modern/Shapes$Square -> [test/modern/Shapes]

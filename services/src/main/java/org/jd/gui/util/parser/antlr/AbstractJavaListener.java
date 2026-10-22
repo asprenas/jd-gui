@@ -15,6 +15,7 @@ import org.jd.gui.api.model.Container;
 import org.jd.gui.util.exception.ExceptionUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -271,5 +272,85 @@ public abstract class AbstractJavaListener extends JavaParserBaseListener {
         }
 
         return dimension;
+    }
+
+    protected String createParamDescriptors(List<JavaParser.FormalParameterContext> formalParameters) {
+        StringBuilder paramDescriptors = null;
+
+        if (formalParameters != null) {
+            paramDescriptors = new StringBuilder("(");
+
+            for (JavaParser.FormalParameterContext formalParameter : formalParameters) {
+                int dimensionOnParameter = countDimension(formalParameter);
+                paramDescriptors.append(createDescriptor(formalParameter.typeType(), dimensionOnParameter));
+            }
+        }
+
+        return (paramDescriptors == null) ? "()" : paramDescriptors.append(')').toString();
+    }
+
+    // --- Records --- //
+
+    protected static List<JavaParser.RecordComponentContext> recordComponents(JavaParser.RecordDeclarationContext ctx) {
+        JavaParser.RecordComponentListContext recordComponentList = ctx.recordHeader().recordComponentList();
+        return (recordComponentList == null) ? Collections.emptyList() : recordComponentList.recordComponent();
+    }
+
+    protected String createDescriptor(JavaParser.RecordComponentContext recordComponent) {
+        return createDescriptor(recordComponent.typeType(), (recordComponent.ELLIPSIS() == null) ? 0 : 1);
+    }
+
+    protected String createCanonicalConstructorDescriptor(JavaParser.RecordDeclarationContext ctx) {
+        StringBuilder descriptor = new StringBuilder("(");
+
+        for (JavaParser.RecordComponentContext recordComponent : recordComponents(ctx)) {
+            descriptor.append(createDescriptor(recordComponent));
+        }
+
+        return descriptor.append(")V").toString();
+    }
+
+    /**
+     * @return true if the record body declares the accessor of the component: a method without parameter with the same name
+     */
+    protected static boolean hasExplicitAccessor(JavaParser.RecordDeclarationContext ctx, String name) {
+        for (JavaParser.ClassBodyDeclarationContext classBodyDeclaration : ctx.recordBody().classBodyDeclaration()) {
+            JavaParser.MemberDeclarationContext memberDeclaration = classBodyDeclaration.memberDeclaration();
+
+            if ((memberDeclaration != null) && (memberDeclaration.methodDeclaration() != null)) {
+                JavaParser.MethodDeclarationContext methodDeclaration = memberDeclaration.methodDeclaration();
+
+                if (name.equals(methodDeclaration.identifier().getText()) && (formalParameters(methodDeclaration.formalParameters()) == null)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return true if the record body declares the canonical constructor, in compact form or not
+     */
+    protected boolean hasExplicitCanonicalConstructor(JavaParser.RecordDeclarationContext ctx) {
+        if (!ctx.recordBody().compactConstructorDeclaration().isEmpty()) {
+            return true;
+        }
+
+        String descriptor = createCanonicalConstructorDescriptor(ctx);
+
+        for (JavaParser.ClassBodyDeclarationContext classBodyDeclaration : ctx.recordBody().classBodyDeclaration()) {
+            JavaParser.MemberDeclarationContext memberDeclaration = classBodyDeclaration.memberDeclaration();
+
+            if ((memberDeclaration != null) && (memberDeclaration.constructorDeclaration() != null)) {
+                JavaParser.FormalParametersContext formalParameters = memberDeclaration.constructorDeclaration().formalParameters();
+
+                if (descriptor.equals(createParamDescriptors(formalParameters(formalParameters)) + 'V')) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

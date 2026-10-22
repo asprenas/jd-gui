@@ -1,8 +1,30 @@
 mainType: test/modern/Records
 type test/modern/Records flags=1 super=java/lang/Object outer=null display=test.modern|Records|null
-  field ORIGIN L*/Point; flags=25 display=ORIGIN : Point
-  method <init>(I)V flags=1 display=Records(int)
-  method distance(L*/Point;)D flags=1 display=distance(Point) : double
-  method compareTo(L*/Point;)I flags=1 display=compareTo(Point) : int
-  method of(II)L*/Point; flags=8 display=of(int, int) : Point
   method points()Ljava/util/List; flags=0 display=points() : List
+  type test/modern/Records$Point flags=25 super=java/lang/Record outer=test/modern/Records display=test.modern|Records.Point|Point
+    field x I flags=18 display=x : int
+    field y I flags=18 display=y : int
+    field ORIGIN Ltest/modern/Records$Point; flags=25 display=ORIGIN : Records.Point
+    method x()I flags=1 display=x() : int
+    method y()I flags=1 display=y() : int
+    method <init>(II)V flags=1 display=Point(int, int)
+    method <init>(I)V flags=1 display=Point(int)
+    method distance(Ltest/modern/Records$Point;)D flags=1 display=distance(Records.Point) : double
+    method compareTo(Ltest/modern/Records$Point;)I flags=1 display=compareTo(Records.Point) : int
+    method of(II)Ltest/modern/Records$Point; flags=8 display=of(int, int) : Records.Point
+  type test/modern/Records$Pair flags=24 super=java/lang/Record outer=test/modern/Records display=test.modern|Records.Pair|Pair
+    field first L*/A; flags=18 display=first : A
+    field second L*/B; flags=18 display=second : B
+    method first()L*/A; flags=1 display=first() : A
+    method second()L*/B; flags=1 display=second() : B
+    method <init>(L*/A;L*/B;)V flags=0 display=Pair(A, B)
+  type test/modern/Records$Names flags=24 super=java/lang/Record outer=test/modern/Records display=test.modern|Records.Names|Names
+    field values [Ljava/lang/String; flags=18 display=values : String[]
+    method <init>([Ljava/lang/String;)V flags=0 display=Names(String[])
+    method values()[Ljava/lang/String; flags=1 display=values() : String[]
+  type test/modern/Records$Local flags=24 super=java/lang/Record outer=test/modern/Records display=test.modern|Records.Local|Local
+    field index I flags=18 display=index : int
+    field point Ltest/modern/Records$Point; flags=18 display=point : Records.Point
+    method <init>(ILtest/modern/Records$Point;)V flags=0 display=Local(int, Records.Point)
+    method index()I flags=1 display=index() : int
+    method point()Ltest/modern/Records$Point; flags=1 display=point() : Records.Point

@@ -31,7 +31,7 @@ type test/fixture/Sample flags=1 super=test/fixture/Base outer=null display=test
   type test/fixture/Sample$Color flags=16384 super=java/lang/Object outer=test/fixture/Sample display=test.fixture|Sample.Color|Color
     field label Ljava/lang/String; flags=18 display=label : String
     method <init>()V flags=0 display=Color()
-    method <init>(Ljava/lang/String;)V flags=0 display=Color()
+    method <init>(Ljava/lang/String;)V flags=0 display=Color(String)
     method code()Ljava/lang/String; flags=0 display=code() : String
   type test/fixture/Sample$Marker flags=8192 super=java/lang/Object outer=test/fixture/Sample display=test.fixture|Sample.Marker|Marker
   type test/fixture/Sample$Callback flags=512 super= outer=test/fixture/Sample display=test.fixture|Sample.Callback|Callback

@@ -6,4 +6,4 @@ type test/modern/Decompiled flags=1 super=java/lang/Object outer=null display=te
   method find(L*/K;)L*/V; flags=1 display=find(K) : V
   method count([Ljava/lang/Object;)I flags=1 display=count(Object[]) : int
   type test/modern/Decompiled$Inner flags=8 super=test/modern/Decompiled outer=test/modern/Decompiled display=test.modern|Decompiled.Inner|Inner
-    method <init>(Ljava/util/Map;)V flags=0 display=Inner()
+    method <init>(Ljava/util/Map;)V flags=0 display=Inner(Map)
