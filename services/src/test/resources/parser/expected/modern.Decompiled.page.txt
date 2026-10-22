@@ -46,5 +46,5 @@ hyperlinks:
   @1062-1065 type=java/util/Map name=null desc=null owner=test/modern/Decompiled$Inner
   @1066-1072 type=java/lang/String name=null desc=null owner=test/modern/Decompiled$Inner
   @1074-1081 type=java/lang/Integer name=null desc=null owner=test/modern/Decompiled$Inner
-  @1101-1106 type=test/modern/Decompiled name=<init> desc=?)? owner=test/modern/Decompiled$Inner
+  @1101-1106 type=test/modern/Decompiled name=<init> desc=(?)? owner=test/modern/Decompiled$Inner
 strings:

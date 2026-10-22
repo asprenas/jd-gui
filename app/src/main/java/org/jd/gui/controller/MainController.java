@@ -65,7 +65,8 @@ public class MainController implements API {
     protected SaveAllSourcesController saveAllSourcesController;
     protected SelectLocationController selectLocationController;
     protected AboutController aboutController;
-    protected SourceLoaderService sourceLoaderService;
+    // Initialized eagerly: files given on the command line are opened before the background initializations run
+    protected SourceLoaderService sourceLoaderService = new SourceLoaderService();
 
     protected History history = new History();
     protected JComponent currentPage = null;
@@ -149,7 +150,6 @@ public class MainController implements API {
                 preferencesController = new PreferencesController(configuration, mainFrame, PreferencesPanelService.getInstance().getProviders());
                 selectLocationController = new SelectLocationController(MainController.this, mainFrame);
                 aboutController = new AboutController(mainFrame);
-                sourceLoaderService = new SourceLoaderService();
                 // Add listeners
                 mainFrame.addComponentListener(new MainFrameListener(configuration));
                 // Set drop files transfer handler

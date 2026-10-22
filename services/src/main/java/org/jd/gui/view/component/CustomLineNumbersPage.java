@@ -145,6 +145,16 @@ public abstract class CustomLineNumbersPage extends HyperlinkPage {
         public SourceLineNumberList(RTextArea textArea) {
             super(textArea, null);
             this.rTextArea = textArea;
+            // Follow text area font size changes, like the default line number list
+            textArea.addPropertyChangeListener("font", e -> {
+                Font font = getFont();
+                if ((font != null) && (rTextArea.getFont() != null)) {
+                    setFont(font.deriveFont(rTextArea.getFont().getSize2D()));
+                }
+                preferredSize = null;
+                revalidate();
+                repaint();
+            });
         }
 
         @Override
@@ -287,9 +297,19 @@ public abstract class CustomLineNumbersPage extends HyperlinkPage {
             if (originalLineNumber != 0) {
                 String number = Integer.toString(originalLineNumber);
                 int strWidth = metrics.stringWidth(number);
-                g.setColor(showMisalignment && (lineNumber != originalLineNumber) ? errorForeground : getForeground());
+                g.setColor(showMisalignment && (lineNumber != originalLineNumber) ? errorForeground : getLineNumberColor(lineNumber));
                 g.drawString(number, x-strWidth, y);
             }
+        }
+
+        protected Color getLineNumberColor(int lineNumber) {
+            if ((getParent() instanceof Gutter) && (rTextArea.getCaretLineNumber() + 1 == lineNumber)) {
+                Color color = ((Gutter)getParent()).getCurrentLineNumberColor();
+                if (color != null) {
+                    return color;
+                }
+            }
+            return getForeground();
         }
 
         public int getRhsBorderWidth() { return ((RSyntaxTextArea)rTextArea).isCodeFoldingEnabled() ? 0 : 4; }

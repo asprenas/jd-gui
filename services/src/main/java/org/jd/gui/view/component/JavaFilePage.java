@@ -464,7 +464,7 @@ public class JavaFilePage extends TypePage {
         }
 
         public StringBuilder getParametersDescriptor(JavaParser.ExpressionListContext expressionListContext) {
-            StringBuilder sb = new StringBuilder('(');
+            StringBuilder sb = new StringBuilder("(");
             for (JavaParser.ExpressionContext exp : expressionListContext.expression()) sb.append('?');
             sb.append(')');
             return sb;

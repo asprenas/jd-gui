@@ -40,19 +40,19 @@ hyperlinks:
   @1488-1491 type=*/Add name=null desc=null owner=test/modern/Switches
   @1492-1496 type=test/modern/Switches$Expr name=null desc=null owner=test/modern/Switches
   @1503-1507 type=test/modern/Switches$Expr name=null desc=null owner=test/modern/Switches
-  @1518-1522 type=test/modern/Switches name=eval desc=?)? owner=test/modern/Switches
-  @1531-1535 type=test/modern/Switches name=eval desc=?)? owner=test/modern/Switches
+  @1518-1522 type=test/modern/Switches name=eval desc=(?)? owner=test/modern/Switches
+  @1531-1535 type=test/modern/Switches name=eval desc=(?)? owner=test/modern/Switches
   @1561-1564 type=*/Neg name=null desc=null owner=test/modern/Switches
   @1565-1568 type=*/Num name=null desc=null owner=test/modern/Switches
   @1620-1623 type=*/Neg name=null desc=null owner=test/modern/Switches
-  @1632-1636 type=test/modern/Switches name=eval desc=?)? owner=test/modern/Switches
+  @1632-1636 type=test/modern/Switches name=eval desc=(?)? owner=test/modern/Switches
   @1641-1648 type=*/neg name=operand desc=()? owner=test/modern/Switches
   @1675-1681 type=java/lang/String name=null desc=null owner=test/modern/Switches
   @1689-1695 type=java/lang/Object name=null desc=null owner=test/modern/Switches
   @1779-1786 type=java/lang/Integer name=null desc=null owner=test/modern/Switches
   @1833-1840 type=java/lang/Integer name=null desc=null owner=test/modern/Switches
   @1875-1881 type=java/lang/String name=null desc=null owner=test/modern/Switches
-  @1894-1900 type=java/lang/String name=format desc=??)? owner=test/modern/Switches
+  @1894-1900 type=java/lang/String name=format desc=(??)? owner=test/modern/Switches
   @1909-1915 type=*/s name=length desc=()? owner=test/modern/Switches
   @1945-1953 type=java/lang/Object name=toString desc=()? owner=test/modern/Switches
 strings:

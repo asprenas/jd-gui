@@ -70,9 +70,9 @@ hyperlinks:
   @637-641 type=java/util/List name=null desc=null owner=test/fixture/Sample
   @642-649 type=java/lang/Integer name=null desc=null owner=test/fixture/Sample
   @659-660 type=*/T name=null desc=null owner=test/fixture/Sample
-  @793-796 type=test/fixture/Sample name=add desc=?)? owner=test/fixture/Sample
-  @852-856 type=test/fixture/Sample name=<init> desc=?)? owner=test/fixture/Sample
-  @906-911 type=test/fixture/Base name=<init> desc=?)? owner=test/fixture/Sample
+  @793-796 type=test/fixture/Sample name=add desc=(?)? owner=test/fixture/Sample
+  @852-856 type=test/fixture/Sample name=<init> desc=(?)? owner=test/fixture/Sample
+  @906-911 type=test/fixture/Base name=<init> desc=(?)? owner=test/fixture/Sample
   @1057-1063 type=test/fixture/Sample name=length desc=? owner=test/fixture/Sample
   @1126-1132 type=java/lang/String name=null desc=null owner=test/fixture/Sample
   @1185-1191 type=*/name name=length desc=()? owner=test/fixture/Sample
@@ -91,16 +91,16 @@ hyperlinks:
   @1655-1656 type=*/E name=null desc=null owner=test/fixture/Sample
   @1688-1699 type=*/e name=doubleValue desc=()? owner=test/fixture/Sample
   @1709-1720 type=*/E name=doubleValue desc=()? owner=test/fixture/Sample
-  @1749-1752 type=java/util/List name=add desc=?)? owner=test/fixture/Sample
+  @1749-1752 type=java/util/List name=add desc=(?)? owner=test/fixture/Sample
   @1815-1821 type=java/lang/String name=null desc=null owner=test/fixture/Sample
   @1830-1836 type=java/lang/String name=null desc=null owner=test/fixture/Sample
-  @1930-1954 type=java/lang/IllegalArgumentException name=<init> desc=?)V owner=test/fixture/Sample
+  @1930-1954 type=java/lang/IllegalArgumentException name=<init> desc=(?)V owner=test/fixture/Sample
   @1990-1996 type=java/lang/Object name=null desc=null owner=test/fixture/Sample
   @2032-2038 type=java/lang/String name=null desc=null owner=test/fixture/Sample
   @2054-2060 type=java/lang/String name=null desc=null owner=test/fixture/Sample
   @2066-2072 type=java/lang/String name=null desc=null owner=test/fixture/Sample
-  @2098-2103 type=java/lang/String name=split desc=?)? owner=test/fixture/Sample
-  @2111-2118 type=java/lang/String name=valueOf desc=?)? owner=test/fixture/Sample
+  @2098-2103 type=java/lang/String name=split desc=(?)? owner=test/fixture/Sample
+  @2111-2118 type=java/lang/String name=valueOf desc=(?)? owner=test/fixture/Sample
   @2161-2167 type=java/lang/String name=null desc=null owner=test/fixture/Sample
   @2193-2204 type=java/io/InputStream name=null desc=null owner=test/fixture/Sample
   @2299-2303 type=*/in name=read desc=()? owner=test/fixture/Sample
@@ -112,12 +112,12 @@ hyperlinks:
   @3185-3191 type=test/fixture/Sample$Nested name=null desc=null owner=test/fixture/Sample$Nested
   @3224-3230 type=test/fixture/Sample$Nested name=<init> desc=()V owner=test/fixture/Sample$Nested
   @3275-3279 type=test/fixture/Base name=null desc=null owner=test/fixture/Sample$Inner
-  @3312-3317 type=test/fixture/Base name=<init> desc=?)? owner=test/fixture/Sample$Inner
+  @3312-3317 type=test/fixture/Base name=<init> desc=(?)? owner=test/fixture/Sample$Inner
   @3347-3348 type=*/T name=null desc=null owner=test/fixture/Sample$Inner
   @3378-3384 type=test/fixture/Sample name=null desc=null owner=test/fixture/Sample$Inner
   @3499-3505 type=java/lang/String name=null desc=null owner=test/fixture/Sample$Color
   @3591-3597 type=java/lang/String name=null desc=null owner=test/fixture/Sample$Color
-  @3636-3640 type=test/fixture/Sample$Color name=<init> desc=?)? owner=test/fixture/Sample$Color
+  @3636-3640 type=test/fixture/Sample$Color name=<init> desc=(?)? owner=test/fixture/Sample$Color
   @3675-3681 type=java/lang/String name=null desc=null owner=test/fixture/Sample$Color
   @3708-3713 type=test/fixture/Sample$Color name=label desc=? owner=test/fixture/Sample$Color
   @3742-3748 type=java/lang/String name=null desc=null owner=test/fixture/Sample$Color

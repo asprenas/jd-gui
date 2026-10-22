@@ -29,7 +29,7 @@ hyperlinks:
   @543-552 type=test/modern/Lambdas$Converter name=null desc=null owner=test/modern/Lambdas$Converter
   @553-554 type=*/F name=null desc=null owner=test/modern/Lambdas$Converter
   @556-557 type=*/T name=null desc=null owner=test/modern/Lambdas$Converter
-  @677-684 type=test/modern/Lambdas$Converter name=convert desc=?)? owner=test/modern/Lambdas$Converter
+  @677-684 type=test/modern/Lambdas$Converter name=convert desc=(?)? owner=test/modern/Lambdas$Converter
   @737-746 type=test/modern/Lambdas$Converter name=null desc=null owner=test/modern/Lambdas$Converter
   @747-748 type=*/T name=null desc=null owner=test/modern/Lambdas$Converter
   @750-751 type=*/T name=null desc=null owner=test/modern/Lambdas$Converter
@@ -48,7 +48,7 @@ hyperlinks:
   @1128-1135 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
   @1150-1157 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
   @1167-1174 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
-  @1186-1189 type=java/lang/Math name=max desc=??)? owner=test/modern/Lambdas
+  @1186-1189 type=java/lang/Math name=max desc=(??)? owner=test/modern/Lambdas
   @1205-1213 type=java/util/function/Supplier name=null desc=null owner=test/modern/Lambdas
   @1214-1218 type=java/util/List name=null desc=null owner=test/modern/Lambdas
   @1219-1225 type=java/lang/String name=null desc=null owner=test/modern/Lambdas
@@ -57,9 +57,9 @@ hyperlinks:
   @1271-1278 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
   @1280-1286 type=java/lang/String name=null desc=null owner=test/modern/Lambdas
   @1299-1305 type=java/lang/String name=null desc=null owner=test/modern/Lambdas
-  @1329-1333 type=test/modern/Lambdas name=sort desc=?)? owner=test/modern/Lambdas
+  @1329-1333 type=test/modern/Lambdas name=sort desc=(?)? owner=test/modern/Lambdas
   @1334-1344 type=java/util/Comparator name=null desc=null owner=test/modern/Lambdas
-  @1345-1354 type=java/util/Comparator name=comparing desc=?)? owner=test/modern/Lambdas
+  @1345-1354 type=java/util/Comparator name=comparing desc=(?)? owner=test/modern/Lambdas
   @1385-1393 type=java/util/function/Function name=null desc=null owner=test/modern/Lambdas
   @1394-1402 type=java/util/function/Function name=identity desc=()? owner=test/modern/Lambdas
   @1416-1420 type=java/util/List name=null desc=null owner=test/modern/Lambdas
@@ -68,16 +68,16 @@ hyperlinks:
   @1487-1494 type=*/n name=isEmpty desc=()? owner=test/modern/Lambdas
   @1552-1562 type=java/util/stream/Collectors name=null desc=null owner=test/modern/Lambdas
   @1563-1569 type=java/util/stream/Collectors name=toList desc=()? owner=test/modern/Lambdas
-  @1599-1604 type=java/util/function/BiFunction name=apply desc=??)? owner=test/modern/Lambdas
+  @1599-1604 type=java/util/function/BiFunction name=apply desc=(??)? owner=test/modern/Lambdas
   @1613-1617 type=java/util/List name=size desc=()? owner=test/modern/Lambdas
-  @1625-1630 type=java/util/function/BiFunction name=apply desc=??)? owner=test/modern/Lambdas
+  @1625-1630 type=java/util/function/BiFunction name=apply desc=(??)? owner=test/modern/Lambdas
   @1737-1745 type=java/util/Optional name=null desc=null owner=test/modern/Lambdas
-  @1746-1756 type=java/util/Optional name=ofNullable desc=?)? owner=test/modern/Lambdas
+  @1746-1756 type=java/util/Optional name=ofNullable desc=(?)? owner=test/modern/Lambdas
   @1765-1768 type=java/util/function/Supplier name=get desc=()? owner=test/modern/Lambdas
-  @1830-1835 type=java/util/function/Function name=apply desc=?)? owner=test/modern/Lambdas
+  @1830-1835 type=java/util/function/Function name=apply desc=(?)? owner=test/modern/Lambdas
   @1870-1874 type=java/util/List name=null desc=null owner=test/modern/Lambdas
   @1875-1881 type=java/lang/String name=null desc=null owner=test/modern/Lambdas
-  @1908-1915 type=java/util/List name=forEach desc=?)? owner=test/modern/Lambdas
+  @1908-1915 type=java/util/List name=forEach desc=(?)? owner=test/modern/Lambdas
   @1923-1926 type=java/lang/System name=out desc=? owner=test/modern/Lambdas
 strings:
   @634-644 "convert " owner=test/modern/Lambdas$Converter
