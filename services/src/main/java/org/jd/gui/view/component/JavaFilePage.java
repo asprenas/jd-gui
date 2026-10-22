@@ -56,6 +56,7 @@ public class JavaFilePage extends TypePage {
     public class DeclarationListener extends AbstractJavaListener {
         protected StringBuilder sbTypeDeclaration = new StringBuilder();
         protected String currentInternalTypeName;
+        protected HashMap<String, Integer> anonymousTypeCounts = new HashMap<>();
 
         public DeclarationListener(Container.Entry entry) { super(entry); }
 
@@ -129,6 +130,21 @@ public class JavaFilePage extends TypePage {
             }
 
             currentInternalTypeName = sbTypeDeclaration.toString();
+        }
+
+        public void enterClassBody(JavaParser.ClassBodyContext ctx) {
+            if (isAnonymousClassBody(ctx)) {
+                // Anonymous classes are numbered like javac: Outer$1, Outer$2...
+                int count = anonymousTypeCounts.merge(currentInternalTypeName, 1, Integer::sum);
+                sbTypeDeclaration.append('$').append(count);
+                currentInternalTypeName = sbTypeDeclaration.toString();
+            }
+        }
+
+        public void exitClassBody(JavaParser.ClassBodyContext ctx) {
+            if (isAnonymousClassBody(ctx)) {
+                exitTypeDeclaration();
+            }
         }
 
         public void enterClassBodyDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
@@ -215,7 +231,7 @@ public class JavaFilePage extends TypePage {
                 paramDescriptors = new StringBuilder("(");
 
                 for (JavaParser.FormalParameterContext formalParameter : formalParameters) {
-                    int dimensionOnParameter = countDimension(formalParameter.variableDeclaratorId().children);
+                    int dimensionOnParameter = countDimension(formalParameter);
                     String descriptor = createDescriptor(formalParameter.typeType(), dimensionOnParameter);
 
                     paramDescriptors.append(descriptor);
@@ -304,7 +320,7 @@ public class JavaFilePage extends TypePage {
 
             if (formalParameters != null) {
                 for (JavaParser.FormalParameterContext formalParameter : formalParameters) {
-                    int dimensionOnParameter = countDimension(formalParameter.variableDeclaratorId().children);
+                    int dimensionOnParameter = countDimension(formalParameter);
                     String descriptor = createDescriptor(formalParameter.typeType(), dimensionOnParameter);
                     String name = identifier(formalParameter.variableDeclaratorId().identifier()).getSymbol().getText();
 

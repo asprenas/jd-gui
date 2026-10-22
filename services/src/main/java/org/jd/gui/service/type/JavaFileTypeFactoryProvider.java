@@ -293,6 +293,20 @@ public class JavaFileTypeFactoryProvider extends AbstractTypeFactoryProvider {
             currentType = currentType.getOuterType();
         }
 
+        public void enterClassBody(JavaParser.ClassBodyContext ctx) {
+            if (isAnonymousClassBody(ctx)) {
+                // Detached type: members of anonymous classes are not members of the enclosing type
+                String outerName = currentType.getName();
+                currentType = new JavaType(0, outerName + '$', "java/lang/Object", outerName, currentType.getDisplayTypeName(), null, displayPackageName, currentType);
+            }
+        }
+
+        public void exitClassBody(JavaParser.ClassBodyContext ctx) {
+            if (isAnonymousClassBody(ctx)) {
+                exitTypeDeclaration();
+            }
+        }
+
         public void enterClassBodyDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
             if (ctx.getChildCount() == 2) {
                 ParseTree first = ctx.getChild(0);
@@ -335,7 +349,17 @@ public class JavaFileTypeFactoryProvider extends AbstractTypeFactoryProvider {
         }
 
         public void enterMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
-            enterMethodDeclaration(ctx, identifier(ctx.identifier()), ctx.formalParameters(), ctx.typeTypeOrVoid());
+            enterMethodDeclaration(skipGenericDeclaration(ctx), identifier(ctx.identifier()), ctx.formalParameters(), ctx.typeTypeOrVoid());
+        }
+
+        /**
+         * "genericMethodDeclaration" and "genericConstructorDeclaration" wrap the declaration: return the wrapper,
+         * so that the modifiers are found two levels up, as for non-generic declarations.
+         */
+        protected ParserRuleContext skipGenericDeclaration(ParserRuleContext ctx) {
+            ParserRuleContext parent = ctx.getParent();
+            boolean generic = (parent instanceof JavaParser.GenericMethodDeclarationContext) || (parent instanceof JavaParser.GenericConstructorDeclarationContext);
+            return generic ? parent : ctx;
         }
 
         public void enterInterfaceCommonBodyDeclaration(JavaParser.InterfaceCommonBodyDeclarationContext ctx) {
@@ -357,7 +381,7 @@ public class JavaFileTypeFactoryProvider extends AbstractTypeFactoryProvider {
         }
 
         public void enterConstructorDeclaration(JavaParser.ConstructorDeclarationContext ctx) {
-            int access = getClassBodyDeclarationAccessFlag(ctx.getParent().getParent());
+            int access = getClassBodyDeclarationAccessFlag(skipGenericDeclaration(ctx).getParent().getParent());
             String paramDescriptors = createParamDescriptors(formalParameters(ctx.formalParameters()));
             String descriptor = paramDescriptors + "V";
 
@@ -371,7 +395,7 @@ public class JavaFileTypeFactoryProvider extends AbstractTypeFactoryProvider {
                 paramDescriptors = new StringBuilder("(");
 
                 for (JavaParser.FormalParameterContext formalParameter : formalParameters) {
-                    int dimensionOnParameter = countDimension(formalParameter.variableDeclaratorId().children);
+                    int dimensionOnParameter = countDimension(formalParameter);
                     paramDescriptors.append(createDescriptor(formalParameter.typeType(), dimensionOnParameter));
                 }
             }

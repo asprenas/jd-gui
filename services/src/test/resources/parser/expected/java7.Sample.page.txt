@@ -1,9 +1,11 @@
 declarations:
   test/fixture/Sample @283-289 type=test/fixture/Sample name=null desc=null super=test/fixture/Base
+  test/fixture/Sample$1-run-()V @2873-2876 type=test/fixture/Sample$1 name=run desc=()V
   test/fixture/Sample$Callback @3954-3962 type=test/fixture/Sample$Callback name=null desc=null super=null
   test/fixture/Sample$Callback-TIMEOUT-I @3980-3987 type=test/fixture/Sample$Callback name=TIMEOUT desc=I
   test/fixture/Sample$Callback-call-(Ljava/lang/String;)L*/R; @4005-4009 type=test/fixture/Sample$Callback name=call desc=(Ljava/lang/String;)L*/R;
   test/fixture/Sample$Color @3425-3430 type=test/fixture/Sample$Color name=null desc=null super=null
+  test/fixture/Sample$Color$1-code-()Ljava/lang/String; @3506-3510 type=test/fixture/Sample$Color$1 name=code desc=()Ljava/lang/String;
   test/fixture/Sample$Color-<init>-()V @3614-3619 type=test/fixture/Sample$Color name=Color desc=()V
   test/fixture/Sample$Color-<init>-(Ljava/lang/String;)V @3669-3674 type=test/fixture/Sample$Color name=Color desc=(Ljava/lang/String;)V
   test/fixture/Sample$Color-code-()Ljava/lang/String; @3749-3753 type=test/fixture/Sample$Color name=code desc=()Ljava/lang/String;
@@ -29,11 +31,11 @@ declarations:
   test/fixture/Sample-matrix-[[Ljava/lang/String; @510-516 type=test/fixture/Sample name=matrix desc=[[Ljava/lang/String;
   test/fixture/Sample-names-Ljava/util/List; @543-548 type=test/fixture/Sample name=names desc=Ljava/util/List;
   test/fixture/Sample-read-(Ljava/io/InputStream;)J @2188-2192 type=test/fixture/Sample name=read desc=(Ljava/io/InputStream;)J
-  test/fixture/Sample-run-()V @2873-2876 type=test/fixture/Sample name=run desc=()V
+  test/fixture/Sample-run-()V @990-993 type=test/fixture/Sample name=run desc=()V
   test/fixture/Sample-running-Z @691-698 type=test/fixture/Sample name=running desc=Z
   test/fixture/Sample-split-(Ljava/lang/String;C)[Ljava/lang/String; @1824-1829 type=test/fixture/Sample name=split desc=(Ljava/lang/String;C)[Ljava/lang/String;
   test/fixture/Sample-stopped-Z @700-707 type=test/fixture/Sample name=stopped desc=Z
-  test/fixture/Sample-sum-()I @1313-1316 type=test/fixture/Sample name=sum desc=()I
+  test/fixture/Sample-sum-([I)I @1313-1316 type=test/fixture/Sample name=sum desc=([I)I
   test/fixture/Sample-task-()Ljava/lang/Runnable; @2786-2790 type=test/fixture/Sample name=task desc=()Ljava/lang/Runnable;
   test/fixture/Sample-ternary-(II)I @2973-2980 type=test/fixture/Sample name=ternary desc=(II)I
   test/fixture/Sample-values-[I @464-470 type=test/fixture/Sample name=values desc=[I

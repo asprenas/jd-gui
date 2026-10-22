@@ -14,14 +14,13 @@ type test/fixture/Sample flags=1 super=test/fixture/Base outer=null display=test
   method <init>(I)V flags=1 display=Sample(int)
   method run()V flags=1 display=run() : void
   method area()D flags=1 display=area() : double
-  method sum()I flags=9 display=sum() : int
+  method sum([I)I flags=9 display=sum(int[]) : int
   method getCurrent()L*/T; flags=4 display=getCurrent() : T
-  method filter(Ljava/util/List;L*/E;)Ljava/util/List; flags=0 display=filter(List, E) : List
+  method filter(Ljava/util/List;L*/E;)Ljava/util/List; flags=1 display=filter(List, E) : List
   method split(Ljava/lang/String;C)[Ljava/lang/String; flags=0 display=split(String, char) : String[]
   method read(Ljava/io/InputStream;)J flags=0 display=read(InputStream) : long
   method describe(L*/Color;)Ljava/lang/String; flags=0 display=describe(Color) : String
   method task()Ljava/lang/Runnable; flags=0 display=task() : Runnable
-  method run()V flags=1 display=run() : void
   method ternary(II)I flags=0 display=ternary(int, int) : int
   type test/fixture/Sample$Nested flags=9 super=java/lang/Object outer=test/fixture/Sample display=test.fixture|Sample.Nested|Nested
     field nestedValue I flags=0 display=nestedValue : int
@@ -31,7 +30,6 @@ type test/fixture/Sample flags=1 super=test/fixture/Base outer=null display=test
     method value()L*/T; flags=0 display=value() : T
   type test/fixture/Sample$Color flags=16384 super=java/lang/Object outer=test/fixture/Sample display=test.fixture|Sample.Color|Color
     field label Ljava/lang/String; flags=18 display=label : String
-    method code()Ljava/lang/String; flags=0 display=code() : String
     method <init>()V flags=0 display=Color()
     method <init>(Ljava/lang/String;)V flags=0 display=Color()
     method code()Ljava/lang/String; flags=0 display=code() : String

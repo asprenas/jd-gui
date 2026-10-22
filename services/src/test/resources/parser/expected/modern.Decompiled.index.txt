@@ -30,17 +30,9 @@ methodReferences:
   next
   super
 fieldReferences:
-  entrySet
-  equals
-  getKey
-  getValue
-  hasNext
-  isEmpty
-  iterator
   length
   map
   modCount
-  next
 strings:
 superTypeNames:
   test/modern/Decompiled$Inner -> [test/modern/Decompiled]

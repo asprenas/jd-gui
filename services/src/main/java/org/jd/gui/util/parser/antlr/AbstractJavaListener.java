@@ -92,8 +92,7 @@ public abstract class AbstractJavaListener extends JavaParserBaseListener {
     }
 
     /**
-     * Formal parameters, except receiver and variable arity parameters.
-     * Variable arity parameters were ignored with the Java 7 grammar ('lastFormalParameter') and still are.
+     * Formal parameters, except receiver parameters.
      *
      * @return null if there is no parameter list
      */
@@ -105,12 +104,10 @@ public abstract class AbstractJavaListener extends JavaParserBaseListener {
             for (ParseTree child : ctx.children) {
                 if (child instanceof JavaParser.FormalParameterContext) {
                     empty = false;
-                    addFormalParameter(formalParameters, (JavaParser.FormalParameterContext)child);
+                    formalParameters.add((JavaParser.FormalParameterContext)child);
                 } else if (child instanceof JavaParser.FormalParameterListContext) {
                     empty = false;
-                    for (JavaParser.FormalParameterContext formalParameter : ((JavaParser.FormalParameterListContext)child).formalParameter()) {
-                        addFormalParameter(formalParameters, formalParameter);
-                    }
+                    formalParameters.addAll(((JavaParser.FormalParameterListContext)child).formalParameter());
                 }
             }
         }
@@ -118,10 +115,20 @@ public abstract class AbstractJavaListener extends JavaParserBaseListener {
         return empty ? null : formalParameters;
     }
 
-    private static void addFormalParameter(List<JavaParser.FormalParameterContext> formalParameters, JavaParser.FormalParameterContext formalParameter) {
-        if (formalParameter.ELLIPSIS() == null) {
-            formalParameters.add(formalParameter);
-        }
+    /**
+     * Body of an anonymous class: "new T(...) { ... }" or an enum constant with a body.
+     */
+    protected static boolean isAnonymousClassBody(JavaParser.ClassBodyContext ctx) {
+        ParserRuleContext parent = ctx.getParent();
+        return (parent instanceof JavaParser.ClassCreatorRestContext) || (parent instanceof JavaParser.EnumConstantContext);
+    }
+
+    /**
+     * Dimension declared after the parameter name, plus one for a variable arity parameter.
+     */
+    protected int countDimension(JavaParser.FormalParameterContext formalParameter) {
+        int dimension = countDimension(formalParameter.variableDeclaratorId().children);
+        return (formalParameter.ELLIPSIS() == null) ? dimension : dimension + 1;
     }
 
     protected String concatIdentifiers(List<TerminalNode> identifiers) {

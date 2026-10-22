@@ -45,27 +45,8 @@ methodReferences:
   thenComparing
   toList
 fieldReferences:
-  apply
-  collect
-  comparing
-  filter
-  forEach
-  get
-  identity
-  ifPresent
-  isEmpty
   length
-  map
-  max
-  ofNullable
   out
-  println
-  run
-  size
-  sort
-  stream
-  thenComparing
-  toList
 strings:
   "convert "
   "run"

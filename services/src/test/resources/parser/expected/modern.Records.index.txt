@@ -26,11 +26,6 @@ methodReferences:
   y
 fieldReferences:
   ORIGIN
-  compare
-  of
-  point
-  requireNonNull
-  sqrt
   x
   y
 strings:

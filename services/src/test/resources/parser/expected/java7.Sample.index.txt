@@ -71,17 +71,10 @@ methodReferences:
   valueOf
 fieldReferences:
   PI
-  add
   current
-  doubleValue
   label
   length
-  name
   out
-  println
-  read
-  split
-  valueOf
 strings:
   ""
   "b"

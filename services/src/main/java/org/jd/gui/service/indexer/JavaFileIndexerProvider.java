@@ -256,11 +256,6 @@ public class JavaFileIndexerProvider extends AbstractIndexerProvider {
             // Search "identifier '(' expressionList? ')'", "this(...)", "super(...)" and "expression '.' identifier '(' expressionList? ')'" : method
             String methodName = ctx.getChild(0).getText();
             methodReferenceSet.add(methodName);
-
-            if ((ctx.identifier() != null) && (ctx.getParent() instanceof JavaParser.MemberReferenceExpressionContext)) {
-                // The Java 7 grammar parsed "a.b(...)" as "(a.b)(...)": "b" was also indexed as a field reference
-                fieldReferenceSet.add(methodName);
-            }
         }
 
         public void enterLiteral(JavaParser.LiteralContext ctx) {

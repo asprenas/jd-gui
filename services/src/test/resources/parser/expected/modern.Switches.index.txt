@@ -31,14 +31,6 @@ methodReferences:
   toString
   value
 fieldReferences:
-  format
-  intValue
-  isEmpty
-  length
-  name
-  operand
-  toString
-  value
 strings:
   "big "
   "int "
