@@ -38,6 +38,7 @@ hyperlinks:
   @971-979 type=java/util/function/Function name=null desc=null owner=test/modern/Lambdas
   @980-986 type=java/lang/String name=null desc=null owner=test/modern/Lambdas
   @988-995 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
+  @1014-1020 type=java/lang/String name=length desc=(*)? owner=test/modern/Lambdas
   @1030-1040 type=java/util/function/BiFunction name=null desc=null owner=test/modern/Lambdas
   @1041-1048 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
   @1050-1057 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
@@ -53,6 +54,7 @@ hyperlinks:
   @1214-1218 type=java/util/List name=null desc=null owner=test/modern/Lambdas
   @1219-1225 type=java/lang/String name=null desc=null owner=test/modern/Lambdas
   @1238-1247 type=java/util/ArrayList name=null desc=null owner=test/modern/Lambdas
+  @1249-1252 type=java/util/ArrayList name=<init> desc=(*)V owner=test/modern/Lambdas
   @1262-1270 type=java/util/function/Function name=null desc=null owner=test/modern/Lambdas
   @1271-1278 type=java/lang/Integer name=null desc=null owner=test/modern/Lambdas
   @1280-1286 type=java/lang/String name=null desc=null owner=test/modern/Lambdas
@@ -60,6 +62,7 @@ hyperlinks:
   @1329-1333 type=test/modern/Lambdas name=sort desc=(?)? owner=test/modern/Lambdas
   @1334-1344 type=java/util/Comparator name=null desc=null owner=test/modern/Lambdas
   @1345-1354 type=java/util/Comparator name=comparing desc=(?)? owner=test/modern/Lambdas
+  @1363-1369 type=java/lang/String name=length desc=(*)? owner=test/modern/Lambdas
   @1385-1393 type=java/util/function/Function name=null desc=null owner=test/modern/Lambdas
   @1394-1402 type=java/util/function/Function name=identity desc=()? owner=test/modern/Lambdas
   @1416-1420 type=java/util/List name=null desc=null owner=test/modern/Lambdas
@@ -74,6 +77,7 @@ hyperlinks:
   @1737-1745 type=java/util/Optional name=null desc=null owner=test/modern/Lambdas
   @1746-1756 type=java/util/Optional name=ofNullable desc=(?)? owner=test/modern/Lambdas
   @1765-1768 type=java/util/function/Supplier name=get desc=()? owner=test/modern/Lambdas
+  @1788-1793 type=test/modern/Lambdas name=print desc=(*)? owner=test/modern/Lambdas
   @1830-1835 type=java/util/function/Function name=apply desc=(?)? owner=test/modern/Lambdas
   @1870-1874 type=java/util/List name=null desc=null owner=test/modern/Lambdas
   @1875-1881 type=java/lang/String name=null desc=null owner=test/modern/Lambdas

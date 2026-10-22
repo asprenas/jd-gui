@@ -34,9 +34,11 @@ methodReferences:
   identity
   ifPresent
   isEmpty
+  length
   map
   max
   ofNullable
+  print
   println
   run
   size

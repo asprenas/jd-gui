@@ -277,6 +277,21 @@ public class JavaFileIndexerProvider extends AbstractIndexerProvider {
             methodReferenceSet.add(methodName);
         }
 
+        public void enterMethodReferenceExpression(JavaParser.MethodReferenceExpressionContext ctx) {
+            // Search "... '::' identifier" : method, "Type '::' new" : constructor
+            TerminalNode identifier = identifier(ctx.identifier());
+
+            if (identifier != null) {
+                methodReferenceSet.add(identifier.getText());
+            } else if ((ctx.typeType() != null) && (ctx.typeType().classOrInterfaceType() != null) && (countDimension(ctx.typeType().children) == 0)) {
+                // Not "Type[]::new": array creation
+                String internalTypeName = resolveInternalTypeName(identifiers(ctx.typeType().classOrInterfaceType()));
+
+                if ((internalTypeName != null) && (internalTypeName.charAt(0) != '*'))
+                    constructorReferenceSet.add(internalTypeName);
+            }
+        }
+
         public void enterLiteral(JavaParser.LiteralContext ctx) {
             TerminalNode stringLiteral = ctx.STRING_LITERAL();
             if (stringLiteral != null) {

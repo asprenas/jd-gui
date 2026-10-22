@@ -504,6 +504,36 @@ public class JavaFilePage extends TypePage {
             }
         }
 
+        public void enterMethodReferenceExpression(JavaParser.MethodReferenceExpressionContext ctx) {
+            // Search "expression '::' identifier", "Type '::' identifier" and "Type '::' new" : method or constructor reference
+            String internalTypeName;
+
+            if (ctx.expression() != null) {
+                internalTypeName = getInternalTypeName(ctx.expression());
+            } else if ((ctx.typeType() != null) && (ctx.typeType().classOrInterfaceType() != null) && (countDimension(ctx.typeType().children) == 0)) {
+                // Not "Type[]::new": array creation
+                internalTypeName = resolveInternalTypeName(identifiers(ctx.typeType().classOrInterfaceType()));
+            } else {
+                internalTypeName = null;
+            }
+
+            if (internalTypeName != null) {
+                // The arity of the referenced method is unknown: match any parameters
+                TerminalNode identifier = identifier(ctx.identifier());
+
+                if (identifier != null) {
+                    String methodName = identifier.getText();
+                    int position = identifier.getSymbol().getStartIndex();
+
+                    addHyperlink(new TypePage.HyperlinkReferenceData(position, methodName.length(), newReferenceData(internalTypeName, methodName, "(*)?", currentInternalTypeName)));
+                } else if (ctx.NEW() != null) {
+                    int position = ctx.NEW().getSymbol().getStartIndex();
+
+                    addHyperlink(new TypePage.HyperlinkReferenceData(position, 3, newReferenceData(internalTypeName, "<init>", "(*)V", currentInternalTypeName)));
+                }
+            }
+        }
+
         public StringBuilder getParametersDescriptor(JavaParser.ExpressionListContext expressionListContext) {
             StringBuilder sb = new StringBuilder("(");
             for (JavaParser.ExpressionContext exp : expressionListContext.expression()) sb.append('?');
