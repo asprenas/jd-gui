@@ -94,4 +94,4 @@ class JDCore121RegressionTest {
             }
         }
     }
-}\n
+}
