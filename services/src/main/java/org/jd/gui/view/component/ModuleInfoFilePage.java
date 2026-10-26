@@ -12,7 +12,7 @@ import org.fife.ui.rtextarea.Marker;
 import org.jd.gui.api.API;
 import org.jd.gui.api.model.Container;
 import org.jd.gui.api.model.Indexes;
-import org.jd.gui.util.decompiler.ContainerLoader;
+import org.jd.gui.util.decompiler.DecompilerLoaderFactory;
 import org.jd.gui.util.decompiler.StringBuilderPrinter;
 import org.jd.gui.util.exception.ExceptionUtil;
 import org.jd.gui.util.index.IndexesUtil;
@@ -56,19 +56,15 @@ public class ModuleInfoFilePage extends ClassFilePage {
             boolean unicodeEscape = getPreferenceValue(preferences, ESCAPE_UNICODE_CHARACTERS, false);
 
             // Init loader
-            ContainerLoader loader = new ContainerLoader(entry);
+            DecompilerLoaderFactory.DecompilerInput decompilerInput =
+                DecompilerLoaderFactory.create(entry, Runtime.version().feature());
 
             // Init printer
             ModuleInfoFilePrinter printer = new ModuleInfoFilePrinter();
             printer.setUnicodeEscape(unicodeEscape);
 
-            // Format internal name
-            String entryPath = entry.getPath();
-            assert entryPath.endsWith(".class");
-            String entryInternalName = entryPath.substring(0, entryPath.length() - 6); // 6 = ".class".length()
-
             // Decompile class file
-            DECOMPILER.decompile(loader, printer, entryInternalName);
+            DECOMPILER.decompile(decompilerInput.loader(), printer, decompilerInput.internalName());
         } catch (Throwable t) {
             assert ExceptionUtil.printStackTrace(t);
             setText("// INTERNAL ERROR //");

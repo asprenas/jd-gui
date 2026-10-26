@@ -10,7 +10,7 @@ package org.jd.gui.service.sourcesaver;
 import org.jd.core.v1.ClassFileToJavaSourceDecompiler;
 import org.jd.gui.api.API;
 import org.jd.gui.api.model.Container;
-import org.jd.gui.util.decompiler.ContainerLoader;
+import org.jd.gui.util.decompiler.DecompilerLoaderFactory;
 import org.jd.gui.util.decompiler.LineNumberStringBuilderPrinter;
 import org.jd.gui.util.exception.ExceptionUtil;
 import org.jd.gui.util.io.NewlineOutputStream;
@@ -31,7 +31,6 @@ public class ClassFileSourceSaverProvider extends AbstractSourceSaverProvider {
 
     protected static final ClassFileToJavaSourceDecompiler DECOMPILER = new ClassFileToJavaSourceDecompiler();
 
-    protected ContainerLoader loader = new ContainerLoader();
     protected LineNumberStringBuilderPrinter printer = new LineNumberStringBuilderPrinter();
 
     @Override public String[] getSelectors() { return appendSelectors("*:file:*.class"); }
@@ -78,20 +77,16 @@ public class ClassFileSourceSaverProvider extends AbstractSourceSaverProvider {
             configuration.put("realignLineNumbers", realignmentLineNumbers);
 
             // Init loader
-            loader.setEntry(entry);
+            DecompilerLoaderFactory.DecompilerInput decompilerInput =
+                DecompilerLoaderFactory.create(entry, Runtime.version().feature());
 
             // Init printer
             printer.setRealignmentLineNumber(realignmentLineNumbers);
             printer.setUnicodeEscape(unicodeEscape);
             printer.setShowLineNumbers(showLineNumbers);
 
-            // Format internal name
-            String entryPath = entry.getPath();
-            assert entryPath.endsWith(".class");
-            String entryInternalName = entryPath.substring(0, entryPath.length() - 6); // 6 = ".class".length()
-
             // Decompile class file
-            DECOMPILER.decompile(loader, printer, entryInternalName, configuration);
+            DECOMPILER.decompile(decompilerInput.loader(), printer, decompilerInput.internalName(), configuration);
 
             StringBuilder stringBuffer = printer.getStringBuffer();
 

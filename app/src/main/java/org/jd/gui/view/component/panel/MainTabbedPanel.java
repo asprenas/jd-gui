@@ -186,11 +186,5 @@ public class MainTabbedPanel<T extends JComponent & UriGettable> extends TabbedP
     @Override
     public void preferencesChanged(Map<String, String> preferences) {
         super.preferencesChanged(preferences);
-
-        // Update current sub-page preferences
-        Component subPage = tabbedPane.getSelectedComponent();
-        if (subPage instanceof PreferencesChangeListener) {
-            ((PreferencesChangeListener)subPage).preferencesChanged(preferences);
-        }
     }
 }

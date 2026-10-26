@@ -184,6 +184,7 @@ public abstract class CustomLineNumbersPage extends HyperlinkPage {
             int ascent = rTextArea.getMaxAscent();
             FoldManager fm = ((RSyntaxTextArea)rTextArea).getFoldManager();
             int RHS_BORDER_WIDTH = getRhsBorderWidth();
+            g.setFont(getFont());
             FontMetrics metrics = g.getFontMetrics();
             int rhs = getWidth() - RHS_BORDER_WIDTH;
 
@@ -194,7 +195,6 @@ public abstract class CustomLineNumbersPage extends HyperlinkPage {
             }
 
             g.fillRect(0, visibleRect.y, cellWidth, visibleRect.height);
-            g.setFont(getFont());
 
             if (aaHints != null) {
                 ((Graphics2D)g).addRenderingHints(aaHints);

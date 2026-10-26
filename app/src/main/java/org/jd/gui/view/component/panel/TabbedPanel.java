@@ -251,6 +251,12 @@ public class TabbedPanel<T extends JComponent & UriGettable> extends JPanel impl
         } else {
             tabbedPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
         }
+        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+            Component page = tabbedPane.getComponentAt(i);
+            if (page instanceof PreferencesChangeListener) {
+                ((PreferencesChangeListener)page).preferencesChanged(preferences);
+            }
+        }
         setSelectedIndex(tabbedPane.getSelectedIndex());
     }
 }

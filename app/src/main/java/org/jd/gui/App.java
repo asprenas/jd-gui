@@ -12,6 +12,7 @@ import org.jd.gui.model.configuration.Configuration;
 import org.jd.gui.service.configuration.ConfigurationPersister;
 import org.jd.gui.service.configuration.ConfigurationPersisterService;
 import org.jd.gui.util.exception.ExceptionUtil;
+import org.jd.gui.util.FontPreferences;
 import org.jd.gui.util.net.InterProcessCommunicationUtil;
 
 import javax.swing.*;
@@ -19,6 +20,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class App {
     protected static final String SINGLE_INSTANCE = "UIMainWindowPreferencesProvider.singleInstance";
@@ -56,6 +58,16 @@ public class App {
                     assert ExceptionUtil.printStackTrace(ee);
                 }
            }
+
+            Map<String, String> preferences = configuration.getPreferences();
+            String uiSizeValue = preferences.get(FontPreferences.UI_FONT_SIZE);
+            int uiSize = FontPreferences.getUiDefaultSize();
+            try { if (uiSizeValue != null) uiSize = Integer.parseInt(uiSizeValue); }
+            catch (NumberFormatException ignored) { }
+            if (uiSize < 8 || uiSize > 32) {
+                uiSize = FontPreferences.getUiDefaultSize();
+            }
+            FontPreferences.applyUiFont(preferences.get(FontPreferences.UI_FONT_FAMILY), uiSize);
 
             // Create main controller and show main frame
             controller = new MainController(configuration);

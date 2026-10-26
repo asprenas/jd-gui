@@ -45,6 +45,8 @@ public class JavaFilePage extends TypePage {
     }
 
     public String getSyntaxStyle() { return SyntaxConstants.SYNTAX_STYLE_JAVA; }
+    @Override protected String getFontFamilyPreferenceKey() { return org.jd.gui.util.FontPreferences.JAVA_FONT_FAMILY; }
+    @Override protected String getFontSizePreferenceKey() { return org.jd.gui.util.FontPreferences.JAVA_FONT_SIZE; }
 
     // --- ContentSavable --- //
     public String getFileName() {

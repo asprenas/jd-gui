@@ -7,12 +7,13 @@ JD-GUI, a standalone graphical utility that displays Java sources from CLASS fil
 > **Fork notice:** this repository is a fork of [java-decompiler/jd-gui](https://github.com/java-decompiler/jd-gui),
 > based on commit `b3c1ced` (JD-GUI 1.6.6). Changes in this fork:
 > - Gradle 9.1, builds with JDK 21+; bytecode targets Java 21 (Java 21+ required to run)
-> - JD-Core 1.1.4 from the [asprenas/jd-core](https://github.com/asprenas/jd-core) fork
+> - JD-Core 1.3.0 from the [asprenas/jd-core](https://github.com/asprenas/jd-core) fork
 > - Tests migrated to JUnit 5, GitHub Actions CI (JDK 21 / 25) and Dependabot
 > - `.java` files are parsed with a Java 24 grammar ([antlr/grammars-v4](https://github.com/antlr/grammars-v4/tree/master/java/java), ANTLR 4.13.2)
   instead of Java 7, so sources using lambdas, `var`, records, sealed types, switch expressions, text blocks and patterns
-  no longer break hyperlinks and indexing (records are not yet indexed as types)
+  including record types and their implicit members, method references, hyperlinks and indexing
 > - RSyntaxTextArea 3.6.3: syntax highlighting of text blocks and of the `record`, `sealed`, `permits`, `yield` and `var` keywords
+> - Long Java expressions are parsed on a dedicated large-stack thread to avoid `StackOverflowError`
 
 ![](https://raw.githubusercontent.com/java-decompiler/jd-gui/master/src/website/img/jd-gui.png)
 
@@ -30,7 +31,7 @@ Prebuilt packages: [GitHub Releases](https://github.com/asprenas/jd-gui/releases
 ## How to build JD-GUI ?
 Requirements: JDK 21 or later (Gradle 9). The resulting bytecode targets Java 21.
 
-JD-Core 1.1.4 is resolved from Maven local (`org.jd:jd-core`, install it from
+JD-Core 1.3.0 is resolved from Maven local (`org.jd:jd-core`, install it from
 [asprenas/jd-core](https://github.com/asprenas/jd-core)) or from JitPack with `-PjdCoreJitpack`.
 ```
 > git clone https://github.com/asprenas/jd-gui.git
@@ -55,6 +56,9 @@ generate :
 - Open a file with menu "File > Open File..."
 - Open recent files with menu "File > Recent Files"
 - Drag and drop files from your file explorer
+
+### Font appearance
+Open `Help > Preferences... > Viewer > Appearance` to choose separate font families and sizes for Java source, other text pages, and the application UI. The font list contains families available to the current Java runtime. If a saved font is unavailable, JD-GUI falls back to the current editor theme or Swing Look and Feel default. Text font changes also update open pages and line numbers; UI font changes are applied immediately. Character coverage depends on fonts installed on the host system; install a font that supports a script if it appears as missing-glyph boxes.
 
 ## How to extend JD-GUI ?
 ```

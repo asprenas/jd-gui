@@ -34,6 +34,7 @@ public class ClassFilePage extends TypePage {
     protected static final ClassFileToJavaSourceDecompiler DECOMPILER = new ClassFileToJavaSourceDecompiler();
 
     protected int maximumLineNumber = -1;
+    protected Map<String, String> lastDecompilerPreferences;
 
     static {
         // Early class loading
@@ -52,6 +53,7 @@ public class ClassFilePage extends TypePage {
         setErrorForeground(Color.decode(preferences.get("JdGuiPreferences.errorBackgroundColor")));
         // Display source
         decompile(preferences);
+        lastDecompilerPreferences = getDecompilerPreferences(preferences);
     }
 
     public void decompile(Map<String, String> preferences) {
@@ -73,20 +75,16 @@ public class ClassFilePage extends TypePage {
             setShowMisalignment(realignmentLineNumbers);
 
             // Init loader
-            ContainerLoader loader = new ContainerLoader(entry);
+            DecompilerLoaderFactory.DecompilerInput decompilerInput =
+                DecompilerLoaderFactory.create(entry, Runtime.version().feature());
 
             // Init printer
             ClassFilePrinter printer = new ClassFilePrinter();
             printer.setRealignmentLineNumber(realignmentLineNumbers);
             printer.setUnicodeEscape(unicodeEscape);
 
-            // Format internal name
-            String entryPath = entry.getPath();
-            assert entryPath.endsWith(".class");
-            String entryInternalName = entryPath.substring(0, entryPath.length() - 6); // 6 = ".class".length()
-
             // Decompile class file
-            DECOMPILER.decompile(loader, printer, entryInternalName, configuration);
+            DECOMPILER.decompile(decompilerInput.loader(), printer, decompilerInput.internalName(), configuration);
         } catch (Throwable t) {
             assert ExceptionUtil.printStackTrace(t);
             setText("// INTERNAL ERROR //");
@@ -124,7 +122,8 @@ public class ClassFilePage extends TypePage {
             configuration.put("realignLineNumbers", realignmentLineNumbers);
 
             // Init loader
-            ContainerLoader loader = new ContainerLoader(entry);
+            DecompilerLoaderFactory.DecompilerInput decompilerInput =
+                DecompilerLoaderFactory.create(entry, Runtime.version().feature());
 
             // Init printer
             LineNumberStringBuilderPrinter printer = new LineNumberStringBuilderPrinter();
@@ -132,13 +131,8 @@ public class ClassFilePage extends TypePage {
             printer.setUnicodeEscape(unicodeEscape);
             printer.setShowLineNumbers(showLineNumbers);
 
-            // Format internal name
-            String entryPath = entry.getPath();
-            assert entryPath.endsWith(".class");
-            String entryInternalName = entryPath.substring(0, entryPath.length() - 6); // 6 = ".class".length()
-
             // Decompile class file
-            DECOMPILER.decompile(loader, printer, entryInternalName, configuration);
+            DECOMPILER.decompile(decompilerInput.loader(), printer, decompilerInput.internalName(), configuration);
 
             StringBuilder stringBuffer = printer.getStringBuffer();
 
@@ -215,15 +209,28 @@ public class ClassFilePage extends TypePage {
     // --- PreferencesChangeListener --- //
     @Override
     public void preferencesChanged(Map<String, String> preferences) {
-        DefaultCaret caret = (DefaultCaret)textArea.getCaret();
-        int updatePolicy = caret.getUpdatePolicy();
-
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        decompile(preferences);
-        caret.setUpdatePolicy(updatePolicy);
+        Map<String, String> currentDecompilerPreferences = getDecompilerPreferences(preferences);
+        if (!currentDecompilerPreferences.equals(lastDecompilerPreferences)) {
+            DefaultCaret caret = (DefaultCaret)textArea.getCaret();
+            int updatePolicy = caret.getUpdatePolicy();
+            caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+            decompile(preferences);
+            caret.setUpdatePolicy(updatePolicy);
+            lastDecompilerPreferences = currentDecompilerPreferences;
+        }
 
         super.preferencesChanged(preferences);
     }
+
+    protected Map<String, String> getDecompilerPreferences(Map<String, String> preferences) {
+        Map<String, String> result = new HashMap<>();
+        result.put(REALIGN_LINE_NUMBERS, preferences.get(REALIGN_LINE_NUMBERS));
+        result.put(ESCAPE_UNICODE_CHARACTERS, preferences.get(ESCAPE_UNICODE_CHARACTERS));
+        return result;
+    }
+
+    @Override protected String getFontFamilyPreferenceKey() { return org.jd.gui.util.FontPreferences.JAVA_FONT_FAMILY; }
+    @Override protected String getFontSizePreferenceKey() { return org.jd.gui.util.FontPreferences.JAVA_FONT_SIZE; }
 
     public class ClassFilePrinter extends StringBuilderPrinter {
         protected HashMap<String, ReferenceData> referencesCache = new HashMap<>();

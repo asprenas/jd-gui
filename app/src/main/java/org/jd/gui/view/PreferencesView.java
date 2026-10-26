@@ -108,6 +108,12 @@ public class PreferencesView implements PreferencesPanel.PreferencesPanelChangeL
             preferencesOkButton.setText("   Ok   ");
             preferencesOkButton.addActionListener(e -> {
                 for (PreferencesPanel pp : panels) {
+                    if (!pp.arePreferencesValid()) {
+                        preferencesOkButton.setEnabled(false);
+                        return;
+                    }
+                }
+                for (PreferencesPanel pp : panels) {
                     pp.savePreferences(preferences);
                 }
                 preferencesDialog.setVisible(false);
@@ -142,7 +148,9 @@ public class PreferencesView implements PreferencesPanel.PreferencesPanelChangeL
                 preferredHeight = maxHeight;
             }
 
-            preferencesScrollPane.setPreferredSize(new Dimension(400, preferredHeight));
+            int preferredWidth = Math.max(400, preferencesPanels.getPreferredSize().width + 2);
+            preferredWidth = Math.min(preferredWidth, Math.max(300, screenSize.width - 80));
+            preferencesScrollPane.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
             preferencesDialog.setMinimumSize(new Dimension(300, 200));
 
             // Prepare to display

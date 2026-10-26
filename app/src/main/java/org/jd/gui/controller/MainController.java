@@ -28,6 +28,7 @@ import org.jd.gui.service.type.TypeFactoryService;
 import org.jd.gui.service.uriloader.UriLoaderService;
 import org.jd.gui.spi.*;
 import org.jd.gui.util.exception.ExceptionUtil;
+import org.jd.gui.util.FontPreferences;
 import org.jd.gui.util.net.UriUtil;
 import org.jd.gui.util.swing.SwingUtil;
 import org.jd.gui.view.MainView;
@@ -388,8 +389,18 @@ public class MainController implements API {
     @SuppressWarnings("unchecked")
     protected void onPreferences() {
         preferencesController.show(() -> {
-            checkPreferencesChange(currentPage);
-            mainView.preferencesChanged(getPreferences());
+            Map<String, String> preferences = getPreferences();
+            String uiSizeValue = preferences.get(FontPreferences.UI_FONT_SIZE);
+            int uiSize = FontPreferences.getUiDefaultSize();
+            try { if (uiSizeValue != null) uiSize = Integer.parseInt(uiSizeValue); }
+            catch (NumberFormatException ignored) { }
+            if (uiSize < 8 || uiSize > 32) uiSize = FontPreferences.getUiDefaultSize();
+            String uiFamily = FontPreferences.resolveFamily(preferences.get(FontPreferences.UI_FONT_FAMILY), FontPreferences.getUiDefaultFamily());
+            FontPreferences.applyUiFont(uiFamily, uiSize);
+            for (Window window : Window.getWindows()) {
+                FontPreferences.updateWindowFonts(window, uiFamily, uiSize);
+            }
+            mainView.preferencesChanged(preferences);
         });
     }
 

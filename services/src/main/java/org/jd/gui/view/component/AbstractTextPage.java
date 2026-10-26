@@ -14,6 +14,7 @@ import org.jd.gui.api.feature.ContentSearchable;
 import org.jd.gui.api.feature.LineNumberNavigable;
 import org.jd.gui.api.feature.PreferencesChangeListener;
 import org.jd.gui.api.feature.UriOpenable;
+import org.jd.gui.util.FontPreferences;
 import org.jd.gui.util.exception.ExceptionUtil;
 
 import javax.swing.*;
@@ -30,10 +31,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.HashMap;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 
 public class AbstractTextPage extends JPanel implements LineNumberNavigable, ContentSearchable, UriOpenable, PreferencesChangeListener {
-    protected static final String FONT_SIZE_KEY = "ViewerPreferences.fontSize";
+    protected static final ArrayList<WeakReference<AbstractTextPage>> OPEN_PAGES = new ArrayList<>();
 
     /** Editor theme (other themes in the same directory: eclipse.xml) */
     public static final String THEME_RESOURCE = "rsyntaxtextarea/themes/intellij-light.xml";
@@ -50,6 +54,7 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
 
     protected RSyntaxTextArea textArea;
     protected RTextScrollPane scrollPane;
+    protected Font themeFont;
 
     protected Map<String, String> preferences;
 
@@ -90,6 +95,7 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
         } catch (IOException e) {
             assert ExceptionUtil.printStackTrace(e);
         }
+        themeFont = textArea.getFont();
 
         scrollPane.setFoldIndicatorEnabled(true);
         scrollPane.setFont(textArea.getFont());
@@ -115,9 +121,7 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
                 }
 
                 // Save preferences
-                if (preferences != null) {
-                    preferences.put(FONT_SIZE_KEY, String.valueOf(textArea.getFont().getSize()));
-                }
+                persistFontSizeAndPropagate();
 
                 try {
                     Rectangle newRectangle = modelToView(offset);
@@ -146,6 +150,9 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
 
         add(scrollPane, BorderLayout.CENTER);
         add(new RoundMarkErrorStrip(textArea), BorderLayout.LINE_END);
+        synchronized (OPEN_PAGES) {
+            OPEN_PAGES.add(new WeakReference<>(this));
+        }
     }
 
     /**
@@ -440,16 +447,59 @@ public class AbstractTextPage extends JPanel implements LineNumberNavigable, Con
 
     // --- PreferencesChangeListener --- //
     public void preferencesChanged(Map<String, String> preferences) {
-        String fontSize = preferences.get(FONT_SIZE_KEY);
+        this.preferences = preferences;
+        applyPreferences(preferences);
+    }
 
-        if (fontSize != null) {
-            try {
-                textArea.setFont(textArea.getFont().deriveFont(Float.parseFloat(fontSize)));
-            } catch (Exception e) {
-                assert ExceptionUtil.printStackTrace(e);
+    protected String getFontFamilyPreferenceKey() { return FontPreferences.OTHER_FONT_FAMILY; }
+    protected String getFontSizePreferenceKey() { return FontPreferences.OTHER_FONT_SIZE; }
+
+    protected void persistFontSizeAndPropagate() {
+        if (preferences != null) {
+            preferences.put(getFontSizePreferenceKey(), String.valueOf(textArea.getFont().getSize()));
+            updateOpenPages(preferences, getFontFamilyPreferenceKey());
+        }
+    }
+
+    @Override
+    public void removeNotify() {
+        super.removeNotify();
+        synchronized (OPEN_PAGES) {
+            OPEN_PAGES.removeIf(reference -> reference.get() == null || reference.get() == this);
+        }
+    }
+
+    protected void applyPreferences(Map<String, String> preferences) {
+        String defaultFamily = themeFont == null ? "Monospaced" : themeFont.getFamily();
+        String family = FontPreferences.resolveFamily(preferences.get(getFontFamilyPreferenceKey()), defaultFamily);
+        int defaultSize = themeFont == null ? 12 : themeFont.getSize();
+        String sizeValue = preferences.get(getFontSizePreferenceKey());
+        if (sizeValue == null) sizeValue = preferences.get(FontPreferences.LEGACY_FONT_SIZE);
+        int size = defaultSize;
+        try {
+            if (sizeValue != null) size = Integer.parseInt(sizeValue);
+        } catch (NumberFormatException ignored) { }
+        if (size < 2 || size > 40) size = defaultSize;
+
+        int style = themeFont == null ? Font.PLAIN : themeFont.getStyle();
+        Font font = FontPreferences.createFont(family, style, size, defaultFamily);
+        textArea.setFont(font);
+        scrollPane.setFont(font);
+        scrollPane.getGutter().setLineNumberFont(font);
+    }
+
+    protected static void updateOpenPages(Map<String, String> preferences, String changedFamilyKey) {
+        synchronized (OPEN_PAGES) {
+            Iterator<WeakReference<AbstractTextPage>> iterator = OPEN_PAGES.iterator();
+            while (iterator.hasNext()) {
+                AbstractTextPage page = iterator.next().get();
+                if (page == null) {
+                    iterator.remove();
+                } else if (page.getFontFamilyPreferenceKey().equals(changedFamilyKey)) {
+                    page.preferences = preferences;
+                    page.applyPreferences(preferences);
+                }
             }
         }
-
-        this.preferences = preferences;
     }
 }
