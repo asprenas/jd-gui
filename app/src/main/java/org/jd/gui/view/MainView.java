@@ -440,7 +440,10 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
         }
 
         char separator = path.indexOf('\\') >= 0 ? '\\' : '/';
-        String[] parts = path.split("[\\\\/]+");
+        String separatorText = String.valueOf(separator);
+        String[] parts = Arrays.stream(path.split("[\\\\/]+"))
+            .filter(part -> !part.isEmpty())
+            .toArray(String[]::new);
         if (parts.length < 2) {
             return path;
         }
@@ -449,21 +452,25 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
         int firstPart = 0;
         if (path.matches("^[A-Za-z]:[\\\\/].*")) {
             root = path.substring(0, 3);
+            firstPart = 1;
         } else if (path.startsWith("\\\\") && parts.length >= 2) {
-            root = "\\\\" + parts[0] + separator + parts[1];
+            root = separatorText + separatorText + parts[0] + separatorText + parts[1];
             firstPart = 2;
         } else if (path.startsWith("/")) {
             root = "/";
         }
 
         String fileName = parts[parts.length - 1];
-        String topFolder = firstPart < parts.length - 1 ? parts[firstPart] : "";
-        String prefix = root + topFolder;
-        if (prefix.isEmpty()) {
-            prefix = parts[0];
+        String prefix;
+        if (firstPart < parts.length - 1) {
+            String topFolder = parts[firstPart];
+            prefix = root.isEmpty() ? topFolder
+                : root + (root.endsWith(separatorText) ? "" : separatorText) + topFolder;
+        } else {
+            prefix = root.isEmpty() ? parts[0] : root;
         }
 
-        return prefix + separator + "..." + separator + fileName;
+        return prefix + separatorText + "..." + separatorText + fileName;
     }
 
     // --- URIOpener --- //
