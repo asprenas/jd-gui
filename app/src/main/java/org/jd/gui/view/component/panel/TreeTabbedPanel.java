@@ -11,6 +11,7 @@ import org.jd.gui.api.API;
 import org.jd.gui.api.feature.*;
 import org.jd.gui.api.model.TreeNodeData;
 import org.jd.gui.util.exception.ExceptionUtil;
+import org.jd.gui.util.swing.CompactMenuLayout;
 import org.jd.gui.view.component.Tree;
 import org.jd.gui.view.renderer.TreeNodeRenderer;
 
@@ -97,6 +98,7 @@ public class TreeTabbedPanel<T extends DefaultMutableTreeNode & ContainerEntryGe
                                     popup.addSeparator();
                                 }
                             }
+                            CompactMenuLayout.apply(popup);
                             popup.show(e.getComponent(), e.getX(), e.getY());
                         }
                     }

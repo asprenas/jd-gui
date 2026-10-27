@@ -12,6 +12,7 @@ import org.jd.gui.api.feature.ContainerEntryGettable;
 import org.jd.gui.api.feature.PreferencesChangeListener;
 import org.jd.gui.api.feature.UriGettable;
 import org.jd.gui.service.platform.PlatformService;
+import org.jd.gui.util.swing.CompactMenuLayout;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -191,6 +192,7 @@ public class TabbedPanel<T extends JComponent & UriGettable> extends JPanel impl
                     }
                 }
             }
+            CompactMenuLayout.apply(this);
         }
     }
 

@@ -14,6 +14,7 @@ import org.jd.gui.model.configuration.Configuration;
 import org.jd.gui.model.history.History;
 import org.jd.gui.service.platform.PlatformService;
 import org.jd.gui.util.exception.ExceptionUtil;
+import org.jd.gui.util.swing.CompactMenuLayout;
 import org.jd.gui.view.component.IconButton;
 import org.jd.gui.view.component.panel.MainTabbedPanel;
 
@@ -210,6 +211,7 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
                 menu.addSeparator();
                 menu.add(exitAction).setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.ALT_DOWN_MASK));
             }
+            CompactMenuLayout.apply(menu);
             menu = new JMenu("Edit");
             menuBar.add(menu);
             menu.add(copyAction).setAccelerator(KeyStroke.getKeyStroke('C', menuShortcutKeyMask));
@@ -218,6 +220,7 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             menu.add(selectAllAction).setAccelerator(KeyStroke.getKeyStroke('A', menuShortcutKeyMask));
             menu.addSeparator();
             menu.add(findAction).setAccelerator(KeyStroke.getKeyStroke('F', menuShortcutKeyMask));
+            CompactMenuLayout.apply(menu);
             menu = new JMenu("Navigation");
             menuBar.add(menu);
             menu.add(openTypeAction).setAccelerator(KeyStroke.getKeyStroke('T', menuShortcutKeyMask));
@@ -227,9 +230,11 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
             menu.addSeparator();
             menu.add(backwardAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_DOWN_MASK));
             menu.add(forwardAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.ALT_DOWN_MASK));
+            CompactMenuLayout.apply(menu);
             menu = new JMenu("Search");
             menuBar.add(menu);
             menu.add(searchAction).setAccelerator(KeyStroke.getKeyStroke('S', menuShortcutKeyMask|InputEvent.SHIFT_DOWN_MASK));
+            CompactMenuLayout.apply(menu);
             menu = new JMenu("Help");
             menuBar.add(menu);
             if (browser) {
@@ -243,6 +248,7 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
                 menu.addSeparator();
                 menu.add(aboutAction).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
             }
+            CompactMenuLayout.apply(menu);
             mainFrame.setJMenuBar(menuBar);
 
             // Icon bar //
@@ -396,9 +402,14 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
 
             for (File file : files) {
                 JMenuItem menuItem = new JMenuItem(reduceRecentFilePath(file.getAbsolutePath()));
+                menuItem.setToolTipText(file.getAbsolutePath());
+                CompactMenuLayout.apply(menuItem);
                 menuItem.addActionListener(e -> openFilesCallback.accept(file));
                 recentFiles.add(menuItem);
             }
+            CompactMenuLayout.applyRecentFiles(recentFiles);
+            recentFiles.getPopupMenu().revalidate();
+            recentFiles.getPopupMenu().repaint();
         });
     }
 
@@ -424,17 +435,35 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
 
     // --- Utils --- //
     static String reduceRecentFilePath(String path) {
-        int lastSeparatorPosition = path.lastIndexOf(File.separatorChar);
-
-        if ((lastSeparatorPosition == -1) || (lastSeparatorPosition < Constants.RECENT_FILE_MAX_LENGTH)) {
+        if (path.length() <= Constants.RECENT_FILE_MAX_LENGTH) {
             return path;
         }
 
-        int length = Constants.RECENT_FILE_MAX_LENGTH/2 - 2;
-        String left = path.substring(0, length);
-        String right = path.substring(path.length() - length);
+        char separator = path.indexOf('\\') >= 0 ? '\\' : '/';
+        String[] parts = path.split("[\\\\/]+");
+        if (parts.length < 2) {
+            return path;
+        }
 
-        return left + "..." + right;
+        String root = "";
+        int firstPart = 0;
+        if (path.matches("^[A-Za-z]:[\\\\/].*")) {
+            root = path.substring(0, 3);
+        } else if (path.startsWith("\\\\") && parts.length >= 2) {
+            root = "\\\\" + parts[0] + separator + parts[1];
+            firstPart = 2;
+        } else if (path.startsWith("/")) {
+            root = "/";
+        }
+
+        String fileName = parts[parts.length - 1];
+        String topFolder = firstPart < parts.length - 1 ? parts[firstPart] : "";
+        String prefix = root + topFolder;
+        if (prefix.isEmpty()) {
+            prefix = parts[0];
+        }
+
+        return prefix + separator + "..." + separator + fileName;
     }
 
     // --- URIOpener --- //
@@ -453,6 +482,13 @@ public class MainView<T extends JComponent & UriGettable> implements UriOpenable
     // --- PreferencesChangeListener --- //
     @Override
     public void preferencesChanged(Map<String, String> preferences) {
+        JMenuBar menuBar = mainFrame.getJMenuBar();
+        if (menuBar != null) {
+            for (int i = 0; i < menuBar.getMenuCount(); i++) {
+                CompactMenuLayout.apply(menuBar.getMenu(i));
+            }
+            CompactMenuLayout.applyRecentFiles(recentFiles);
+        }
         mainTabbedPanel.preferencesChanged(preferences);
     }
 }
