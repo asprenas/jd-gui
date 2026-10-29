@@ -10,6 +10,6 @@ class TextFileTreeNodeFactoryProviderTest {
     @Test
     void registersSpringComponentsAsTextForRootAndNestedPaths() {
         assertTrue(Arrays.asList(new TextFileTreeNodeFactoryProvider().getSelectors())
-            .contains("*:file:*/.spring.components"));
+            .contains("*:file:*/spring.components"));
     }
 }
